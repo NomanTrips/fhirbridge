@@ -6,8 +6,8 @@ Rails.application.routes.draw do
       #resources :microposts, only: [:index, :create, :show, :update, :destroy]
     #end
   #end
-  #match '*path', :to => redirect("/api/v1/base"), via: :get
-  match "/*path/:id" => "/api/v1/base#show", via: :get
+  match '/*path/:id', :to => redirect("/api/v1/base#show"), via: :get
+  #match "/*path/:id" => "/api/v1/base#show", via: :get
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
