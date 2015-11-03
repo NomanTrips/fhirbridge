@@ -5,17 +5,18 @@ class Api::V1::BaseController < ApplicationController
   
   def show
 	puts 'getting to show...'
-    render json: get_resource(params)
+	puts params
+    render json: get_resource(request_params)
   end
 
   def destroy_session
     request.session_options[:skip] = true
   end
-  
-  private
-    
-  def params
+
+  def request_params
     params.permit(:resource_type, :id)
   end
+  
+  private
   
 end
