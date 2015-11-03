@@ -4,7 +4,8 @@ class Api::V1::BaseController < ApplicationController
   #before_action :destroy_session
   
   def show
-    render json: get_resource(params[:resource_type, :id])
+	puts 'getting to show...'
+    render json: get_resource(params)
   end
 
   def destroy_session
