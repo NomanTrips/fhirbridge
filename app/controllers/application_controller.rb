@@ -10,7 +10,8 @@ class ApplicationController < ActionController::API
 	puts 'getting to get_resource'
 	puts resource_type
 	puts id
-	result = ActiveRecord::Base.connection.execute("SELECT * from '#{resource_type}' where id='#{id}'")
+	#result = ActiveRecord::Base.connection.execute("SELECT * from '#{resource_type}' where id='#{id}'")
+	result =  ActiveRecord::Base.connection.execute("SELECT * FROM search('Patient'::text,'id=#{id}')")
 	puts 'after query exec....'
 	return result
   end
