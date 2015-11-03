@@ -6,7 +6,7 @@ class Api::V1::BaseController < ApplicationController
   def show
 	puts 'getting to show...'
 	puts params
-    render json: get_resource(request_params)
+    render json: get_resource(params)
   end
 
   def destroy_session

@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   #protect_from_forgery with: :exception
   
   def get_resource(request_params)
+	puts request_params
 	resource_kind = request_params[resource_type]
 	resource_id = request_params[id]
 	puts 'getting to get_resource'
