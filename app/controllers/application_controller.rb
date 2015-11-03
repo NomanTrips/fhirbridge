@@ -4,7 +4,11 @@ class ApplicationController < ActionController::API
   #protect_from_forgery with: :exception
   
   def get_resource(resource_type, id)
+	puts 'getting to get_resource'
+	puts resource_type.to_s
+	puts id.to_s
 	result = ActiveRecord::Base.connection.execute("SELECT * from '#{resource_type}' where id='#{id}'")
+	puts 'after query exec....'
 	return result
   end
 
