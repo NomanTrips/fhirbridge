@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   #api
-  namespace :api do
-    namespace :v1 do
+  #namespace :api do
+   # namespace :v1 do
       #resources :users, only: [:index, :create, :show, :update, :destroy]
       #resources :microposts, only: [:index, :create, :show, :update, :destroy]
-    end
-  end
+    #end
+  #end
   match '*path', :to => redirect("/api/v1/base"), via: :get
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
