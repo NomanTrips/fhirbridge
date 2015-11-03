@@ -1,7 +1,7 @@
 class Api::V1::BaseController < ApplicationController
-  protect_from_forgery with: :null_session
+  #protect_from_forgery with: :null_session
 
-  before_action :destroy_session
+  #before_action :destroy_session
   
   def show
     render json: get_resource(params[:resource_type, :id])
