@@ -12,7 +12,8 @@ class ApplicationController < ActionController::API
 	puts id
 	#result = ActiveRecord::Base.connection.execute("SELECT * from '#{resource_type}' where id='#{id}'")
 	#result =  ActiveRecord::Base.connection.execute("SELECT * FROM search('Patient'::text,'id=#{id}')")
-	result =  ActiveRecord::Base.connection.execute("SELECT call(fhir.read('Patient', '#{id}'));")
+	#result =  ActiveRecord::Base.connection.execute("SELECT call(fhir.read('Patient', '#{id}'));")
+	result =  ActiveRecord::Base.connection.execute("SELECT fhir.read('Patient', '62d60123-244d-4da7-81be-40a6fd63a6ef');")
 	#result =  ActiveRecord::Base.connection.execute("SELECT content FROM resource WHERE logical_id = '#{id}' AND resource_type = 'Patient';")
 	#fhir.read('Patient', 'c6f20b3a...');
 	puts 'after query exec....'
