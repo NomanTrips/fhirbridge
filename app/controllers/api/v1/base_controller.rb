@@ -7,7 +7,7 @@ class Api::V1::BaseController < ApplicationController
 	puts 'getting to show...'
 	puts params
     #render json: get_resource(params[:resource_type], params[:id])
-	render JSON.pretty_generate( json: get_resource(params[:resource_type], params[:id]) )
+	JSON.pretty_generate( json: get_resource(params[:resource_type], params[:id]) )
   end
 
   def destroy_session
