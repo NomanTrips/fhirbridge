@@ -18,7 +18,10 @@ class ApplicationController < ActionController::API
 	#fhir.read('Patient', 'c6f20b3a...');
 	puts 'after query exec....'
 	result = @result.to_a()
-	#result = record.first
+	record = record.first
+	puts result.to_s
+	puts 'now record:'
+	puts record.to_s
 	return result
   end
 
