@@ -17,9 +17,9 @@ class ApplicationController < ActionController::API
 	#result =  ActiveRecord::Base.connection.execute("SELECT content FROM resource WHERE logical_id = '#{id}' AND resource_type = 'Patient';")
 	#fhir.read('Patient', 'c6f20b3a...');
 	puts 'after query exec....'
+	puts result.class
 	result = result.to_a()
 	record = result.first
-	puts result.class
 	puts record.class
 	#puts result.to_s
 	#puts 'now record:'
