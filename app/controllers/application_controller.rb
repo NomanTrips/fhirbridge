@@ -19,11 +19,13 @@ class ApplicationController < ActionController::API
 	puts 'after query exec....'
 	record = result.to_a()
 	result = record.first
-	puts result.class
-	result.each do |node|
-		puts node.class
-	end
-	result = result.first
+	#puts result.class
+	record_a = result.first
+	result = record_a.second
+	#result.each do |node|
+	#	puts node.class
+	#end
+	#result = result.first
 	#puts result.to_s
 	#puts 'now record:'
 	#puts record.to_s
