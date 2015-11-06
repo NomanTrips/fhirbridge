@@ -21,7 +21,7 @@ class ApplicationController < ActionController::API
 	result = record.first
 	#puts result.class
 	record_a = result.first
-	#result = record_a.second
+	result = record_a.second
 	record_a.each do |node|
 		puts node.class
 		puts node.to_s
