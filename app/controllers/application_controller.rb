@@ -21,12 +21,12 @@ class ApplicationController < ActionController::API
 	result = record.first
 	#puts result.class
 	record_a = result.first
-	result = record_a.second
-	puts result.class
-	puts result.to_s
-	#result.each do |node|
-	#	puts node.class
-	#end
+	#result = record_a.second
+	record_a.each do |node|
+		puts node.class
+		puts node.to_s
+		
+	end
 	#result = result.first
 	#puts result.to_s
 	#puts 'now record:'
