@@ -21,8 +21,9 @@ class ApplicationController < ActionController::API
 	result = record.first
 	puts result.class
 	result.each do |node|
-		puts node.to_s
+		puts node.class
 	end
+	result = result.first
 	#puts result.to_s
 	#puts 'now record:'
 	#puts record.to_s
