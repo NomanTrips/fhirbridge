@@ -22,6 +22,8 @@ class ApplicationController < ActionController::API
 	#puts result.class
 	record_a = result.first
 	result = record_a.second
+	puts result.class
+	puts result.to_s
 	#result.each do |node|
 	#	puts node.class
 	#end
