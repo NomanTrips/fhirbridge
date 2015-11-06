@@ -19,6 +19,10 @@ class ApplicationController < ActionController::API
 	puts 'after query exec....'
 	record = result.to_a()
 	result = record.first
+	puts result.class
+	result.each do |node|
+		puts node.to_s
+	end
 	#puts result.to_s
 	#puts 'now record:'
 	#puts record.to_s
