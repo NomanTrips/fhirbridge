@@ -3,24 +3,19 @@ class ApplicationController < ActionController::API
   # For APIs, you may want to use :null_session instead.
   #protect_from_forgery with: :exception
   
-  def get_resource(resource_type, id)
-	#puts request_params
-	#resource_kind = request_params[resource_type]
-	#resource_id = request_params[id]
-	puts 'getting to get_resource'
-	puts resource_type
-	puts id
-	#result = ActiveRecord::Base.connection.execute("SELECT * from '#{resource_type}' where id='#{id}'")
-	#result =  ActiveRecord::Base.connection.execute("SELECT * FROM search('Patient'::text,'id=#{id}')")
-	#result =  ActiveRecord::Base.connection.execute("SELECT call(fhir.read('Patient', '#{id}'));")
-	#result =  ActiveRecord::Base.connection.execute("SELECT fhir.read('Patient', '62d60123-244d-4da7-81be-40a6fd63a6ef');") THIS ONE WORKS!
-	result =  ActiveRecord::Base.connection.execute("SELECT fhir.read('Patient', '#{id}');")
-	#result =  ActiveRecord::Base.connection.execute("SELECT content FROM resource WHERE logical_id = '#{id}' AND resource_type = 'Patient';")
-	record = result.to_a()
-	result = record.first
-	record_a = result.first
-	result = record_a.second
+    def get_resource(resource_type, id)
+		fhirbase_query_result =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');")
+		content_col_index = fhirbase_query_result.fnumber('content')
+		json_content = fhirbase_query_result.getvalue(1, content_col_index)
+		puts 'line 10'
+		puts json_content.class
+		result = json_content
+		#record = result.to_a()
+		#result = record.first
+		#record_a = result.first
+		#json_content_str = record_a.second
+		#result = json_content_str
 	return result
   end
-
+  
 end
