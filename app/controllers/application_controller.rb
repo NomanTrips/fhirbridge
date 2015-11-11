@@ -10,11 +10,11 @@ class ApplicationController < ActionController::API
 		#content_col_index = fhirbase_query_result.fnumber('content')
 		res_hash = res[0]
 		record_hash = res_hash.first
-		puts 'record_hash class:' + record_hash.class
+		puts 'record_hash class:' + record_hash.class.to_s
 		record_a = record_hash.first
-		puts 'record a class: ' + record_a.class
+		puts 'record a class: ' + record_a.class.to_s
 		result = record_a.second
-		puts 'result class' + result.class
+		puts 'result class' + result.class.to_s
 		
 		
 		#puts 'done printing the field names.'
