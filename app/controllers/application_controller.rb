@@ -4,10 +4,17 @@ class ApplicationController < ActionController::API
   #protect_from_forgery with: :exception
   
     def get_resource(resource_type, id)
-		fhirbase_query_result =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');")
+		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');")
 		#puts fhirbase_query_result.fname(1)
 		#puts fhirbase_query_result.fname(2)
 		#content_col_index = fhirbase_query_result.fnumber('content')
+		field_names = res.fields()
+		puts 'printing the field names....'
+		field_names.each do |field|
+			puts field
+		end
+		puts 'done printing the field names.'
+		puts res[0].size
 		json_content = fhirbase_query_result.getvalue(0, 1)
 		puts 'line 10'
 		puts json_content.class
