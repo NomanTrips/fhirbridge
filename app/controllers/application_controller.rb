@@ -9,16 +9,20 @@ class ApplicationController < ActionController::API
 		#puts fhirbase_query_result.fname(2)
 		#content_col_index = fhirbase_query_result.fnumber('content')
 		res_hash = res[0]
-		res_hash.each do |element|
-			puts element.class
-			puts element.to_s
-		end
-		puts 'done printing the field names.'
-		puts res[0].size
-		json_content = fhirbase_query_result.getvalue(0, 1)
-		puts 'line 10'
-		puts json_content.class
-		result = json_content
+		record_hash = res_hash.first
+		puts 'record_hash class:' + record_hash.class
+		record_a = record_hash.first
+		puts 'record a class: ' + record_a.class
+		result = record_a.second
+		puts 'result class' + result.class
+		
+		
+		#puts 'done printing the field names.'
+		#puts res[0].size
+		#json_content = fhirbase_query_result.getvalue(0, 1)
+		#puts 'line 10'
+		#puts json_content.class
+		#result = json_content
 		#record = result.to_a()
 		#result = record.first
 		#record_a = result.first
