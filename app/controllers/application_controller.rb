@@ -8,9 +8,10 @@ class ApplicationController < ActionController::API
 		#puts fhirbase_query_result.fname(1)
 		#puts fhirbase_query_result.fname(2)
 		#content_col_index = fhirbase_query_result.fnumber('content')
-		puts res.getvalue 0, 0
-		res.each do |row|
-			puts row[0].class
+		res_hash = res[0]
+		res_hash.each do |element|
+			puts element.class
+			puts element.to_s
 		end
 		puts 'done printing the field names.'
 		puts res[0].size
