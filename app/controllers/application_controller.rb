@@ -8,14 +8,16 @@ class ApplicationController < ActionController::API
 		#puts fhirbase_query_result.fname(1)
 		#puts fhirbase_query_result.fname(2)
 		#content_col_index = fhirbase_query_result.fnumber('content')
+		puts 'after query exec...'
+		puts 'res class: ' + res.class.to_s
+		
+		res.each{|tuple| puts tuple.length}
+		
 		res_hash = res[0]
 		record_hash = res_hash.first
 		puts 'record_hash class:' + record_hash.class.to_s
-		record_a = record_hash.first
-		puts 'record a class: ' + record_a.class.to_s
-		result = record_a.second
-		puts 'result class' + result.class.to_s
-		
+		result = record_hash.second
+		puts 'result class: ' + result.class.to_s
 		
 		#puts 'done printing the field names.'
 		#puts res[0].size
