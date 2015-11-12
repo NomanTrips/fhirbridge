@@ -5,10 +5,16 @@ class ApplicationController < ActionController::API
   
     def get_resource(resource_type, id)
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
-		puts res.cmd_status()
-		res_hash = res[0] #First row of query result
-		record_hash = res_hash.first #Some kind of wrapper array?
-		result = record_hash.second #string of the json content
+		puts 'res status: ' + res.cmd_status()
+		puts 'tuple amt: ' + res.ntuples().to_s
+		
+		if res.ntuples() > 0 then
+			begin
+				res_hash = res[0] #First row of query result
+				record_hash = res_hash.first #Some kind of wrapper array?
+				result = record_hash.second #string of the json content
+			end
+	
 	return result
   end
   
