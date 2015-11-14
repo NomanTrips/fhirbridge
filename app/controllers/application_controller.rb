@@ -17,4 +17,5 @@ class ApplicationController < ActionController::API
 	return result
   end
   
+  
 end

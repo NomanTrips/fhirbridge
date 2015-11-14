@@ -3,6 +3,7 @@ class Api::V1::BaseController < ApplicationController
 
   #before_action :destroy_session
   
+  
   def show
     render json: get_resource(params[:resource_type], params[:id])
 	#render JSON.pretty_generate( json: get_resource(params[:resource_type], params[:id]) )
