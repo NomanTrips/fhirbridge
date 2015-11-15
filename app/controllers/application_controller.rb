@@ -30,5 +30,20 @@ class ApplicationController < ActionController::API
 		return result
 	
 	end
+	
+	def search_for_resource(resource_type, criteria)
+	puts 'entering search'
+	# select fhir.search('Patient', 'given=john')
+		res =  ActiveRecord::Base.connection.execute("SELECT fhir.search('#{resource_type}', '#{criteria}');") # Running fhirbase stored procedure
+
+		if res.ntuples() > 0 then
+			res_hash = res[0] #First row of query result
+			record_hash = res_hash.first #Some kind of wrapper array?
+			result = record_hash.second #string of the json content
+		end
+	
+		return result
+	
+	end
   
 end

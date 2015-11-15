@@ -5,6 +5,7 @@ class Api::V1::BaseController < ApplicationController
   
   
   def show
+	puts 'entering show'
     render json: get_resource(params[:resource_type], params[:id])
 	#render JSON.pretty_generate( json: get_resource(params[:resource_type], params[:id]) )
 	#render json: JSON.pretty_generate( get_resource(params[:resource_type], params[:id]) )
@@ -22,6 +23,10 @@ class Api::V1::BaseController < ApplicationController
 	 # render json: get_resource.errors, status: :unprocessable_entity
 	#end
   
+  end
+  
+  def search
+	render json: search_for_resource(params[:resource_type], params[:criteria])
   end
 
   def destroy_session
