@@ -28,7 +28,7 @@ class Api::V1::BaseController < ApplicationController
   def search
 	puts 'entering search'
 	puts params.to_s
-	render json: search_for_resource(params[:resource_type], params[:search])
+	render json: search_for_resource(params[:resource_type], params[:searchString])
   end
 
   def destroy_session
