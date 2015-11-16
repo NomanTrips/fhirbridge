@@ -30,11 +30,11 @@ class Api::V1::BaseController < ApplicationController
 	query_strings = request.query_parameters.to_hash()
 	
 	query_strings.each do |key,value|
-		search_string = "#{key.to_s}=#{value.to_s}"
+		@search_string = "#{key.to_s}=#{value.to_s}"
 	end
-	puts search_string
+	puts @search_string
 	
-	render json: search_for_resource(params[:resource_type], search_string)
+	render json: search_for_resource(params[:resource_type], @search_string)
   end
 
   def destroy_session
