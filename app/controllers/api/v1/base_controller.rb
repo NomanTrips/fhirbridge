@@ -33,6 +33,7 @@ class Api::V1::BaseController < ApplicationController
 			search_string = "#{key.to_s}=#{value.to_s}"
 		else
 			search_string = search_string + '&' + "#{key.to_s}=#{value.to_s}"
+		end
 	end
 	puts search_string
 	
