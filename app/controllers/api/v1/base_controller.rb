@@ -30,7 +30,9 @@ class Api::V1::BaseController < ApplicationController
 	@search_string = ""
 	query_strings.each do |key,value|
 		puts "#{key.to_s}---#{value.to_s}"
-		if @search_string = "" then
+		puts @search_string
+		puts 'juju'
+		if @search_string.empty? then
 			@search_string = "#{key.to_s}=#{value.to_s}"
 		else
 			@search_string.concat "&#{key.to_s}=#{value.to_s}"
@@ -38,7 +40,7 @@ class Api::V1::BaseController < ApplicationController
 	end
 	puts 'This is the search string: ' + @search_string
 	
-	render json: search_for_resource(params[:resource_type], search_string)
+	render json: search_for_resource(params[:resource_type], @search_string)
   end
 
   def destroy_session
