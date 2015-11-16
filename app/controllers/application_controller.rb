@@ -32,8 +32,6 @@ class ApplicationController < ActionController::API
 	end
 	
 	def search_for_resource(resource_type, searchString)
-	puts 'entering search'
-	puts criteria.to_s
 	# select fhir.search('Patient', 'given=john')
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.search('#{resource_type}', '#{searchString}');") # Running fhirbase stored procedure
 

@@ -27,7 +27,13 @@ class Api::V1::BaseController < ApplicationController
   
   def search
 	puts 'entering search'
-	puts params.to_s
+	query_strings = request.query_parameters.to_hash()
+	
+	query_strings.each do |keyValue|
+		puts keyValue.to_s
+	end
+	
+	
 	render json: search_for_resource(params[:resource_type], params[:searchString])
   end
 

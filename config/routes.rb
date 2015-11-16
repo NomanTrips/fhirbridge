@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   #end
   #match '/*path/:id', :to => redirect("/api/v1/base#show"), via: :get
   match '/:resource_type/:id', to: 'api/v1/base#show', via: :get
-  match '/:resource_type?:searchString', to: 'api/v1/base#search', via: :get
+  match '/:resource_type', to: 'api/v1/base#search', via: :get
   match '/:resource_type', to: 'api/v1/base#create', via: :post
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
