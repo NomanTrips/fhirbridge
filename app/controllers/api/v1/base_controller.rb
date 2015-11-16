@@ -26,15 +26,17 @@ class Api::V1::BaseController < ApplicationController
   end
   
   def search
-	puts 'entering search'
 	query_strings = request.query_parameters.to_hash()
-	
+	search_string = ''
 	query_strings.each do |key,value|
-		@search_string = "#{key.to_s}=#{value.to_s}"
+		if search_string = '' then
+			search_string = "#{key.to_s}=#{value.to_s}"
+		else
+			search_string = search_string + '&' + "#{key.to_s}=#{value.to_s}"
 	end
-	puts @search_string
+	puts search_string
 	
-	render json: search_for_resource(params[:resource_type], @search_string)
+	render json: search_for_resource(params[:resource_type], search_string)
   end
 
   def destroy_session
