@@ -33,8 +33,9 @@ class ApplicationController < ActionController::API
 	
 	def search_for_resource(resource_type, criteria)
 	puts 'entering search'
+	puts criteria.to_s
 	# select fhir.search('Patient', 'given=john')
-		res =  ActiveRecord::Base.connection.execute("SELECT fhir.search('#{resource_type}', '#{criteria}');") # Running fhirbase stored procedure
+		res =  ActiveRecord::Base.connection.execute("SELECT fhir.search('#{resource_type}', 'given=ahab');") # Running fhirbase stored procedure
 
 		if res.ntuples() > 0 then
 			res_hash = res[0] #First row of query result
