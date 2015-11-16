@@ -28,7 +28,9 @@ class Api::V1::BaseController < ApplicationController
   def search
 	query_strings = request.query_parameters.to_hash()
 	search_string = ''
+	puts query_strings.size
 	query_strings.each do |key,value|
+		puts "#{key.to_s} #{value.to_s}"
 		if search_string = '' then
 			search_string = "#{key.to_s}=#{value.to_s}"
 		else
