@@ -26,6 +26,8 @@ class Api::V1::BaseController < ApplicationController
   end
   
   def search
+	puts 'entering search'
+	puts params.to_s
 	render json: search_for_resource(params[:resource_type], params[:search])
   end
 
