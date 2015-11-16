@@ -27,17 +27,16 @@ class Api::V1::BaseController < ApplicationController
   
   def search
 	query_strings = request.query_parameters.to_hash()
-	search_string = ''
-	puts query_strings.size
+	search_string = ""
 	query_strings.each do |key,value|
-		puts "#{key.to_s} #{value.to_s}"
-		if search_string = '' then
+		puts "#{key.to_s}---#{value.to_s}"
+		if search_string = "" then
 			search_string = "#{key.to_s}=#{value.to_s}"
 		else
-			search_string = search_string + '&' + "#{key.to_s}=#{value.to_s}"
+			search_string = search_string + "&" + "#{key.to_s}=#{value.to_s}"
 		end
 	end
-	puts search_string
+	puts 'This is the search string: ' + search_string
 	
 	render json: search_for_resource(params[:resource_type], search_string)
   end
