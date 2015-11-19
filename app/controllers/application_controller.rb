@@ -59,4 +59,16 @@ class ApplicationController < ActionController::API
 	return result
   end
   
+    def vread_resource(resource_type, id, vid)
+		res =  ActiveRecord::Base.connection.execute("SELECT fhir.vread('#{resource_type}', /*old_version_id*/ '#{vid}');") # Running fhirbase stored procedure
+		
+		if res.ntuples() > 0 then
+			res_hash = res[0] #First row of query result
+			record_hash = res_hash.first #Some kind of wrapper array?
+			result = record_hash.second #string of the json content
+		end
+	
+	return result
+  end
+  
 end

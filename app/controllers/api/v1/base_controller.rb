@@ -47,6 +47,11 @@ class Api::V1::BaseController < ApplicationController
   def update  
 	render json: update_resource(params[:resource_type], params[:id], request.body.read)
   end 
+  
+  def vread
+	render json: vread_resource(params[:resource_type], params[:id], params[:vid])
+  end
+  
 
   def destroy_session
     request.session_options[:skip] = true
