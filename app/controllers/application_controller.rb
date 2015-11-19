@@ -44,5 +44,19 @@ class ApplicationController < ActionController::API
 		return result
 	
 	end
+	
+    def update_resource(resource_type, id, payload)
+		res =  ActiveRecord::Base.connection.execute("SELECT fhir.update(fhirbase_json.merge(fhir.read('#{resource_type}', '#{id}'),'#{payload}'));") # Running fhirbase stored procedure
+		
+		#SELECT fhir.update(fhirbase_json.merge(fhir.read('#{resource_type}', '#{id}'),'#{payload}'));
+
+		if res.ntuples() > 0 then
+			res_hash = res[0] #First row of query result
+			record_hash = res_hash.first #Some kind of wrapper array?
+			result = record_hash.second #string of the json content
+		end
+	
+	return result
+  end
   
 end

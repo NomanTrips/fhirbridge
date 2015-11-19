@@ -42,6 +42,11 @@ class Api::V1::BaseController < ApplicationController
 	
 	render json: search_for_resource(params[:resource_type], @search_string)
   end
+  
+  # PATCH/PUT /api/{resource_name}/id
+  def update  
+	render json: update_resource(params[:resource_type], params[:id], request.body.read)
+  end 
 
   def destroy_session
     request.session_options[:skip] = true
