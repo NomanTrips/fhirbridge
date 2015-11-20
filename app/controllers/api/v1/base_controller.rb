@@ -2,20 +2,22 @@ class Api::V1::BaseController < ApplicationController
   #protect_from_forgery with: :null_session
 
   #before_action :destroy_session
-  
+  require 'json'
   
   def show
-	puts 'entering show'
-    render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
-	#render JSON.pretty_generate( json: get_resource(params[:resource_type], params[:id]) )
-	#render json: JSON.pretty_generate( get_resource(params[:resource_type], params[:id]) )
+	resource_string = get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
+	resource_json_hash = JSON.parse resource_string
+    ETag = resource_json_hash["meta"][0]["versionId"]
+	puts ETag.to_s
+	render json: resource_string
+	#render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
   end
 
   # POST /api/{plural_resource_name}
   def create
 	puts 'entering create....'
 	puts request.body.read
-	render json: create_resource(request.body.read)
+	render json: create_resource(request.body.read), content_type: "application/json+fhir"
 
 	#if get_resource.save
 	 # render :show, status: :created
@@ -40,16 +42,16 @@ class Api::V1::BaseController < ApplicationController
 	end
 	puts 'This is the search string: ' + @search_string
 	
-	render json: search_for_resource(params[:resource_type], @search_string)
+	render json: search_for_resource(params[:resource_type], @search_string), content_type: "application/json+fhir"
   end
   
   # PATCH/PUT /api/{resource_name}/id
   def update  
-	render json: update_resource(params[:resource_type], params[:id], request.body.read)
+	render json: update_resource(params[:resource_type], params[:id], request.body.read), content_type: "application/json+fhir"
   end 
   
   def vread
-	render json: vread_resource(params[:resource_type], params[:id], params[:vid])
+	render json: vread_resource(params[:resource_type], params[:id], params[:vid]), content_type: "application/json+fhir"
   end
   
 
