@@ -7,6 +7,7 @@ class Api::V1::BaseController < ApplicationController
   def show
 	resource_string = get_resource(params[:resource_type], params[:id])
 	resource_json_hash = JSON.parse resource_string
+	puts resource_json_hash.class
 	puts resource_json_hash.to_s
 	puts 'now actual elemtn'
 	puts resource_json_hash["meta"]["versionId"]
