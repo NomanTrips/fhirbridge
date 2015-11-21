@@ -7,8 +7,11 @@ class Api::V1::BaseController < ApplicationController
   def show
 	resource_string = get_resource(params[:resource_type], params[:id])
 	resource_json_hash = JSON.parse resource_string
-	puts resource_json_hash["meta"][0]["versionId"][0].to_s
-    ETag = resource_json_hash["meta"][0]["versionId"][0].to_s
+	puts resource_json_hash.to_s
+	puts 'now actual elemtn'
+	puts resource_json_hash["meta"]["versionId"]
+    ETag = resource_json_hash["meta"]["versionId"]
+		puts 'now etag'
 	puts ETag.to_s
 	render json: resource_string, content_type: "application/json+fhir"
 	#render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
