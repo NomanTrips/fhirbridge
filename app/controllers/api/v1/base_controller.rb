@@ -11,7 +11,7 @@ class Api::V1::BaseController < ApplicationController
 	puts resource_json_hash.to_s
 	puts 'now actual elemtn'
 	puts resource_json_hash["meta"]["versionId"]
-    ETag = resource_json_hash["meta"]["versionId"]
+    #ETag = resource_json_hash["meta"]["versionId"]
 		puts 'now etag'
 	puts ETag.to_s
 	render json: resource_string, content_type: "application/json+fhir"
