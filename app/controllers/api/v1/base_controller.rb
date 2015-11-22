@@ -24,13 +24,16 @@ class Api::V1::BaseController < ApplicationController
   def create
 	resource_string = create_resource(request.body.read)
 	resource_json_hash = JSON.parse resource_string
-    etag_str = resource_json_hash["meta"]["versionId"]
-	headers['ETag'] = etag_str
+	
+	headers['ETag'] = resource_json_hash["meta"]["versionId"]
+	headers['Location'] = request.original_url + "/#{resource_json_hash["id"]}"
+	
 	render json: resource_string, content_type: "application/json+fhir"
 	#render json: create_resource(request.body.read), content_type: "application/json+fhir" <-- This one works 
   end
   
   def search
+	# Getting the search params out of the URL key-value pairs and then putting them into a string that fhirbase can use to search
 	query_strings = request.query_parameters.to_hash()
 	@search_string = ""
 	query_strings.each do |key,value|
@@ -43,17 +46,24 @@ class Api::V1::BaseController < ApplicationController
 			@search_string.concat "&#{key.to_s}=#{value.to_s}"
 		end
 	end
-	puts 'This is the search string: ' + @search_string
+
+	resource_string = search_for_resource(params[:resource_type], @search_string)
 	
-	render json: search_for_resource(params[:resource_type], @search_string), content_type: "application/json+fhir"
+	resource_json_hash = JSON.parse resource_string
+	headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+	
+	render json: resource_string, content_type: "application/json+fhir"
+	
+	#render json: search_for_resource(params[:resource_type], @search_string), content_type: "application/json+fhir" <-- original code that worked
   end
   
   # PATCH/PUT /api/{resource_name}/id
   def update  
 	resource_string = update_resource(params[:resource_type], params[:id], request.body.read)
 	resource_json_hash = JSON.parse resource_string
-    etag_str = resource_json_hash["meta"]["versionId"]
-	headers['ETag'] = etag_str
+	
+	headers['ETag'] = resource_json_hash["meta"]["versionId"]
+	
 	render json: resource_string, content_type: "application/json+fhir"  
   	#render json: update_resource(params[:resource_type], params[:id], request.body.read), content_type: "application/json+fhir"
   end 
