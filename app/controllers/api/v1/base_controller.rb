@@ -3,12 +3,17 @@ class Api::V1::BaseController < ApplicationController
 
   #before_action :destroy_session
   require 'json'
-  
+
+  def caching_allowed?
+    false
+  end
+
   def show
 	resource_string = get_resource(params[:resource_type], params[:id])
 	resource_json_hash = JSON.parse resource_string
     etag_str = resource_json_hash["meta"]["versionId"]
-	render json: resource_string, content_type: "application/json+fhir", etag: "#{etag_str}"
+	headers['ETag'] = etag_str
+	render json: resource_string, content_type: "application/json+fhir"
 	#render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
   end
 
