@@ -4,31 +4,30 @@ class Api::V1::BaseController < ApplicationController
   #before_action :destroy_session
   require 'json'
 
+  # Can't set ETag with the caching? 
   def caching_allowed?
     false
   end
 
   def show
 	resource_string = get_resource(params[:resource_type], params[:id])
+	
 	resource_json_hash = JSON.parse resource_string
-    etag_str = resource_json_hash["meta"]["versionId"]
-	headers['ETag'] = etag_str
+	headers['ETag'] = resource_json_hash["meta"]["versionId"]
+	headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+	
 	render json: resource_string, content_type: "application/json+fhir"
 	#render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
   end
 
   # POST /api/{plural_resource_name}
   def create
-	puts 'entering create....'
-	puts request.body.read
-	render json: create_resource(request.body.read), content_type: "application/json+fhir"
-
-	#if get_resource.save
-	 # render :show, status: :created
-	#else
-	 # render json: get_resource.errors, status: :unprocessable_entity
-	#end
-  
+	resource_string = create_resource(request.body.read)
+	resource_json_hash = JSON.parse resource_string
+    etag_str = resource_json_hash["meta"]["versionId"]
+	headers['ETag'] = etag_str
+	render json: resource_string, content_type: "application/json+fhir"
+	#render json: create_resource(request.body.read), content_type: "application/json+fhir" <-- This one works 
   end
   
   def search
@@ -51,7 +50,12 @@ class Api::V1::BaseController < ApplicationController
   
   # PATCH/PUT /api/{resource_name}/id
   def update  
-	render json: update_resource(params[:resource_type], params[:id], request.body.read), content_type: "application/json+fhir"
+	resource_string = update_resource(params[:resource_type], params[:id], request.body.read)
+	resource_json_hash = JSON.parse resource_string
+    etag_str = resource_json_hash["meta"]["versionId"]
+	headers['ETag'] = etag_str
+	render json: resource_string, content_type: "application/json+fhir"  
+  	#render json: update_resource(params[:resource_type], params[:id], request.body.read), content_type: "application/json+fhir"
   end 
   
   def vread
