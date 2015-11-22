@@ -31,6 +31,16 @@ class Api::V1::BaseController < ApplicationController
 	render json: resource_string, content_type: "application/json+fhir"
 	#render json: create_resource(request.body.read), content_type: "application/json+fhir" <-- This one works 
   end
+ 
+  #  DELETE [base]/[type]/[id]
+  def delete
+	resource_string = delete_resource(params[:resource_type], params[:id])
+	resource_json_hash = JSON.parse resource_string
+	
+	headers['ETag'] = resource_json_hash["meta"]["versionId"]
+	
+	render json: resource_string, content_type: "application/json+fhir"
+  end
   
   def search
 	# Getting the search params out of the URL key-value pairs and then putting them into a string that fhirbase can use to search
