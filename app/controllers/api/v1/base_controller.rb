@@ -9,6 +9,11 @@ class Api::V1::BaseController < ApplicationController
     false
   end
 
+   def conformance
+	resource_string = get_conformance_statement()	
+	render json: resource_string, content_type: "application/json+fhir"
+  end
+  
   def show
 	resource_string = get_resource(params[:resource_type], params[:id])
 	
