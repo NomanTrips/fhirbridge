@@ -44,7 +44,7 @@ class ApplicationController < ActionController::API
 	def create_resource(payload)
 	# SELECT fhir.create('{"resourceType":"Patient", "name": [{"given": ["John"]}]}')
 		#payload_escaped = %q[payload]
-		res =  ActiveRecord::Base.connection.execute("SELECT fhir.create('$token$#{payload}$token$');") # Running fhirbase stored procedure
+		res =  ActiveRecord::Base.connection.execute("SELECT fhir.create($token$'#{payload}'$token$);") # Running fhirbase stored procedure
 
 		if res.ntuples() > 0 then
 			res_hash = res[0] #First row of query result
