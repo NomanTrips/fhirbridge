@@ -46,6 +46,7 @@ class ApplicationController < ActionController::API
 	# SELECT fhir.create('{"resourceType":"Patient", "name": [{"given": ["John"]}]}')
 		#payload_escaped = %q[payload]
 		payload_as_json = Hash.from_xml(payload).to_json
+		puts payload_as_json.to_s
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.create('#{payload_as_json}');") # Running fhirbase stored procedure
 
 		if res.ntuples() > 0 then

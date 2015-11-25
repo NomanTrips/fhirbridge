@@ -27,9 +27,10 @@ class Api::V1::BaseController < ApplicationController
 
   # POST /api/{plural_resource_name}
   def create
+	puts 'line 30'
 	resource_string = create_resource(request.body.read)
 	resource_json_hash = JSON.parse resource_string
-	
+	puts 'line 33'
 	headers['ETag'] = resource_json_hash["meta"]["versionId"]
 	headers['Location'] = request.original_url + "/#{resource_json_hash["id"]}"
 	
