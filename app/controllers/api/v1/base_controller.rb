@@ -64,7 +64,7 @@ class Api::V1::BaseController < ApplicationController
 	resource_string = search_for_resource(params[:resource_type], @search_string)
 	
 	resource_json_hash = JSON.parse resource_string
-	#headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+	#headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"] <-- Since it's a search set collection which last modified do we grab?
 	
 	render json: resource_string, content_type: "application/json+fhir"
 	

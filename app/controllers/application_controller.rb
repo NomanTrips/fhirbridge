@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   #protect_from_forgery with: :exception
+  require 'json'
 
     def get_conformance_statement()
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('Conformance', 'fb5ef8ec-55da-4718-9fd4-5a4c930ee8c9');") # Running fhirbase stored procedure
@@ -44,6 +45,7 @@ class ApplicationController < ActionController::API
 	def create_resource(payload)
 	# SELECT fhir.create('{"resourceType":"Patient", "name": [{"given": ["John"]}]}')
 		#payload_escaped = %q[payload]
+		payload_as_json = Hash.from_xml(payload).to_json
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.create('#{payload}');") # Running fhirbase stored procedure
 
 		if res.ntuples() > 0 then
