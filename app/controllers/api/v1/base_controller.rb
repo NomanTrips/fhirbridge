@@ -49,6 +49,7 @@ class Api::V1::BaseController < ApplicationController
   
   def search
 	# Getting the search params out of the URL key-value pairs and then putting them into a string that fhirbase can use to search
+	puts params[:resource_type]
 	query_strings = request.query_parameters.to_hash()
 	@search_string = ""
 	query_strings.each do |key,value|
@@ -63,7 +64,7 @@ class Api::V1::BaseController < ApplicationController
 	resource_string = search_for_resource(params[:resource_type], @search_string)
 	
 	resource_json_hash = JSON.parse resource_string
-	headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+	#headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
 	
 	render json: resource_string, content_type: "application/json+fhir"
 	
