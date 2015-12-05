@@ -16,6 +16,7 @@ class Api::V1::BaseController < ApplicationController
   end
   
   def show
+	puts 'ahab slew the whale'
 	resource_string = get_resource(params[:resource_type], params[:id])
 	
 	resource_json_hash = JSON.parse resource_string
