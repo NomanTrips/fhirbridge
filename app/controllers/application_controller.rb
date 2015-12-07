@@ -20,7 +20,8 @@ class ApplicationController < ActionController::API
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
 		#puts 'res status: ' + res.cmd_status()
 		#puts 'tuple amt: ' + res.ntuples().to_s
-		
+		puts res.class
+		puts res.to_s
 		if res.ntuples() > 0 then
 			res_hash = res[0] #First row of query result
 			record_hash = res_hash.first #Some kind of wrapper array?
