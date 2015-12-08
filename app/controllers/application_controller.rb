@@ -15,6 +15,14 @@ require 'lib/jars/xpp3-1.1.4c.jar'
 java_import 'fhirconverterutils.FhirConvUtil';
 java_import java.lang.System
 
+		#fhir_conv = fhirconverterutils.FhirConvUtil 
+		#fc = fhir_conv.new
+
+		#puts fc.TestPrinter
+	puts 'not in function......'
+	fc = FhirConvUtil.new
+	fc.TestPrinter
+	
 class XmlConvert 
     def self.classify
       xmlconverter = FhirConvUtil.new
@@ -45,10 +53,10 @@ end
 		#fc = FhirConvUtil.new
 		#fc.TestPrinter
 		
-		fhir_conv = fhirconverterutils.FhirConvUtil 
-		fc = fhir_conv.new
+		#fhir_conv = fhirconverterutils.FhirConvUtil 
+		#fc = fhir_conv.new
 
-		puts fc.TestPrinter
+		#puts fc.TestPrinter
 
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
 		#puts 'res status: ' + res.cmd_status()
