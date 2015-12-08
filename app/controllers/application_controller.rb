@@ -12,7 +12,7 @@ require 'lib/jars/Saxon-HE-9.4.jar'
 require 'lib/jars/xpp3_min-1.1.4c.jar'
 require 'lib/jars/xpp3_xpath-1.1.4c.jar'
 require 'lib/jars/xpp3-1.1.4c.jar'
-java_import 'fhirconverterutils.FhirConvUtil.java';
+java_import 'fhirconverterutils.FhirConvUtil';
 java_import java.lang.System
 
 class XmlConvert 
