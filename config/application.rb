@@ -3,7 +3,7 @@ require File.expand_path('../boot', __FILE__)
 require 'rails/all'
 require 'java'
 require 'lib/jars/fhir-dstu1-0.0.82.2943.jar'
-require 'lib/jars/FHIRXmlConvDSTUone.jar'
+require 'lib/jars/FhirConvUtilsOne.jar'
 require 'lib/jars/gson-2.5.jar'
 require 'lib/jars/Saxon-HE-9.4.jar'
 require 'lib/jars/xpp3_min-1.1.4c.jar'

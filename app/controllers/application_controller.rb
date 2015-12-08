@@ -3,23 +3,23 @@ class ApplicationController < ActionController::API
   # For APIs, you may want to use :null_session instead.
   #protect_from_forgery with: :exception
   require 'json'
-require 'java'
+$CLASSPATH << (Rails.root.to_s + "/lib/jars")
+  require 'java'
 require 'lib/jars/fhir-dstu1-0.0.82.2943.jar'
-require 'lib/jars/FHIRXmlConvDSTUone.jar'
+require 'lib/jars/FhirConvUtilsOne.jar'
 require 'lib/jars/gson-2.5.jar'
 require 'lib/jars/Saxon-HE-9.4.jar'
 require 'lib/jars/xpp3_min-1.1.4c.jar'
 require 'lib/jars/xpp3_xpath-1.1.4c.jar'
 require 'lib/jars/xpp3-1.1.4c.jar'
-#$CLASSPATH << (Rails.root.to_s + "/lib/jars")
-#java_import 'com.fhirxmlconvdstu1.FhirXmlConvDSTUone.class';
+java_import 'fhirconverterutils.FhirConvUtil.java';
 java_import java.lang.System
 
-#class XmlConvert 
- #   def self.classify
-  #     xmlconverter = FHIRXmlConvDSTUone.new
-   # end
-#end
+class XmlConvert 
+    def self.classify
+      xmlconverter = FhirConvUtil.new
+    end
+end
 
 
     def get_conformance_statement()
@@ -40,6 +40,8 @@ java_import java.lang.System
 		#fhirXmlconv.TestPrinter()
 		version = System.getProperties["java.runtime.version"]
 		puts version.to_s
+		fhirXmlconv = XmlConvert.new()
+		fhirXmlconv.TestPrinter()
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
 		#puts 'res status: ' + res.cmd_status()
 		#puts 'tuple amt: ' + res.ntuples().to_s
