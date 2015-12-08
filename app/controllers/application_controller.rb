@@ -11,13 +11,14 @@ require 'lib/jars/Saxon-HE-9.4.jar'
 require 'lib/jars/xpp3_min-1.1.4c.jar'
 require 'lib/jars/xpp3_xpath-1.1.4c.jar'
 require 'lib/jars/xpp3-1.1.4c.jar'
-java_import 'com.fhirxmlconvdstu1.FHIRXmlConvDSTUone';
+java_import 'com.fhirxmlconvdstu1.FhirXmlConvDSTUone.class';
 
 class XmlConvert 
     def self.classify
        xmlconverter = FHIRXmlConvDSTUone.new
     end
 end
+
 
     def get_conformance_statement()
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('Conformance', 'fb5ef8ec-55da-4718-9fd4-5a4c930ee8c9');") # Running fhirbase stored procedure
@@ -34,7 +35,7 @@ end
     def get_resource(resource_type, id)
 		puts 'getting to get_resource'
 		fhirXmlconv = XmlConvert.new()
-		fhirXmlconv.fromXmltoResource()
+		fhirXmlconv.TestPrinter()
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
 		#puts 'res status: ' + res.cmd_status()
 		#puts 'tuple amt: ' + res.ntuples().to_s
