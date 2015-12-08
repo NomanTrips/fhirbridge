@@ -11,14 +11,15 @@ require 'lib/jars/Saxon-HE-9.4.jar'
 require 'lib/jars/xpp3_min-1.1.4c.jar'
 require 'lib/jars/xpp3_xpath-1.1.4c.jar'
 require 'lib/jars/xpp3-1.1.4c.jar'
-$CLASSPATH << (Rails.root.to_s + "/lib/jars")
-java_import 'com.fhirxmlconvdstu1.FhirXmlConvDSTUone.class';
+#$CLASSPATH << (Rails.root.to_s + "/lib/jars")
+#java_import 'com.fhirxmlconvdstu1.FhirXmlConvDSTUone.class';
+java_import java.lang.System
 
-class XmlConvert 
-    def self.classify
-       xmlconverter = FHIRXmlConvDSTUone.new
-    end
-end
+#class XmlConvert 
+ #   def self.classify
+  #     xmlconverter = FHIRXmlConvDSTUone.new
+   # end
+#end
 
 
     def get_conformance_statement()
@@ -35,8 +36,10 @@ end
   
     def get_resource(resource_type, id)
 		puts 'getting to get_resource'
-		fhirXmlconv = XmlConvert.new()
-		fhirXmlconv.TestPrinter()
+		#fhirXmlconv = XmlConvert.new()
+		#fhirXmlconv.TestPrinter()
+		version = System.getProperties["java.runtime.version"]
+		puts version.to_s
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
 		#puts 'res status: ' + res.cmd_status()
 		#puts 'tuple amt: ' + res.ntuples().to_s
