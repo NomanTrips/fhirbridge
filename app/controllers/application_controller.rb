@@ -42,8 +42,14 @@ end
 		puts version.to_s
 		#fhirXmlconv = XmlConvert.new()
 		#fhirXmlconv.TestPrinter()
-		fc = FhirConvUtil.new
-		fc.TestPrinter
+		#fc = FhirConvUtil.new
+		#fc.TestPrinter
+		
+		Convy = fhirconverterutils.FhirConvUtil 
+		fc = Convy.new
+
+		puts fc.TestPrinter
+
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
 		#puts 'res status: ' + res.cmd_status()
 		#puts 'tuple amt: ' + res.ntuples().to_s
