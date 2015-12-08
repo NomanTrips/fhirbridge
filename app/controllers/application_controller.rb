@@ -40,8 +40,10 @@ end
 		#fhirXmlconv.TestPrinter()
 		version = System.getProperties["java.runtime.version"]
 		puts version.to_s
-		fhirXmlconv = XmlConvert.new()
-		fhirXmlconv.TestPrinter()
+		#fhirXmlconv = XmlConvert.new()
+		#fhirXmlconv.TestPrinter()
+		fc = FhirConvUtil.new
+		fc.TestPrinter
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
 		#puts 'res status: ' + res.cmd_status()
 		#puts 'tuple amt: ' + res.ntuples().to_s
