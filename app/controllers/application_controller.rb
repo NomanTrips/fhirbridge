@@ -45,8 +45,8 @@ end
 		#fc = FhirConvUtil.new
 		#fc.TestPrinter
 		
-		Convy = fhirconverterutils.FhirConvUtil 
-		fc = Convy.new
+		fhir_conv = fhirconverterutils.FhirConvUtil 
+		fc = fhir_conv.new
 
 		puts fc.TestPrinter
 
