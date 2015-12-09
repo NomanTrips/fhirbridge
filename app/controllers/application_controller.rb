@@ -79,9 +79,11 @@ end
 			result = record_hash.second #string of the json content
 		end
 		
-		res = Resource.new
-		res = fc.fromJsontoResource(result)
+		Resource res = fc.fromJsontoResource(result)
 		result = fc.ResourceToXml(res)
+		puts 'res as xml str.....'
+		puts result
+		puts 'end res as xml str.....'
 		
 	return result
   end
