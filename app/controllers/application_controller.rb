@@ -79,8 +79,9 @@ end
 			result = record_hash.second #string of the json content
 		end
 		
-		Resource res = fc.fromJsontoResource(result)
-		result = fc.ResourceToXml(res)
+		puts 'getting to line 82...'
+		org.hl7.fhir.instance.model.Resource resourceObject = fc.fromJsontoResource(result)
+		result = fc.ResourceToXml(resourceObject)
 		puts 'res as xml str.....'
 		puts result
 		puts 'end res as xml str.....'
