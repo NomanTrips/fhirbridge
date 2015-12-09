@@ -15,13 +15,23 @@ require 'lib/jars/xpp3-1.1.4c.jar'
 java_import 'fhirconverterutils.FhirConvUtil';
 java_import java.lang.System
 
+java_import 'java.io.ByteArrayInputStream';
+java_import 'java.io.FileInputStream';
+java_import 'java.io.FileNotFoundException';
+java_import 'java.io.InputStream';
+java_import 'java.nio.charset.StandardCharsets';
+
+java_import 'org.hl7.fhir.instance.formats.JsonParser';
+java_import 'org.hl7.fhir.instance.formats.XmlParser';
+java_import 'org.hl7.fhir.instance.formats.JsonComposer';
+java_import 'org.hl7.fhir.instance.formats.XmlComposer';
+java_import 'org.hl7.fhir.instance.model.Resource';
+
 		#fhir_conv = fhirconverterutils.FhirConvUtil 
 		#fc = fhir_conv.new
 
 		#puts fc.TestPrinter
-	puts 'not in function......'
-	fc = FhirConvUtil.new
-	fc.TestPrinter
+
 	
 class XmlConvert 
     def self.classify
@@ -57,7 +67,8 @@ end
 		#fc = fhir_conv.new
 
 		#puts fc.TestPrinter
-
+		fc = FhirConvUtil.new
+		fc.TestPrinter
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
 		#puts 'res status: ' + res.cmd_status()
 		#puts 'tuple amt: ' + res.ntuples().to_s
@@ -67,7 +78,11 @@ end
 			record_hash = res_hash.first #Some kind of wrapper array?
 			result = record_hash.second #string of the json content
 		end
-	
+		
+		res = Resource.new
+		res = fc.fromJsontoResource(result)
+		result = fc.ResourceToXml(res)
+		
 	return result
   end
 
