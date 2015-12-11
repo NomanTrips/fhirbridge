@@ -80,10 +80,10 @@ end
 		end
 		
 		puts 'getting to line 82...'
-		#org.hl7.fhir.instance.model.Resource.class resourceObject = fc.fromJsontoResource(result)
-		#result = fc.ResourceToXml(resourceObject)
-		#puts 'res as xml str.....'
-		puts result
+		org.hl7.fhir.instance.model.Resource.class resourceObject = fc.fromJsontoResource(result)
+		theresstr = fc.ResourceToXml(resourceObject)
+		puts 'res as xml str.....'
+		puts theresstr
 		puts 'end res as xml str.....'
 		
 	return result
