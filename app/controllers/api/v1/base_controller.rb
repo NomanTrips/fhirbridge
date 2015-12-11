@@ -23,7 +23,7 @@ class Api::V1::BaseController < ApplicationController
 	headers['ETag'] = resource_json_hash["meta"]["versionId"]
 	headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
 	
-	render json: resource_string, content_type: "application/json+fhir"
+	render :text => resource_string, content_type: "application/json+fhir"
 	#render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
   end
 
