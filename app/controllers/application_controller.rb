@@ -84,8 +84,8 @@ end
 		  classmethods.each do |method|
             puts method.getName()
           end
-		ResObj = org.hl7.fhir.instance.model.Resource.class.Resource
-		ResObj.Resource resourceObject = fc.fromJsontoResource(result)
+		res_obj = org.hl7.fhir.instance.model.Resource.class.Resource
+		res_obj.Resource resourceObject = fc.fromJsontoResource(result)
 		#org.hl7.fhir.instance.model.Resource.class.Resource resourceObject = fc.fromJsontoResource(result)
 		theresstr = fc.ResourceToXml(resourceObject)
 		puts 'res as xml str.....'
