@@ -80,7 +80,7 @@ end
 		end
 		
 		puts 'getting to line 82...'
-		classmethods = org.hl7.fhir.instance.model.Resource.class.java_class.declared_instance_methods
+		classmethods = org.hl7.fhir.instance.model.Resource.class.java_class.declared_class_methods
 		  classmethods.each do |method|
             puts method.getName()
           end
