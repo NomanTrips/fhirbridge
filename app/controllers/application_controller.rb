@@ -27,6 +27,9 @@ java_import 'org.hl7.fhir.instance.formats.JsonComposer';
 java_import 'org.hl7.fhir.instance.formats.XmlComposer';
 java_import 'org.hl7.fhir.instance.model.Resource';
 
+		res_class = org.hl7.fhir.instance.model.Resource
+		res_class.methods
+		rc = res_class.new("something")
 		#fhir_conv = fhirconverterutils.FhirConvUtil 
 		#fc = fhir_conv.new
 
@@ -84,14 +87,14 @@ end
 		 # classmethods.each do |method|
           #  puts method.getName()
           #end
-		  puts Resource.methods
-		res_obj = Resource.class.new(fc.from_jsonto_resource(result.to_s))
+		 # puts Resource.methods
+		#res_obj = Resource.class.new(fc.from_jsonto_resource(result.to_s))
 
 		#res_obj.Resource resourceObject = fc.fromJsontoResource(result)
 		#org.hl7.fhir.instance.model.Resource.class.Resource resourceObject = fc.fromJsontoResource(result)
-		theresstr = fc.resource_to_xml(res_obj)
+		#theresstr = fc.resource_to_xml(res_obj)
 		puts 'res as xml str.....'
-		puts theresstr
+		#puts theresstr
 		puts 'end res as xml str.....'
 		
 	return result
