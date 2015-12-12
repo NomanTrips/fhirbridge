@@ -28,8 +28,8 @@ java_import 'org.hl7.fhir.instance.formats.XmlComposer';
 java_import 'org.hl7.fhir.instance.model.Resource';
 
 		res_class = org.hl7.fhir.instance.model.Resource
-		res_class.methods
-		rc = res_class.new("something")
+		puts res_class.methods
+		rc = res_class.new
 		#fhir_conv = fhirconverterutils.FhirConvUtil 
 		#fc = fhir_conv.new
 
