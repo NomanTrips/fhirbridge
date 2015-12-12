@@ -80,14 +80,15 @@ end
 		end
 		
 		puts 'getting to line 82...'
-		classmethods = org.hl7.fhir.instance.model.Resource.class.declared_class_methods
-		  classmethods.each do |method|
-            puts method.getName()
-          end
-		res_obj = org.hl7.fhir.instance.model.Resource.class.Resource
-		res_obj.Resource resourceObject = fc.fromJsontoResource(result)
+		#classmethods = org.hl7.fhir.instance.model.Resource.class.declared_class_methods
+		 # classmethods.each do |method|
+          #  puts method.getName()
+          #end
+		res_obj = Resource.class.new(fc.from_jsonto_resource(result))
+
+		#res_obj.Resource resourceObject = fc.fromJsontoResource(result)
 		#org.hl7.fhir.instance.model.Resource.class.Resource resourceObject = fc.fromJsontoResource(result)
-		theresstr = fc.ResourceToXml(resourceObject)
+		theresstr = fc.resource_to_xml(res_obj)
 		puts 'res as xml str.....'
 		puts theresstr
 		puts 'end res as xml str.....'
