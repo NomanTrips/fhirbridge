@@ -84,7 +84,8 @@ end
 		 # classmethods.each do |method|
           #  puts method.getName()
           #end
-		res_obj = Resource.class.new(fc.from_jsonto_resource(result))
+		  puts Resource.methods
+		res_obj = Resource.class.new(fc.from_jsonto_resource(result.to_s))
 
 		#res_obj.Resource resourceObject = fc.fromJsontoResource(result)
 		#org.hl7.fhir.instance.model.Resource.class.Resource resourceObject = fc.fromJsontoResource(result)
