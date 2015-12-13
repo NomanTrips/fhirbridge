@@ -17,11 +17,11 @@ class Api::V1::BaseController < ApplicationController
   
   def show
 	puts 'ahab slew the whale'
-	resource_string = get_resource(params[:resource_type], params[:id])
+	resource_string = get_resource(params[:resource_type], params[:id], request.headers["Accept"])
 	
-	resource_json_hash = JSON.parse resource_string
-	headers['ETag'] = resource_json_hash["meta"]["versionId"]
-	headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+	#resource_json_hash = JSON.parse resource_string
+	#headers['ETag'] = resource_json_hash["meta"]["versionId"]
+	#headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
 	
 	render :text => resource_string, content_type: "application/json+fhir"
 	#render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
@@ -30,13 +30,13 @@ class Api::V1::BaseController < ApplicationController
   # POST /api/{plural_resource_name}
   def create
 	puts 'line 30'
-	resource_string = create_resource(request.body.read)
-	resource_json_hash = JSON.parse resource_string
+	resource_string = create_resource(request.body.read, request.headers["Content-Type"])
+	#resource_json_hash = JSON.parse resource_string
 	puts 'line 33'
-	headers['ETag'] = resource_json_hash["meta"]["versionId"]
-	headers['Location'] = request.original_url + "/#{resource_json_hash["id"]}"
+	#headers['ETag'] = resource_json_hash["meta"]["versionId"]
+	#headers['Location'] = request.original_url + "/#{resource_json_hash["id"]}"
 	
-	render json: resource_string, content_type: "application/json+fhir"
+	render :text => resource_string, content_type: request.headers["Content-Type"]
 	#render json: create_resource(request.body.read), content_type: "application/json+fhir" <-- This one works 
   end
  
