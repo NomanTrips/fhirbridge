@@ -76,9 +76,18 @@ class ApplicationController < ActionController::API
 	def create_resource(payload, content_type_header)
 	# SELECT fhir.create('{"resourceType":"Patient", "name": [{"given": ["John"]}]}')
 		#payload_escaped = %q[payload]
-		payload_as_json = Hash.from_xml(payload).to_json
-		puts payload_as_json.to_s
-		res =  ActiveRecord::Base.connection.execute("SELECT fhir.create('#{payload_as_json}');") # Running fhirbase stored procedure
+		#payload_as_json = Hash.from_xml(payload).to_json
+		#puts payload_as_json.to_s
+		
+		if content_type_header = "application/xml+fhir" then
+			fc = FhirConvUtil.new
+			xmlresource = fc.fromXmltoResource(payload)
+			payload_converted = fc.ResourceToJson(xmlresource)			
+		else
+			payload_converted = payload
+		end
+		
+		res =  ActiveRecord::Base.connection.execute("SELECT fhir.create('#{payload_converted}');") # Running fhirbase stored procedure
 
 		if res.size() > 0 then
 			res_hash = res[0] #First row of query result
@@ -87,7 +96,11 @@ class ApplicationController < ActionController::API
 		end
 
 		if content_type_header = "application/xml+fhir" then
-			fc = FhirConvUtil.new
+			
+			if not( (defined?(fc)).nil? ) # will now return true or false
+				fc = FhirConvUtil.new
+			end
+			
 			jsonresource = fc.fromJsontoResource(result)
 			result = fc.ResourceToXml(jsonresource)
 		end
