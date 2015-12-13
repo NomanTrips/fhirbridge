@@ -89,13 +89,15 @@ end
           #end
 		 # puts Resource.methods
 		#res_obj = Resource.class.new(fc.from_jsonto_resource(result.to_s))
-		istream = FileInputStream.new("C:/Users/bscott/Desktop/testxml/dregdenyor.json")
-		jsonparse = JsonParser.new
-		jsonresource = jsonparse.parse(istream)
-		str = fc.ResourceToXml(jsonresource)
+		
+		#istream = FileInputStream.new("C:/Users/bscott/Desktop/testxml/dregdenyor.json")
+		#jsonparse = JsonParser.new
+		#jsonresource = jsonparse.parse(istream)
+		#str = fc.ResourceToXml(jsonresource)
+		
 		#res_obj.Resource resourceObject = fc.fromJsontoResource(result)
-		#org.hl7.fhir.instance.model.Resource.class.Resource resourceObject = fc.fromJsontoResource(result)
-		#theresstr = fc.resource_to_xml(res_obj)
+		jsonresource = fc.fromJsontoResource(result)
+		str = fc.ResourceToXml(jsonresource)
 		puts 'res as xml str.....'
 		puts str
 		puts 'end res as xml str.....'
