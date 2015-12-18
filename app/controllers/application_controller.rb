@@ -4,12 +4,14 @@ class ApplicationController < ActionController::API
   #protect_from_forgery with: :exception
   require 'json'
   $CLASSPATH << (Rails.root.to_s + "/lib/jars")
+  $CLASSPATH << (Rails.root.to_s + "/lib/deps")
   require 'java'
-   
-   Dir["#{File.dirname(__FILE__)}/deps/*.jar"].each do |jar|
+  puts 'getting to line 9...' 
+   Dir["#{File.dirname(__FILE__)}/lib/deps/*.jar"].each do |jar|
     puts "requiring: #{jar}"
     require jar
   end
+  puts 'after require loop'
   #require 'lib/jars/fhir-dstu1-0.0.82.2943.jar'
   #require 'lib/jars/FhirConvUtilsOne.jar'
   #require 'lib/jars/gson-2.5.jar'
