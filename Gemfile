@@ -45,3 +45,5 @@ gem 'json'
 
 ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.23'
 gem 'puma'
+
+gem 'jrclj'
