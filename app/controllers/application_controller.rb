@@ -55,8 +55,8 @@ class ApplicationController < ActionController::API
 		core = JRClj.new
 		puts core.inc 3
 		
-		clj = JRClj.new "clojure.contrib.str-utils"
-		puts clj.str_join ":", [1,2,3]
+		#clj = JRClj.new "clojure.contrib.str-utils"
+		#puts clj.str_join ":", [1,2,3]
 		
 
 		fhir = JRClj.new "fhir.fhir.core"
