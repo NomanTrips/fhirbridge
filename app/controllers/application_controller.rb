@@ -70,11 +70,12 @@ require 'lib/deps/tools.namespace-0.2.8.jar'
 		#puts clj.str_join ":", [1,2,3]
 		
 
-		fhir = JRClj.new "fhir.fhir.core"
-		pt = "{\"resourceType\": \"Patient\",\"name\": [{\"text\":\"Smith\"}],\"active\": true}"
-		idx = fhir.index "profiles/profiles-resources.json" "profiles/profiles-types.json"
-		ptparsed = fhir.parse idx pt
-		puts fhir.generate idx :xml ptparsed
+		#fhir = JRClj.new "fhir.fhir.core"
+		#pt = "{\"resourceType\": \"Patient\",\"name\": [{\"text\":\"Smith\"}],\"active\": true}"
+		#idx = fhir.index "profiles/profiles-resources.json" "profiles/profiles-types.json"
+		#ptparsed = fhir.parse idx pt
+		#puts fhir.generate idx :xml ptparsed
+		
 		#if accept_header = "application/xml+fhir" then
 		#	fc = FhirConvUtil.new
 		#	jsonresource = fc.fromJsontoResource(result)
