@@ -7,11 +7,20 @@ class ApplicationController < ActionController::API
   $CLASSPATH << (Rails.root.to_s + "/lib/deps")
   require 'java'
   puts 'getting to line 9...' 
-   Dir["#{File.dirname(__FILE__)}/lib/deps/*.jar"].each do |jar|
-    puts "requiring: #{jar}"
-    require jar
-  end
+ #  Dir["#{File.dirname(__FILE__)}/lib/deps/*.jar"].each do |jar|
+  #  puts "requiring: #{jar}"
+   # require jar
+  #end
+require 'lib/deps/cheshire-5.4.0.jar'
+require 'lib/deps/clj-time-0.9.0.jar'
+require 'lib/deps/clojure-1.7.0.jar'
+require 'lib/deps/data.xml-0.0.8.jar'
+require 'lib/deps/fhir-0.1.1.jar'
+require 'lib/deps/fs-1.4.6.jar'
+require 'lib/deps/http-kit-2.1.16.jar'
+require 'lib/deps/tools.namespace-0.2.8.jar'
   puts 'after require loop'
+  
   #require 'lib/jars/fhir-dstu1-0.0.82.2943.jar'
   #require 'lib/jars/FhirConvUtilsOne.jar'
   #require 'lib/jars/gson-2.5.jar'
