@@ -70,7 +70,8 @@ require 'lib/deps/tools.namespace-0.2.8.jar'
 		#puts clj.str_join ":", [1,2,3]
 		
 
-		fhir = JRClj.new "fhir.fhir.core"
+		fhir = JRClj.new "fhir.core"
+		
 		pt = "{\"resourceType\": \"Patient\",\"name\": [{\"text\":\"Smith\"}],\"active\": true}"
 		idx = fhir.index "profiles/profiles-resources.json" "profiles/profiles-types.json"
 		ptparsed = fhir.parse idx pt
