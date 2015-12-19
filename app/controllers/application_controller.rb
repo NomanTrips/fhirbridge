@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
   #end
 require 'lib/deps/cheshire-5.4.0.jar'
 require 'lib/deps/clj-time-0.9.0.jar'
-require 'lib/deps/clojure-1.7.0.jar'
+require 'lib/deps/clojure-1.0.0.jar'
 require 'lib/deps/data.xml-0.0.8.jar'
 require 'lib/deps/fhir-0.1.1.jar'
 require 'lib/deps/fs-1.4.6.jar'
