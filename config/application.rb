@@ -19,6 +19,14 @@ require 'lib/deps/fs-1.4.6.jar'
 require 'lib/deps/http-kit-2.1.16.jar'
 require 'lib/deps/tools.namespace-0.2.8.jar'
 
+require 'lib/deps/commons-compress-1.8.jar'
+require 'lib/deps/jackson-core-2.4.4.jar'
+require 'lib/deps/jackson-dataformat-cbor-2.4.4.jar'
+require 'lib/deps/jackson-dataformat-smile-2.4.4.jar'
+require 'lib/deps/joda-time-2.6.jar'
+require 'lib/deps/tigris-0.1.1.jar'
+require 'lib/deps/xz-1.5.jar'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
