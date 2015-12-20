@@ -71,17 +71,23 @@ require 'lib/deps/xz-1.5.jar'
 			result = record_hash.second #string of the json content
 		end
 		
-		core = JRClj.new
-		puts core.inc 3
 		
 		#clj = JRClj.new "clojure.contrib.str-utils"
 		#puts clj.str_join ":", [1,2,3]
 		
-		fhir = JRClj.new "fhir.core"
-		pt = "{\"resourceType\": \"Patient\",\"name\": [{\"text\":\"Smith\"}],\"active\": true}"
-		idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
-		ptparsed = fhir.parse(idx, pt)
-		puts fhir.generate(idx, core.keyword("xml"), ptparsed)
+		#fhir = JRClj.new "fhir.core"
+		#pt = "{\"resourceType\": \"Patient\",\"name\": [{\"text\":\"Smith\"}],\"active\": true}"
+		#idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
+		#ptparsed = fhir.parse(idx, pt)
+		#puts fhir.generate(idx, core.keyword("xml"), ptparsed)
+
+		if accept_header = "application/xml+fhir" then
+			core = JRClj.new #clojure core
+			fhir = JRClj.new "fhir.core"
+			idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
+			resultparsed = fhir.parse(idx, result)
+			result = fhir.generate(idx, core.keyword("xml"), resultparsed)
+		end
 		
 		#if accept_header = "application/xml+fhir" then
 		#	fc = FhirConvUtil.new
