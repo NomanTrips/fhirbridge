@@ -77,16 +77,11 @@ require 'lib/deps/xz-1.5.jar'
 		#clj = JRClj.new "clojure.contrib.str-utils"
 		#puts clj.str_join ":", [1,2,3]
 		
-puts '72'
 		fhir = JRClj.new "fhir.core"
-		puts '74'
 		pt = "{\"resourceType\": \"Patient\",\"name\": [{\"text\":\"Smith\"}],\"active\": true}"
-		puts '76'
-		idx = fhir.index "profiles/profiles-resources.json" "profiles/profiles-types.json"
-		puts '78'
-		ptparsed = fhir.parse idx pt
-		puts '80'
-		puts fhir.generate(idx, ':xml', ptparsed)
+		idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
+		ptparsed = fhir.parse(idx, pt)
+		puts fhir.generate(idx, core.keyword("xml"), ptparsed)
 		
 		#if accept_header = "application/xml+fhir" then
 		#	fc = FhirConvUtil.new
