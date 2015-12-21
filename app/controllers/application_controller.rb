@@ -80,7 +80,7 @@ require 'lib/deps/xz-1.5.jar'
 		#idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
 		#ptparsed = fhir.parse(idx, pt)
 		#puts fhir.generate(idx, core.keyword("xml"), ptparsed)
-
+		puts accept_header
 		if accept_header = "application/xml+fhir" then
 			core = JRClj.new #clojure core
 			fhir = JRClj.new "fhir.core"
@@ -120,14 +120,24 @@ require 'lib/deps/xz-1.5.jar'
 		#payload_escaped = %q[payload]
 		#payload_as_json = Hash.from_xml(payload).to_json
 		#puts payload_as_json.to_s
-		
+
 		if content_type_header = "application/xml+fhir" then
-			fc = FhirConvUtil.new
-			xmlresource = fc.fromXmltoResource(payload)
-			payload_converted = fc.ResourceToJson(xmlresource)			
+			core = JRClj.new #clojure core
+			fhir = JRClj.new "fhir.core"
+			idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
+			payloadparsed = fhir.parse(idx, payload)
+			payload_converted = fhir.generate(idx, core.keyword("json"), payloadparsed)		
 		else
 			payload_converted = payload
 		end
+		
+		#if content_type_header = "application/xml+fhir" then
+		#	fc = FhirConvUtil.new
+		#	xmlresource = fc.fromXmltoResource(payload)
+		#	payload_converted = fc.ResourceToJson(xmlresource)			
+		#else
+		#	payload_converted = payload
+		#end
 		
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.create('#{payload_converted}');") # Running fhirbase stored procedure
 
