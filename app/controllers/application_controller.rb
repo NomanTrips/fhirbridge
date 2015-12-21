@@ -80,8 +80,7 @@ require 'lib/deps/xz-1.5.jar'
 		#idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
 		#ptparsed = fhir.parse(idx, pt)
 		#puts fhir.generate(idx, core.keyword("xml"), ptparsed)
-		puts accept_header
-		if accept_header = "application/xml+fhir" then
+		if accept_header == "application/xml+fhir" then
 			core = JRClj.new #clojure core
 			fhir = JRClj.new "fhir.core"
 			idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
@@ -120,8 +119,11 @@ require 'lib/deps/xz-1.5.jar'
 		#payload_escaped = %q[payload]
 		#payload_as_json = Hash.from_xml(payload).to_json
 		#puts payload_as_json.to_s
-
-		if content_type_header = "application/xml+fhir" then
+		is_requested_format_xml = if content_type_header == "application/xml+fhir"
+		core = nil
+		fhir = nil
+		idx =  nil
+		if is_requested_format_xml then # conv incoming payload to json since fhirbase stores everything as json
 			core = JRClj.new #clojure core
 			fhir = JRClj.new "fhir.core"
 			idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
@@ -147,6 +149,10 @@ require 'lib/deps/xz-1.5.jar'
 			result = record_hash.second #string of the json content
 		end
 
+		if is_requested_format_xml then # conv response to xml from stored json resource in fhirbase
+			resultparsed = fhir.parse(idx, result)
+			result = fhir.generate(idx, core.keyword("xml"), resultparsed)
+		end
 		#if content_type_header = "application/xml+fhir" then
 			
 		#	if not( (defined?(fc)).nil? ) # will now return true or false
