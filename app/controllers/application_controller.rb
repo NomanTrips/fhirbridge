@@ -64,11 +64,11 @@ require 'lib/deps/xz-1.5.jar'
     def get_resource(resource_type, id, accept_header)
 		puts 'getting to show...'
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
-
+		resource_as_str = ''
 		if res.size() > 0 then
 			res_hash = res[0] #First row of query result
 			record_hash = res_hash.first #Some kind of wrapper array?
-			result = record_hash.second #string of the json content
+			resource_as_str = record_hash.second #string of the json content
 		end
 		
 		
@@ -84,8 +84,8 @@ require 'lib/deps/xz-1.5.jar'
 			core = JRClj.new #clojure core
 			fhir = JRClj.new "fhir.core"
 			idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
-			resultparsed = fhir.parse(idx, result)
-			result = fhir.generate(idx, core.keyword("xml"), resultparsed)
+			resourceparsed = fhir.parse(idx, resource_as_str)
+			resource_as_str = fhir.generate(idx, core.keyword("xml"), resourceparsed)
 		end
 		
 		#if accept_header = "application/xml+fhir" then
@@ -99,7 +99,7 @@ require 'lib/deps/xz-1.5.jar'
 		#str = fc.ResourceToXml(jsonresource)
 		#puts str
 		
-	return result
+	return resource_as_str
   end
 
     def delete_resource(resource_type, id)
@@ -133,37 +133,21 @@ require 'lib/deps/xz-1.5.jar'
 			payload_converted = payload
 		end
 		
-		#if content_type_header = "application/xml+fhir" then
-		#	fc = FhirConvUtil.new
-		#	xmlresource = fc.fromXmltoResource(payload)
-		#	payload_converted = fc.ResourceToJson(xmlresource)			
-		#else
-		#	payload_converted = payload
-		#end
 		
+		resource_as_str = ""
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.create('#{payload_converted}');") # Running fhirbase stored procedure
-
 		if res.size() > 0 then
 			res_hash = res[0] #First row of query result
 			record_hash = res_hash.first #Some kind of wrapper array?
-			result = record_hash.second #string of the json content
+			resource_as_str = record_hash.second #string of the json content
 		end
 
 		if is_requested_format_xml then # conv response to xml from stored json resource in fhirbase
-			resultparsed = fhir.parse(idx, result)
-			result = fhir.generate(idx, core.keyword("xml"), resultparsed)
+			resourceparsed = fhir.parse(idx, resource_as_str)
+			resource_as_str = fhir.generate(idx, core.keyword("xml"), resourceparsed)
 		end
-		#if content_type_header = "application/xml+fhir" then
-			
-		#	if not( (defined?(fc)).nil? ) # will now return true or false
-		#		fc = FhirConvUtil.new
-		#	end
-			
-		#	jsonresource = fc.fromJsontoResource(result)
-		#	result = fc.ResourceToXml(jsonresource)
-		#end
-		
-		return result
+
+		return resource_as_str
 	
 	end
 	
