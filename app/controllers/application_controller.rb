@@ -131,20 +131,23 @@ require 'lib/deps/xz-1.5.jar'
 			payload_converted = fhir.generate(idx, core.keyword("json"), payloadparsed)		
 		else
 			payload_converted = payload
-		end
+		end		
 		
-		
-		resource_as_str = ""
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.create('#{payload_converted}');") # Running fhirbase stored procedure
+		
+		resource_as_json_str = nil
 		if res.size() > 0 then
 			res_hash = res[0] #First row of query result
 			record_hash = res_hash.first #Some kind of wrapper array?
-			resource_as_str = record_hash.second #string of the json content
+			resource_as_json_str = record_hash.second #string of the json content
 		end
 
+		resource_as_str = nil
 		if is_requested_format_xml then # conv response to xml from stored json resource in fhirbase
 			resourceparsed = fhir.parse(idx, resource_as_str)
 			resource_as_str = fhir.generate(idx, core.keyword("xml"), resourceparsed)
+		else	
+			resource_as_str = resource_as_json_str
 		end
 
 		return resource_as_str
