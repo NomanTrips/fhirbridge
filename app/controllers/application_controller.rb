@@ -120,9 +120,10 @@ require 'lib/deps/xz-1.5.jar'
 		#payload_as_json = Hash.from_xml(payload).to_json
 		#puts payload_as_json.to_s
 		is_requested_format_xml = if content_type_header == "application/xml+fhir"
-		core = nil
-		fhir = nil
-		idx =  nil
+		
+		puts 'getting to 124'
+		puts is_requested_format_xml
+		
 		if is_requested_format_xml then # conv incoming payload to json since fhirbase stores everything as json
 			core = JRClj.new #clojure core
 			fhir = JRClj.new "fhir.core"
@@ -135,16 +136,19 @@ require 'lib/deps/xz-1.5.jar'
 		
 		res =  ActiveRecord::Base.connection.execute("SELECT fhir.create('#{payload_converted}');") # Running fhirbase stored procedure
 		
-		resource_as_json_str = nil
+		resource_as_json_str = ''
 		if res.size() > 0 then
 			res_hash = res[0] #First row of query result
 			record_hash = res_hash.first #Some kind of wrapper array?
 			resource_as_json_str = record_hash.second #string of the json content
 		end
 
-		resource_as_str = nil
+		resource_as_str = ''
 		if is_requested_format_xml then # conv response to xml from stored json resource in fhirbase
-			resourceparsed = fhir.parse(idx, resource_as_str)
+			core = JRClj.new #clojure core
+			fhir = JRClj.new "fhir.core"
+			idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
+			resourceparsed = fhir.parse(idx, resource_as_json_str)
 			resource_as_str = fhir.generate(idx, core.keyword("xml"), resourceparsed)
 		else	
 			resource_as_str = resource_as_json_str
