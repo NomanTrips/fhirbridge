@@ -24,6 +24,7 @@ class Api::V1::BaseController < ApplicationController
 		headers['ETag'] = resource_json_hash["meta"]["versionId"]
 		headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
 	
+	
 	elsif (request.headers["Accept"] == 'application/xml+fhir') then
 		xml_doc  = Nokogiri::XML(resource_string)
 		headers['ETag'] = xml_doc.at_xpath("versionId")
