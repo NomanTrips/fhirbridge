@@ -1,10 +1,16 @@
+require 'json'
+require 'nokogiri'
+require 'postgres_calls'
+require 'format'
+  
 class Api::V1::BaseController < ApplicationController
+	include PostgresCalls
+	include Format
   #protect_from_forgery with: :null_session
 
   
   #before_action :destroy_session
-  require 'json'
-  require 'nokogiri'
+
   # Can't set ETag with the caching? 
   def caching_allowed?
     false
@@ -17,18 +23,14 @@ class Api::V1::BaseController < ApplicationController
   
   def show
 	puts 'ahab slew the whale'
-	resource_string = get_resource(params[:resource_type], params[:id], request.headers["Accept"])
-
-	if (request.headers["Accept"] == 'application/json+fhir') then
-		resource_json_hash = JSON.parse resource_string
-		headers['ETag'] = resource_json_hash["meta"]["versionId"]
-		headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+	resource_string = pg_get_call(params[:resource_type], params[:id])
 	
+	resource_json_hash = JSON.parse resource_string
+	headers['ETag'] = resource_json_hash["meta"]["versionId"]
+	headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
 	
-	elsif (request.headers["Accept"] == 'application/xml+fhir') then
-		xml_doc  = Nokogiri::XML(resource_string)
-		headers['ETag'] = xml_doc.at_xpath("versionId")
-		headers['Last-Modified'] = xml_doc.at_xpath("lastUpdated")
+	if (request.headers["Accept"] == 'application/xml+fhir') then
+		convert_to_xml(resource_string)
 	end
 	
 	
