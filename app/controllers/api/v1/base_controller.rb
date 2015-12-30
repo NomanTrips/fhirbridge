@@ -4,7 +4,7 @@ require 'postgres_calls'
 require 'format'
   
 class Api::V1::BaseController < ApplicationController
-	include PostgresCalls
+	include PostgresCalls 
 	include Format
   #protect_from_forgery with: :null_session
 

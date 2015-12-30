@@ -3,7 +3,7 @@ require 'json'
 
 module PostgresCalls
   
-  def get_pg_call(resource_type, id)
+  def pg_get_call(resource_type, id)
     
 	res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
 	resource_as_json_str = ''
