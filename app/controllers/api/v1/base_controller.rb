@@ -30,7 +30,7 @@ class Api::V1::BaseController < ApplicationController
 	headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
 	
 	if (request.headers["Accept"] == 'application/xml+fhir') then
-		convert_to_xml(resource_string)
+		resource_string = convert_to_xml(resource_string)
 	end
 	
 	
@@ -40,14 +40,27 @@ class Api::V1::BaseController < ApplicationController
 
   # POST /api/{plural_resource_name}
   def create
-	puts 'line 30'
-	resource_string = create_resource(request.body.read, request.headers["Content-Type"])
-	#resource_json_hash = JSON.parse resource_string
-	puts 'line 33'
-	#headers['ETag'] = resource_json_hash["meta"]["versionId"]
-	#headers['Location'] = request.original_url + "/#{resource_json_hash["id"]}"
 	
-	render :text => resource_string, content_type: request.headers["Content-Type"]
+	if (request.headers["Content-Type"] == 'application/xml+fhir') then
+		payload = convert_to_xml(request.body.read) # request.body.read --> xml body from request
+	else
+		payload = request.body.read # json
+	end
+	
+	resource_string = pg_post_call(payload)
+	
+	# set response headers using data from json string retrieved from fhirbase
+	resource_json_hash = JSON.parse resource_string
+	headers['ETag'] = resource_json_hash["meta"]["versionId"]
+	headers['Location'] = request.original_url + "/#{resource_json_hash["id"]}"
+	headers['Content-Type'] = request.headers["Content-Type"]
+
+	# conv response string back to requested format if xml
+	if (request.headers["Content-Type"] == 'application/xml+fhir') then
+		resource_string = convert_to_xml(resource_string)
+	end	
+	
+	render :text => resource_string
 	#render json: create_resource(request.body.read), content_type: "application/json+fhir" <-- This one works 
   end
  
