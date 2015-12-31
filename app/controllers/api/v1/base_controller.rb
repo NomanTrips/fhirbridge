@@ -41,7 +41,9 @@ class Api::V1::BaseController < ApplicationController
   # POST /api/{plural_resource_name}
   def create
 	
+	puts request.headers["Content-Type"]
 	if (request.headers["Content-Type"] == 'application/xml+fhir') then
+		puts 'content-type header is xml'
 		payload = convert_to_xml(request.body.read) # request.body.read --> xml body from request
 	else
 		payload = request.body.read # json
