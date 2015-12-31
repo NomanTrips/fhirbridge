@@ -33,4 +33,17 @@
 		
 	  end
 	  
+	  def convert_to_json(resource_as_xml_str)
+		
+		core = JRClj.new #clojure core
+		fhir = JRClj.new "fhir.core"
+		idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
+		payloadparsed = fhir.parse(idx, resource_as_xml_str)
+		resource_as_json_str = fhir.generate(idx, core.keyword("json"), payloadparsed)	
+		
+		return resource_as_json_str
+		
+	  end
+	  
+	  
 	end
