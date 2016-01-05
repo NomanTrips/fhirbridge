@@ -60,7 +60,7 @@ class Api::V1::BaseController < ApplicationController
 		resource_string = convert_to_xml(resource_string)
 	end	
 	
-	render :text => resource_string
+	render :text => resource_string, :status => 201
 	#render json: create_resource(request.body.read), content_type: "application/json+fhir" <-- This one works 
   end
  
