@@ -35,11 +35,6 @@
 	  
 	  def convert_to_json(resource_as_xml_str)
 		
-		beginning_time = Time.now
-		core = JRClj.new #clojure core
-		end_time = Time.now
-		puts "Core create... #{(end_time - beginning_time)*1000} milliseconds"
-		
 		beginning_time = Time.now		
 		fhir = JRClj.new "fhir.core"
 		end_time = Time.now
@@ -60,6 +55,7 @@
 		end_time = Time.now
 		puts "Actual convert... #{(end_time - beginning_time)*1000} milliseconds"	
 		
+		puts fhir.class.name
 		return resource_as_json_str
 		
 	  end
