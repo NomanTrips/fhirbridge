@@ -35,28 +35,12 @@
 	  
 	  def convert_to_json(resource_as_xml_str)
 		
-		core = JRClj.new #clojure core		
-		beginning_time = Time.now		
-		fhir = JRClj.new "fhir.core"
-		end_time = Time.now
-		puts "Fhir create... #{(end_time - beginning_time)*1000} milliseconds"
-
-		beginning_time = Time.now			
-		idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
-		end_time = Time.now
-		puts "Index... #{(end_time - beginning_time)*1000} milliseconds"		
-
-		beginning_time = Time.now			
-		payloadparsed = fhir.parse(idx, resource_as_xml_str)
-		end_time = Time.now
-		puts "Parse... #{(end_time - beginning_time)*1000} milliseconds"			
-
-		beginning_time = Time.now			
+		core = JRClj.new #clojure core			
+		fhir = JRClj.new "fhir.core"	
+		idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')		
+		payloadparsed = fhir.parse(idx, resource_as_xml_str)			
 		resource_as_json_str = fhir.generate(idx, core.keyword("json"), payloadparsed)	
-		end_time = Time.now
-		puts "Actual convert... #{(end_time - beginning_time)*1000} milliseconds"	
 		
-		puts fhir.class.name
 		return resource_as_json_str
 		
 	  end

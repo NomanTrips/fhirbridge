@@ -31,6 +31,13 @@ require 'lib/deps/xz-1.5.jar'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+config.after_initialize do
+	puts 'running after initialize......!'
+	core = JRClj.new #clojure core	
+	Rails.cache.write 'clojure_core', core
+	puts 'put it into the cache?'
+end
+
 module FhirWidgetOne
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
