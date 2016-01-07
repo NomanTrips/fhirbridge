@@ -35,6 +35,7 @@
 	  
 	  def convert_to_json(resource_as_xml_str)
 		
+		core = JRClj.new #clojure core		
 		beginning_time = Time.now		
 		fhir = JRClj.new "fhir.core"
 		end_time = Time.now
