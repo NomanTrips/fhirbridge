@@ -36,7 +36,8 @@
 		if core_cached != nil then
 			puts core.class.name
 		else
-			puts 'core cached is nil...' 
+			puts 'core cached is nil...'
+		end
 		
 		return resource_as_xml_str
 		
