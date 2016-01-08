@@ -23,7 +23,14 @@ class Api::V1::BaseController < ApplicationController
   
   def show
 	puts 'ahab slew the whale'
+	beginning_time = Time.now
+	ccore = Clojurecore.new
+	puts ccore.class.name
+	end_time = Time.now
+	puts "Clojure core create... #{(end_time - beginning_time)*1000} milliseconds"
+
 	resource_string = pg_get_call(params[:resource_type], params[:id])
+	
 	
 	resource_json_hash = JSON.parse resource_string
 	headers['ETag'] = resource_json_hash["meta"]["versionId"]

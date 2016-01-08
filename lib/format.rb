@@ -23,7 +23,7 @@
 	  
 	  def convert_to_xml(resource_as_json_str)
 		
-		puts Rails.configuration.x.whatever.you.want
+		#puts Rails.configuration.x.whatever.you.want
 		core = JRClj.new #clojure core
 		
 		#Rails.cache.write 'clojure_core', core
