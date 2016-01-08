@@ -26,6 +26,7 @@ class Api::V1::BaseController < ApplicationController
 	puts 'ahab slew the whale'
 	beginning_time = Time.now
 	ccore = ::ClojureCore.new
+	ccore.clojurecore
 	puts ccore.class.name
 	end_time = Time.now
 	puts "Clojure core create... #{(end_time - beginning_time)*1000} milliseconds"
