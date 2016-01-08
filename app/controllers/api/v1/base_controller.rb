@@ -2,10 +2,12 @@ require 'json'
 require 'nokogiri'
 require 'postgres_calls'
 require 'format'
+require 'clojure_core'
   
 class Api::V1::BaseController < ApplicationController
 	include PostgresCalls 
 	include Format
+	include Clojurecore
   #protect_from_forgery with: :null_session
 
   
