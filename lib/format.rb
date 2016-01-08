@@ -23,21 +23,22 @@
 	  
 	  def convert_to_xml(resource_as_json_str)
 		
+		puts Rails.configuration.x.whatever.you.want
 		core = JRClj.new #clojure core
 		
-		Rails.cache.write 'clojure_core', core
+		#Rails.cache.write 'clojure_core', core
 		
 		fhir = JRClj.new "fhir.core"
 		idx = fhir.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
 		resourceparsed = fhir.parse(idx, resource_as_json_str)
 		resource_as_xml_str = fhir.generate(idx, core.keyword("xml"), resourceparsed)
 		
-		core_cached = Rails.cache.read 'clojure_core'
-		if core_cached != nil then
-			puts core.class.name
-		else
-			puts 'core cached is nil...'
-		end
+		#core_cached = Rails.cache.read 'clojure_core'
+		#if core_cached != nil then
+		#	puts core.class.name
+		#else
+		#	puts 'core cached is nil...'
+		#end
 		
 		return resource_as_xml_str
 		
