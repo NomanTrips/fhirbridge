@@ -36,7 +36,8 @@ class Api::V1::BaseController < ApplicationController
 	puts "Fhir core create... #{(end_time - beginning_time)*1000} milliseconds"
 
 	beginning_time = Time.now	
-	idx = fcore.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
+	indexer = ::ClojureCore.idx
+	#idx = fcore.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
 	end_time = Time.now
 	puts "Index... #{(end_time - beginning_time)*1000} milliseconds"
 	

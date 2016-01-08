@@ -21,6 +21,7 @@
 class ClojureCore
   @@clojurecore = JRClj.new #clojure core
   @@fhircore = JRClj.new "fhir.core"
+  @@idx = @@fhircore.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
   
   def self.clojurecore
     @@clojurecore
@@ -28,6 +29,10 @@ class ClojureCore
   
   def self.fhircore
 	@@fhircore
+  end
+  
+   def self.idx
+	@@idx
   end
   
 end
