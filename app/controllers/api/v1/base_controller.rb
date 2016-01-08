@@ -24,12 +24,24 @@ class Api::V1::BaseController < ApplicationController
   
   def show
 	puts 'ahab slew the whale'
+	
 	beginning_time = Time.now
 	::ClojureCore.clojurecore
-	
-	idx = ::ClojureCore.fhircore.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
 	end_time = Time.now
 	puts "Clojure core create... #{(end_time - beginning_time)*1000} milliseconds"
+
+	beginning_time = Time.now	
+	fcore = ::ClojureCore.fhircore
+	end_time = Time.now
+	puts "Fhir core create... #{(end_time - beginning_time)*1000} milliseconds"
+
+	beginning_time = Time.now	
+	idx = fcore.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
+	end_time = Time.now
+	puts "Index... #{(end_time - beginning_time)*1000} milliseconds"
+	
+
+
 
 	resource_string = pg_get_call(params[:resource_type], params[:id])
 	
