@@ -18,7 +18,7 @@
 	require 'lib/deps/tigris-0.1.1.jar'
 	require 'lib/deps/xz-1.5.jar'
 
-class Clojurecore
+class ClojureCore
   @@clojurecore = JRClj.new #clojure core
   def self.clojurecore
     @@clojurecore

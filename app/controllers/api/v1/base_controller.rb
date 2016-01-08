@@ -7,7 +7,6 @@ require 'clojure_core'
 class Api::V1::BaseController < ApplicationController
 	include PostgresCalls 
 	include Format
-	include Clojurecore
   #protect_from_forgery with: :null_session
 
   
@@ -26,7 +25,7 @@ class Api::V1::BaseController < ApplicationController
   def show
 	puts 'ahab slew the whale'
 	beginning_time = Time.now
-	ccore = Clojurecore.new
+	ccore = ::ClojureCore.new
 	puts ccore.class.name
 	end_time = Time.now
 	puts "Clojure core create... #{(end_time - beginning_time)*1000} milliseconds"
