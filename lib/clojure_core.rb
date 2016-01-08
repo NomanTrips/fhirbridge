@@ -20,7 +20,14 @@
 
 class ClojureCore
   @@clojurecore = JRClj.new #clojure core
+  @@fhircore = JRClj.new "fhir.core"
+  
   def self.clojurecore
     @@clojurecore
   end
+  
+  def self.fhircore
+	@@fhircore
+  end
+  
 end

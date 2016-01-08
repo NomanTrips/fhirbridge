@@ -26,6 +26,8 @@ class Api::V1::BaseController < ApplicationController
 	puts 'ahab slew the whale'
 	beginning_time = Time.now
 	::ClojureCore.clojurecore
+	
+	idx = ::ClojureCore.fhircore.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
 	end_time = Time.now
 	puts "Clojure core create... #{(end_time - beginning_time)*1000} milliseconds"
 
