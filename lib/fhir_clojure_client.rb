@@ -25,7 +25,7 @@ class FhirClojureClient
 	
 	@@clojure_core = JRClj.new #clojure core
 	@@fhir_core = JRClj.new "fhir.core"
-	@@idx = @@fhircore.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
+	@@idx = @@fhir_core.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
   
 	def self.clojure_core
 		@@clojure_core
@@ -41,8 +41,8 @@ class FhirClojureClient
   
 	def self.convert_to_xml(resource_as_json_str)
 
-		resourceparsed = @@fhir_core.parse(idx, resource_as_json_str)
-		resource_as_xml_str = @@fhir_core.generate(idx, @@clojure_core.keyword("xml"), resourceparsed)
+		resource_parsed = @@fhir_core.parse(idx, resource_as_json_str)
+		resource_as_xml_str = @@fhir_core.generate(idx, @@clojure_core.keyword("xml"), resource_parsed)
 		
 		return resource_as_xml_str
 		
@@ -50,8 +50,8 @@ class FhirClojureClient
 	
 	def self.convert_to_json(resource_as_xml_str)
 				
-		payloadparsed = @@fhir_core.parse(idx, resource_as_xml_str)			
-		resource_as_json_str = @@fhir_core.generate(idx, @@clojure_core.keyword("json"), payloadparsed)	
+		payload_parsed = @@fhir_core.parse(idx, resource_as_xml_str)			
+		resource_as_json_str = @@fhir_core.generate(idx, @@clojure_core.keyword("json"), payload_parsed)	
 		
 		return resource_as_json_str
 		
