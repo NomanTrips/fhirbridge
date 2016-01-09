@@ -11,8 +11,10 @@ module PostgresCalls
 		res_hash = res[0] #First row of query result
 		record_hash = res_hash.first #Some kind of wrapper array?
 		resource_as_json_str = record_hash.second #string of the json content
+		puts 'pg res has size'
 	end
 	
+	puts "resource as json str: #{resource_as_json_str}"
 	return resource_as_json_str
 	
   end
@@ -39,7 +41,10 @@ module PostgresCalls
 		res_hash = res[0] #First row of query result
 		record_hash = res_hash.first #Some kind of wrapper array?
 		resource_as_str = record_hash.second #operation outcome json str
+				puts 'pg res has size'
 	end
+
+	puts "resource as json str: #{resource_as_str}"
 	
 	return resource_as_str
 	

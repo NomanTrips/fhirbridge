@@ -29,9 +29,12 @@ class Api::V1::BaseController < ApplicationController
 
 		resource_string = pg_get_call(params[:resource_type], params[:id])
 	
-		resource_json_hash = JSON.parse resource_string
-		headers['ETag'] = resource_json_hash["meta"]["versionId"]
-		headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+		if ! resource_string.empty? then
+			begin
+				resource_json_hash = JSON.parse resource_string
+				headers['ETag'] = resource_json_hash["meta"]["versionId"]
+				headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+			end
 	
 		if (request.headers["Accept"] == 'application/xml+fhir') then
 			resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
