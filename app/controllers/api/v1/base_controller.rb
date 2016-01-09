@@ -2,7 +2,7 @@ require 'json'
 require 'nokogiri'
 require 'postgres_calls'
 require 'format'
-require 'clojure_core'
+require 'fhir_clojure_client'
   
 class Api::V1::BaseController < ApplicationController
 	include PostgresCalls 
@@ -22,43 +22,27 @@ class Api::V1::BaseController < ApplicationController
 	render json: resource_string, content_type: "application/json+fhir"
   end
   
-  def show
-	puts 'ahab slew the whale'
+	def show
+		puts 'ahab slew the whale'
 	
-	beginning_time = Time.now
-	::ClojureCore.clojurecore
-	end_time = Time.now
-	puts "Clojure core create... #{(end_time - beginning_time)*1000} milliseconds"
+		#beginning_time = Time.now	
+		#end_time = Time.now
+		#puts "Index... #{(end_time - beginning_time)*1000} milliseconds"
 
-	beginning_time = Time.now	
-	fcore = ::ClojureCore.fhircore
-	end_time = Time.now
-	puts "Fhir core create... #{(end_time - beginning_time)*1000} milliseconds"
-
-	beginning_time = Time.now	
-	indexer = ::ClojureCore.idx
-	#idx = fcore.index('app/assets/javascripts/profiles-resources.json', 'app/assets/javascripts/profiles-types.json')
-	end_time = Time.now
-	puts "Index... #{(end_time - beginning_time)*1000} milliseconds"
+		resource_string = pg_get_call(params[:resource_type], params[:id])
 	
-
-
-
-	resource_string = pg_get_call(params[:resource_type], params[:id])
+		resource_json_hash = JSON.parse resource_string
+		headers['ETag'] = resource_json_hash["meta"]["versionId"]
+		headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+	
+		if (request.headers["Accept"] == 'application/xml+fhir') then
+			resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+		end
 	
 	
-	resource_json_hash = JSON.parse resource_string
-	headers['ETag'] = resource_json_hash["meta"]["versionId"]
-	headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
-	
-	if (request.headers["Accept"] == 'application/xml+fhir') then
-		resource_string = convert_to_xml(resource_string)
+		render :text => resource_string, content_type: request.headers["Accept"]
+		#render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
 	end
-	
-	
-	render :text => resource_string, content_type: request.headers["Accept"]
-	#render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
-  end
 
   # POST /api/{plural_resource_name}
   def create
