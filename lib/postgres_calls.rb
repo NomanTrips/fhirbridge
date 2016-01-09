@@ -35,7 +35,7 @@ module PostgresCalls
 	
 	res =  ActiveRecord::Base.connection.execute("SELECT fhir.delete('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
 	resource_as_str = ''		
-	if res.ntuples() > 0 then
+	if res.size() > 0 then
 		res_hash = res[0] #First row of query result
 		record_hash = res_hash.first #Some kind of wrapper array?
 		resource_as_str = record_hash.second #operation outcome json str
