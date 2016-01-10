@@ -31,16 +31,20 @@ class Api::V1::BaseController < ApplicationController
 	
 		if ! resource_string.empty? then
 			resource_json_hash = JSON.parse resource_string
-			headers['ETag'] = resource_json_hash["meta"]["versionId"]
-			headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+			if resource_json_hash["resourceType"] == "OperationOutcome" then
+				response_status = 410
+			else
+				headers['ETag'] = resource_json_hash["meta"]["versionId"]
+				headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+				response_status = 200
+			end
+		
+			if (request.headers["Accept"] == 'application/xml+fhir') then
+				resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+			end		
 		end
-	
-		if (request.headers["Accept"] == 'application/xml+fhir') then
-			resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-		end
-	
-	
-		render :text => resource_string, content_type: request.headers["Accept"]
+		
+		render :text => resource_string, content_type: request.headers["Accept"], :status => response_status
 		#render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
 	end
 
@@ -73,16 +77,20 @@ class Api::V1::BaseController < ApplicationController
 	#  DELETE [base]/[type]/[id]
 	def delete
 		resource_string = pg_delete_call(params[:resource_type], params[:id])
-		
-		resource_json_hash = JSON.parse resource_string
-		headers['ETag'] = resource_json_hash["meta"]["versionId"]
 
-		# conv response string back to requested format if xml
-		if (request.headers["Content-Type"] == 'application/xml+fhir') || (request.headers["Accept"] == 'application/xml+fhir') then
-			resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-		end	
+		if ! resource_string.empty? then
+			resource_json_hash = JSON.parse resource_string
+			if resource_json_hash["resourceType"] == "OperationOutcome" then
+				response_status = 204
+				if resource_json_hash.key?("meta") then
+					headers['ETag'] = resource_json_hash["meta"]["versionId"]
+				end
+			end
+				
+		end
 		
-		render :text => resource_string, :status => 204
+
+		render :text => resource_string, :status => response_status
 	end
   
   def search
