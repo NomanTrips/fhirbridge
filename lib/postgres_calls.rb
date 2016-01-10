@@ -5,7 +5,16 @@ module PostgresCalls
   
   def pg_get_call(resource_type, id)
     
-	res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
+	begin
+		res =  ActiveRecord::Base.connection.execute("SELECT fhir.read('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
+	rescue ActiveRecord::StatementInvalid => e
+		puts ' '
+		puts e.to_s
+		puts ' '
+		if (e.to_s.include? "relation") && ((e.to_s.include? "does not exist")) then
+			return "No table for that resourceType"
+	end
+	
 	resource_as_json_str = ''
 	if res.size() > 0 then
 		res_hash = res[0] #First row of query result
@@ -14,6 +23,7 @@ module PostgresCalls
 		puts 'pg res has size'
 	end
 	
+
 	puts "resource as json str: #{resource_as_json_str}"
 	return resource_as_json_str
 	

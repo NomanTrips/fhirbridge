@@ -26,7 +26,12 @@ class Api::V1::BaseController < ApplicationController
   
 	def show
 		puts 'ahab slew the whale'
-	
+		
+		is_request_format_xml = true # default the response to xml format unless otherwise requested
+		if (request.headers["Accept"] == 'application/json+fhir') then
+			is_request_format_xml = false
+		end
+		
 		#beginning_time = Time.now	
 		#end_time = Time.now
 		#puts "Index... #{(end_time - beginning_time)*1000} milliseconds"
@@ -34,18 +39,22 @@ class Api::V1::BaseController < ApplicationController
 		resource_string = pg_get_call(params[:resource_type], params[:id])
 	
 		if ! resource_string.empty? then
-			resource_json_hash = JSON.parse resource_string
-			if resource_json_hash["resourceType"] == "OperationOutcome" then
-				response_status = 410
+			if resource_string == "No table for that resourceType" then
+				response_status = 404
 			else
-				headers['ETag'] = resource_json_hash["meta"]["versionId"]
-				headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
-				response_status = 200
-			end
+				resource_json_hash = JSON.parse resource_string
+				if resource_json_hash["resourceType"] == "OperationOutcome" then #deleted resource
+					response_status = 410
+				else
+					headers['ETag'] = resource_json_hash["meta"]["versionId"]
+					headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+					response_status = 200
+				end
 		
-			if (request.headers["Accept"] == 'application/xml+fhir') then
-				resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-			end		
+				if is_request_format_xml then
+					resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+				end
+			end
 		end
 		
 		render :text => resource_string, content_type: request.headers["Accept"], :status => response_status
