@@ -13,6 +13,7 @@ module PostgresCalls
 		puts ' '
 		if (e.to_s.include? "relation") && ((e.to_s.include? "does not exist")) then
 			return "No table for that resourceType"
+		end
 	end
 	
 	resource_as_json_str = ''
