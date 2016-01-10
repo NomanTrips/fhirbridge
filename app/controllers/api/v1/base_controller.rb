@@ -108,7 +108,6 @@ class Api::V1::BaseController < ApplicationController
   
   def search
 	# Getting the search params out of the URL key-value pairs and then putting them into a string that fhirbase can use to search
-	puts params[:resource_type]
 	query_strings = request.query_parameters.to_hash()
 	@search_string = ""
 	query_strings.each do |key,value|
@@ -119,15 +118,33 @@ class Api::V1::BaseController < ApplicationController
 			@search_string.concat "&#{key.to_s}=#{value.to_s}"
 		end
 	end
-	puts @search_string
-	resource_string = search_for_resource(params[:resource_type], @search_string)
+
+	resource_string = pg_search_call(params[:resource_type], @search_string)
+
+	is_request_format_xml = true # default the response to xml format unless otherwise requested
+	if (request.headers["Accept"] == 'application/json+fhir') || (request.headers["Content-Type"] == 'application/json+fhir') then
+		is_request_format_xml = false
+	end
+		
+	if ! resource_string.empty? then
+		if resource_string == "No table for that resourceType" then
+			response_status = 404
+		else
+			resource_json_hash = JSON.parse resource_string
+			if resource_json_hash["resourceType"] == "OperationOutcome" then #deleted resource
+				response_status = 410
+			else
+				response_status = 200
+			end
+		
+			if is_request_format_xml then
+				resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+			end
+		end
+	end
 	
-	resource_json_hash = JSON.parse resource_string
-	#headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"] <-- Since it's a search set collection which last modified do we grab?
+	render :text => resource_string, :status => response_status
 	
-	render json: resource_string, content_type: "application/json+fhir"
-	
-	#render json: search_for_resource(params[:resource_type], @search_string), content_type: "application/json+fhir" <-- original code that worked
   end
   
   # PATCH/PUT /api/{resource_name}/id

@@ -30,6 +30,31 @@ module PostgresCalls
 	
   end
   
+	def pg_search_call(resource_type, searchString)
+		# select fhir.search('Patient', 'given=john')
+		begin
+			res =  ActiveRecord::Base.connection.execute("SELECT fhir.search('#{resource_type}', '#{searchString}');") # Running fhirbase stored procedure
+		rescue ActiveRecord::StatementInvalid => e
+			puts ' '
+			puts e.to_s
+			puts ' '
+			if (e.to_s.include? "relation") && ((e.to_s.include? "does not exist")) then
+				return "No table for that resourceType"
+			end
+		end
+	
+		if res.size() > 0 then
+			res_hash = res[0] #First row of query result
+			record_hash = res_hash.first #Some kind of wrapper array?
+			result = record_hash.second #string of the json content
+		end
+	
+		return result
+	
+	end
+	
+	
+  
   def pg_post_call(payload)	
 	
 	res =  ActiveRecord::Base.connection.execute("SELECT fhir.create('#{payload}');") # Running fhirbase stored procedure
