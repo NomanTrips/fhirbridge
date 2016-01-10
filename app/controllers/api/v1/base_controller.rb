@@ -16,8 +16,12 @@ class Api::V1::BaseController < ApplicationController
 	end
 
 	def conformance
-		resource_string = get_conformance_statement()	
-		render json: resource_string, content_type: "application/json+fhir"
+		resource_string = pg_get_conformance_statement()
+		if (request.headers["Accept"] == 'application/xml+fhir') || (request.headers["Content-Type"] == 'application/xml+fhir') then
+			resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+		end	
+			
+		render text: resource_string, content_type: request.headers["Accept"]
 	end
   
 	def show
