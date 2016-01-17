@@ -16,18 +16,14 @@ module PostgresCalls
 		end
 	end
 	
-	does_exist = ''
+	does_exist = false
 	if res.size() > 0 then
 		res_hash = res[0] #First row of query result
 		record_hash = res_hash.first #Some kind of wrapper array?
 		does_exist = record_hash.second #string of the json content
 	end
-	puts 'pg does exists result........ ' + does_exist
-	if does_exist == 't' then
-	  return true
-	else
-	  return false
-	end
+	
+	return does_exist
 	
   end
   
