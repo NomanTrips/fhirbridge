@@ -42,9 +42,7 @@ class Api::V1::BaseController < ApplicationController
 	#puts "Index... #{(end_time - beginning_time)*1000} milliseconds"
 	if !(params[:id] =~ /^[A-Za-z0-9\-\.]{1,64}$/) then
 	  response_status = 400
-	  render :text => '', content_type: request.headers["Accept"], :status => response_status
-	  puts 'successful break on 400 status'
-	  break
+	  render (:text => '', content_type: request.headers["Accept"], :status => response_status) and return
 	end
 	
 	resource_string = ''
