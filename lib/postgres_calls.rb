@@ -2,6 +2,34 @@
 require 'json'
 
 module PostgresCalls
+
+  def pg_does_exist_call(resource_type, id)
+    
+	begin
+		res =  ActiveRecord::Base.connection.execute("SELECT fhir.is_exists('#{resource_type}', '#{id}');") # Running fhirbase stored procedure
+	rescue ActiveRecord::StatementInvalid => e
+		puts ' '
+		puts e.to_s
+		puts ' '
+		if (e.to_s.include? "relation") && ((e.to_s.include? "does not exist")) then
+			return "No table for that resourceType"
+		end
+	end
+	
+	does_exist = ''
+	if res.size() > 0 then
+		res_hash = res[0] #First row of query result
+		record_hash = res_hash.first #Some kind of wrapper array?
+		does_exist = record_hash.second #string of the json content
+	end
+	puts 'pg does exists result........ ' + does_exist
+	if does_exist == 't' then
+	  return true
+	else
+	  return false
+	end
+	
+  end
   
   def pg_get_call(resource_type, id)
     

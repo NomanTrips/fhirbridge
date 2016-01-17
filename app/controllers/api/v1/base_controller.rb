@@ -40,29 +40,31 @@ class Api::V1::BaseController < ApplicationController
     #beginning_time = Time.now	
 	#end_time = Time.now
 	#puts "Index... #{(end_time - beginning_time)*1000} milliseconds"
-
-    resource_string = pg_get_call(params[:resource_type], params[:id])
-	
-    if ! resource_string.empty? then
-      if resource_string == "No table for that resourceType" then
-        response_status = 404
-      else
-        resource_json_hash = JSON.parse resource_string
-        if resource_json_hash["resourceType"] == "OperationOutcome" then #deleted resource
-          response_status = 410
+	resource_string = ''
+	does_res_exist = pg_does_exist_call(params[:resource_type], params[:id])
+	if does_res_exist then
+		resource_string = pg_get_call(params[:resource_type], params[:id])
+	    if resource_string == "No table for that resourceType" then
+          response_status = 404
         else
-          headers['ETag'] = resource_json_hash["meta"]["versionId"]
-          headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
-          response_status = 200
-        end
+          resource_json_hash = JSON.parse resource_string
+          if resource_json_hash["resourceType"] == "OperationOutcome" then #deleted resource
+            response_status = 410
+          else
+            headers['ETag'] = resource_json_hash["meta"]["versionId"]
+            headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+            response_status = 200
+          end
 		
-        if is_request_format_xml then
-          resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-        end
+          if is_request_format_xml then
+            resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+          end
       
-	  end
+	    end
 	  
-    end
+	else
+	  response_status = 404
+	end
 		
     render :text => resource_string, content_type: request.headers["Accept"], :status => response_status
 
@@ -122,7 +124,7 @@ class Api::V1::BaseController < ApplicationController
 
     if ! resource_string.empty? then
       resource_json_hash = JSON.parse resource_string
-      if resource_json_hash.key?["resourceType"] then
+      if resource_json_hash.key?("resourceType") then
         response_status = 204
         if resource_json_hash.key?("meta") then
           headers['ETag'] = resource_json_hash["meta"]["versionId"]
