@@ -2,109 +2,131 @@ require 'json'
 require 'nokogiri'
 require 'postgres_calls'
 require 'fhir_clojure_client'
+
   
 class Api::V1::BaseController < ApplicationController
-	include PostgresCalls 
-	#protect_from_forgery with: :null_session
-
-	#before_action :destroy_session
-
-	# Can't set ETag with the caching? 
+  include PostgresCalls 
+  #protect_from_forgery with: :null_session
+  #before_action :destroy_session     
   
-	def caching_allowed?
-		false
-	end
+  def caching_allowed? # Can't set ETag with the caching?
+    false
+  end
 
-	def conformance
-		resource_string = pg_get_conformance_statement()
-		if (request.headers["Accept"] == 'application/xml+fhir') || (request.headers["Content-Type"] == 'application/xml+fhir') then
-			resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-		end	
+  def conformance
+  
+    is_request_format_xml = true # default the response to xml format unless otherwise requested
+	if (request.headers["Accept"] == 'application/json+fhir') || (request.headers["Content-Type"] == 'application/xml+fhir') then
+	  is_request_format_xml = false
+    end
+	
+    resource_string = pg_get_conformance_statement()
+    
+	if is_request_format_xml then
+	  resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+    end	
 			
-		render text: resource_string, content_type: request.headers["Accept"]
-	end
+	render text: resource_string, content_type: request.headers["Accept"]
+  end
   
-	def show
-		puts 'ahab slew the whale'
+  def show
+    puts 'ahab slew the whale'
 		
-		is_request_format_xml = true # default the response to xml format unless otherwise requested
-		if (request.headers["Accept"] == 'application/json+fhir') then
-			is_request_format_xml = false
-		end
+    is_request_format_xml = true # default the response to xml format unless otherwise requested
+	if (request.headers["Accept"] == 'application/json+fhir') then
+	  is_request_format_xml = false
+    end
 		
-		#beginning_time = Time.now	
-		#end_time = Time.now
-		#puts "Index... #{(end_time - beginning_time)*1000} milliseconds"
+    #beginning_time = Time.now	
+	#end_time = Time.now
+	#puts "Index... #{(end_time - beginning_time)*1000} milliseconds"
 
-		resource_string = pg_get_call(params[:resource_type], params[:id])
+    resource_string = pg_get_call(params[:resource_type], params[:id])
 	
-		if ! resource_string.empty? then
-			if resource_string == "No table for that resourceType" then
-				response_status = 404
-			else
-				resource_json_hash = JSON.parse resource_string
-				if resource_json_hash["resourceType"] == "OperationOutcome" then #deleted resource
-					response_status = 410
-				else
-					headers['ETag'] = resource_json_hash["meta"]["versionId"]
-					headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
-					response_status = 200
-				end
+    if ! resource_string.empty? then
+      if resource_string == "No table for that resourceType" then
+        response_status = 404
+      else
+        resource_json_hash = JSON.parse resource_string
+        if resource_json_hash["resourceType"] == "OperationOutcome" then #deleted resource
+          response_status = 410
+        else
+          headers['ETag'] = resource_json_hash["meta"]["versionId"]
+          headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+          response_status = 200
+        end
 		
-				if is_request_format_xml then
-					resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-				end
-			end
-		end
+        if is_request_format_xml then
+          resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+        end
+      
+	  end
+	  
+    end
 		
-		render :text => resource_string, content_type: request.headers["Accept"], :status => response_status
-		#render json: get_resource(params[:resource_type], params[:id]), content_type: "application/json+fhir"
-	end
+    render :text => resource_string, content_type: request.headers["Accept"], :status => response_status
 
-	# POST /api/{plural_resource_name}
-	def create
-	
-		if (request.headers["Content-Type"] == 'application/xml+fhir') then
-			payload = ::FhirClojureClient.convert_to_json(request.body.read) # request.body.read --> xml body from request
-		else
-			payload = request.body.read # json
-		end
-	
-		resource_string = pg_post_call(payload)
-	
-		# set response headers using data from json string retrieved from fhirbase
-		resource_json_hash = JSON.parse resource_string
-		headers['ETag'] = resource_json_hash["meta"]["versionId"]
-		headers['Location'] = request.original_url + "/#{resource_json_hash["id"]}"
-		headers['Content-Type'] = request.headers["Content-Type"]
+  end
 
-		# conv response string back to requested format if xml
-		if (request.headers["Content-Type"] == 'application/xml+fhir') then
-			resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-		end	
+  # POST /api/{plural_resource_name}
+  def create
+
+    is_request_format_xml = true # default the response to xml format unless otherwise requested
+	if (request.headers["Content-Type"] == 'application/json+fhir') then
+	  is_request_format_xml = false
+    end
 	
-		render :text => resource_string, :status => 201
-		#render json: create_resource(request.body.read), content_type: "application/json+fhir" <-- This one works 
-	end
+    if is_request_format_xml then
+      payload = ::FhirClojureClient.convert_to_json(request.body.read) # request.body.read --> xml body from request
+    else
+      payload = request.body.read # json
+    end
+	
+    resource_string = pg_post_call(payload)
+
+    if ! resource_string.empty? then
+      if resource_string == "No table for that resourceType" then
+        response_status = 404
+      else
+        resource_json_hash = JSON.parse resource_string
+        if resource_json_hash["resourceType"] == "OperationOutcome" then #deleted resource
+          response_status = 400
+        else
+          headers['ETag'] = resource_json_hash["meta"]["versionId"]
+          headers['Location'] = request.original_url + "/#{resource_json_hash["id"]}"
+		  headers['Content-Type'] = request.headers["Content-Type"]
+          response_status = 201
+        end
+		
+        if is_request_format_xml then
+          resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+        end
+      
+	  end
+	  
+    end
+		
+    render :text => resource_string, :status => response_status
+
+  end
  
-	#  DELETE [base]/[type]/[id]
-	def delete
-		resource_string = pg_delete_call(params[:resource_type], params[:id])
+  #  DELETE [base]/[type]/[id]
+  def delete
+    resource_string = pg_delete_call(params[:resource_type], params[:id])
 
-		if ! resource_string.empty? then
-			resource_json_hash = JSON.parse resource_string
-			if resource_json_hash["resourceType"] == "OperationOutcome" then
-				response_status = 204
-				if resource_json_hash.key?("meta") then
-					headers['ETag'] = resource_json_hash["meta"]["versionId"]
-				end
-			end
+    if ! resource_string.empty? then
+      resource_json_hash = JSON.parse resource_string
+      if resource_json_hash["resourceType"] == "OperationOutcome" then
+        response_status = 204
+        if resource_json_hash.key?("meta") then
+          headers['ETag'] = resource_json_hash["meta"]["versionId"]
+        end
+      end
 				
-		end
+    end
 		
-
-		render :text => resource_string, :status => response_status
-	end
+    render :text => resource_string, :status => response_status
+  end
   
   def search
 	# Getting the search params out of the URL key-value pairs and then putting them into a string that fhirbase can use to search
