@@ -13,6 +13,10 @@ class Api::V1::BaseController < ApplicationController
     false
   end
 
+  def splashpage
+    render html: '<h1>Fhir-widget-one experimental FHIR server</h1>'.html_safe
+  end
+  
   def conformance
   
     is_request_format_xml = true # default the response to xml format unless otherwise requested
