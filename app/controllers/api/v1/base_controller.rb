@@ -14,7 +14,7 @@ class Api::V1::BaseController < ApplicationController
   end
 
   def splashpage
-    render html: '<h1>Fhir-widget-one experimental FHIR server</h1>'.html_safe
+    render html: '<h1>Fhir widget one experimental fhir server -- <a href="mailto:brianscott0017@yahoo.com" onmouseover="this.href=this.href.replace(/x/g,'');">link</a></h1>'.html_safe
   end
   
   def conformance
