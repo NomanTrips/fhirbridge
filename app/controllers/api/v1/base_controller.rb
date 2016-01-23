@@ -53,7 +53,7 @@ class Api::V1::BaseController < ApplicationController
 	resource_string = ''
 	does_res_exist = pg_call("SELECT fhir.is_exists('#{params[:resource_type]}', '#{params[:id]}');")
 	if does_res_exist then
-		resource_string = pg_get_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
+		resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
 	    if resource_string == "No table for that resourceType" then
           response_status = 404
         else
