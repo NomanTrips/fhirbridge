@@ -22,7 +22,7 @@ class Api::V1::BaseController < ApplicationController
     is_request_format_xml = true # default the response to xml format unless otherwise requested
 	if (request.headers["Accept"] == 'application/json+fhir') || (request.headers["Content-Type"] == 'application/xml+fhir') then
 	  is_request_format_xml = false
-    end
+  end
 	
     resource_string = pg_get_conformance_statement()
     
