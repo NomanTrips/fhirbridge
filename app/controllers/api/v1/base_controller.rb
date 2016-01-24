@@ -16,15 +16,36 @@ class Api::V1::BaseController < ApplicationController
   def splashpage
     render html: '<h1>Fhir widget one experimental fhir server -- <a href="mailto:brianscott0017@yahoo.com" onmouseover="this.href=this.href.replace(/x/g,'');">contact</a></h1>'.html_safe
   end
-  
-  def conformance
-  
-    is_request_format_xml = true # default the response to xml format unless otherwise requested
-	if (request.headers["Accept"] == 'application/json+fhir') || (request.headers["Content-Type"] == 'application/xml+fhir') then
-	  is_request_format_xml = false
+
+  def is_request_format_xml
+    if (request.headers["Accept"] == 'application/json+fhir') ||
+       (request.headers["Content-Type"] == 'application/json+fhir') then
+      return false
+	else
+	  return true
   end
+  
+  def build_headers(resource_json_hash = nil)
+    headers['Content-Type'] = 'application/xml+fhir' # default content type xml
+	if request.headers.key?("Accept") then headers['Content-Type'] = request.headers["Accept"] end
+    if request.headers.key?("Content-Type") then headers['Content-Type'] = request.headers["Content-Type"] end	
+    
+	if ! resource_json_hash == nil then 
+	  if resource_json_hash.key?("meta") then
+	    headers['ETag'] = resource_json_hash["meta"]["versionId"]
+		headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+	  end
+      
+	end
 	
-    resource_string = pg_get_conformance_statement()
+  end
+
+  def is_id_valid_chars_and_length(id)
+	return (id =~ /^[A-Za-z0-9\-\.]{1,64}$/)
+  end
+  
+  def conformance 
+    resource_string = pg_call("SELECT fhir.read('Conformance', 'fb5ef8ec-55da-4718-9fd4-5a4c930ee8c9');") # hard coded conf record in db for now
     
 	if is_request_format_xml then
 	  resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
@@ -34,59 +55,45 @@ class Api::V1::BaseController < ApplicationController
   end
   
   def show
-    puts 'ahab slew the whale'
-		
-    is_request_format_xml = true # default the response to xml format unless otherwise requested
-	if (request.headers["Accept"] == 'application/json+fhir') then
-	  is_request_format_xml = false
-    end
-		
-    #beginning_time = Time.now	
-	#end_time = Time.now
-	#puts "Index... #{(end_time - beginning_time)*1000} milliseconds"
-	if !(params[:id] =~ /^[A-Za-z0-9\-\.]{1,64}$/) then
+	if ! is_id_valid_chars_and_length(params[:id]) then
 	  response_status = 400
-	  render :text => '', content_type: request.headers["Accept"], :status => response_status
-	  return
+	else	
+	  does_res_exist = pg_call("SELECT fhir.is_exists('#{params[:resource_type]}', '#{params[:id]}');")
+	  if ! does_res_exist then
+	    response_status = 404
+	  end	
+    end
+	
+	if (does_res_exist) && ( ! is_id_valid_chars_and_length(params[:id]) ) then
+      resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
+	else
+	  resource_string = nil
 	end
 	
-	resource_string = ''
-	does_res_exist = pg_call("SELECT fhir.is_exists('#{params[:resource_type]}', '#{params[:id]}');")
-	if does_res_exist then
-		resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
-	    if resource_string == "No table for that resourceType" then
-          response_status = 404
-        else
-          resource_json_hash = JSON.parse resource_string
-          if resource_json_hash["resourceType"] == "OperationOutcome" then #deleted resource
-            response_status = 410
-          else
-            headers['ETag'] = resource_json_hash["meta"]["versionId"]
-            headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
-            response_status = 200
-          end
-		
-          if is_request_format_xml then
-            resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-          end
-      
-	    end
-	  
-	else
-	  response_status = 404
+	if resource_string == "No table for that resourceType" then
+	  response_status = 404 # Un-supported resource
 	end
-		
-    render :text => resource_string, content_type: request.headers["Accept"], :status => response_status
 
+ 	resource_json_hash = nil
+	if ! resource_string.nil? then
+	  resource_json_hash = JSON.parse resource_string   
+	  if resource_json_hash["resourceType"] == "OperationOutcome" then # deleted resource
+	    response_status = 410
+      else # found resource and everything was ok
+	    response_status = 200
+	  end
+    end
+	
+	build_headers(resource_json_hash)
+	if (is_request_format_xml) && ( ! resource_string.nil? ) then
+      resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+    end
+	render :text => resource_string, :status => response_status
+	
   end
 
   # POST /api/{plural_resource_name}
   def create
-
-    is_request_format_xml = true # default the response to xml format unless otherwise requested
-	if (request.headers["Content-Type"] == 'application/json+fhir') then
-	  is_request_format_xml = false
-    end
 	
     if is_request_format_xml then
       payload = ::FhirClojureClient.convert_to_json(request.body.read) # request.body.read --> xml body from request
@@ -94,7 +101,7 @@ class Api::V1::BaseController < ApplicationController
       payload = request.body.read # json
     end
 	
-    resource_string = pg_post_call(payload)
+    resource_string = pg_call("SELECT fhir.create('#{payload}');")
 
     if ! resource_string.empty? then
       if resource_string == "No table for that resourceType" then
@@ -124,13 +131,8 @@ class Api::V1::BaseController < ApplicationController
  
   #  DELETE [base]/[type]/[id]
   def delete
-    
-	is_request_format_xml = true # default the response to xml format unless otherwise requested
-	if (request.headers["Content-Type"] == 'application/json+fhir') || (request.headers["Accept"] == 'application/json+fhir') then
-	  is_request_format_xml = false
-    end
-	
-    resource_string = pg_delete_call(params[:resource_type], params[:id])
+    	
+    resource_string = pg_call("SELECT fhir.delete('#{params[:resource_type]}', '#{params[:id]}');")
 
     if ! resource_string.empty? then
       resource_json_hash = JSON.parse resource_string
@@ -164,12 +166,7 @@ class Api::V1::BaseController < ApplicationController
 		end
 	end
 
-	resource_string = pg_search_call(params[:resource_type], @search_string)
-
-	is_request_format_xml = true # default the response to xml format unless otherwise requested
-	if (request.headers["Accept"] == 'application/json+fhir') || (request.headers["Content-Type"] == 'application/json+fhir') then
-		is_request_format_xml = false
-	end
+	resource_string = pg_call("SELECT fhir.search('#{params[:resource_type]}', '#{@search_string}');")	
 		
 	if ! resource_string.empty? then
 		if resource_string == "No table for that resourceType" then
@@ -194,7 +191,7 @@ class Api::V1::BaseController < ApplicationController
   
   # PATCH/PUT /api/{resource_name}/id
   def update  
-	resource_string = update_resource(params[:resource_type], params[:id], request.body.read)
+	resource_string = pg_call("SELECT fhir.update(fhirbase_json.merge(fhir.read('#{params[:resource_type]}', '#{params[:id]}'),'#{request.body.read}'));")
 	resource_json_hash = JSON.parse resource_string
 	
 	headers['ETag'] = resource_json_hash["meta"]["versionId"]
@@ -204,7 +201,8 @@ class Api::V1::BaseController < ApplicationController
   end 
   
   def vread
-	render json: vread_resource(params[:resource_type], params[:id], params[:vid]), content_type: "application/json+fhir"
+    resource_string = pg_call("SELECT fhir.vread('#{params[:resource_type]}', /*old_version_id*/ '#{params[:vid]}');")
+	render json: resource_string, content_type: "application/json+fhir"
   end
   
 
