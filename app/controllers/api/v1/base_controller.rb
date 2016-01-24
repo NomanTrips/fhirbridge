@@ -23,6 +23,8 @@ class Api::V1::BaseController < ApplicationController
       return false
 	else
 	  return true
+	end
+	
   end
   
   def build_headers(resource_json_hash = nil)
