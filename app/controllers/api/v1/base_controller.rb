@@ -31,10 +31,8 @@ class Api::V1::BaseController < ApplicationController
     headers['Content-Type'] = 'application/xml+fhir' # default content type xml
 	if request.headers.key?("Accept") then headers['Content-Type'] = request.headers["Accept"] end
     if request.headers.key?("Content-Type") then headers['Content-Type'] = request.headers["Content-Type"] end	
-    puts resource_json_hash.to_s
-	if ! resource_json_hash == nil then 
+	if ! resource_json_hash.empty? then 
 	  if resource_json_hash.key?("meta") then
-	    puts 'setting eTag'
 	    headers['ETag'] = resource_json_hash["meta"]["versionId"]
 		headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
 	  end
