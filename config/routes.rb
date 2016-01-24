@@ -6,8 +6,7 @@ Rails.application.routes.draw do
       #resources :microposts, only: [:index, :create, :show, :update, :destroy]
     #end
   #end
-  #match '/*path/:id', :to => redirect("/api/v1/base#show"), via: :get
-  match '/:resource_type/:id', to: 'api/v1/base#show', via: :get
+  match '/:resource_type/:id', to: 'api/v1/base#get', via: :get
   match '/metadata', to: 'api/v1/base#conformance', via: :get
   match '/:resource_type', to: 'api/v1/base#search', via: :get
   match '/:resource_type', to: 'api/v1/base#create', via: :post
