@@ -66,7 +66,7 @@ class Api::V1::BaseController < ApplicationController
 	  end	
     end
 	
-	if (does_res_exist) && ( ! is_id_valid_chars_and_length(params[:id]) ) then
+	if (does_res_exist) && ( is_id_valid_chars_and_length(params[:id]) ) then
       resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
 	else
 	  resource_string = nil
