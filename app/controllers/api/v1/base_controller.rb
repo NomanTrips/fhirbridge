@@ -17,20 +17,40 @@ class Api::V1::BaseController < ApplicationController
   end
 
   def is_request_format_xml
-    if (request.headers["Accept"] == 'application/json+fhir') ||
-       (request.headers["Content-Type"] == 'application/json+fhir') then
-      return false
-	else
-	  return true
+    result = true
+	if (request.headers["Accept"] == 'application/xml+fhir') then result = true end
+	
+	if params.has_key?(:_format) then # _format param overrides accept header if present
+      case params[:_format]
+      when "xml", "text/xml", "application/xml", "application/xml+fhir"
+        result = true
+      when "json", "application/json", "application/json+fhir"
+        result = false
+	  else
+        result = true	    
+      end
+	
 	end
+	
+    if (request.headers["Content-Type"] == 'application/xml+fhir') then # content-type overrides format param
+      result = true
+	else
+	  result = false
+	end
+	
+	return result
 	
   end
   
   def build_headers(resource_json_hash)
-    headers['Content-Type'] = 'application/xml+fhir' # default content type xml
-	if request.headers.key?("Accept") then headers['Content-Type'] = request.headers["Accept"] end
-    if request.headers.key?("Content-Type") then headers['Content-Type'] = request.headers["Content-Type"] end	
-	if ! resource_json_hash.empty? then 
+
+    if is_request_format_xml then 
+	  headers['Content-Type'] = 'application/xml+fhir'
+    else
+	  headers['Content-Type'] = 'application/json+fhir'
+	end	
+	
+	if ! resource_json_hash.nil? then 
 	  if resource_json_hash.key?("meta") then
 	    headers['ETag'] = resource_json_hash["meta"]["versionId"]
 		headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
