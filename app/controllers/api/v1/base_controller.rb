@@ -20,7 +20,8 @@ class Api::V1::BaseController < ApplicationController
     result = true
 	if (request.headers["Accept"] == 'application/xml+fhir') then result = true end
 	
-	if params.has_key?(:_format) then # _format param overrides accept header if present
+	if params[:_format].present? then # _format param overrides accept header if present
+	  puts 'getting to case'
       case params[:_format]
       when "xml", "text/xml", "application/xml", "application/xml+fhir"
         result = true
@@ -32,10 +33,8 @@ class Api::V1::BaseController < ApplicationController
 	
 	end
 	
-    if (request.headers["Content-Type"] == 'application/xml+fhir') then # content-type overrides format param
-      result = true
-	else
-	  result = false
+    if (request.headers["Content-Type"] == 'application/json+fhir') then # content-type overrides format param
+      result = false
 	end
 	
 	return result
