@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   match '/:resource_type/:id', to: 'api/v1/base#delete', via: :delete
   match '/:resource_type/:id', to: 'api/v1/base#update', via: :put
   match '/:resource_type/:id/_history/:vid', to: 'api/v1/base#vread', via: :get
-  match '/:resource_type/:id/_history' to: 'api/v1/base#history', via: :get  
+  match '/:resource_type/:id/_history', to: 'api/v1/base#history', via: :get  
   match '/', to: 'api/v1/base#splashpage', via: :get
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
