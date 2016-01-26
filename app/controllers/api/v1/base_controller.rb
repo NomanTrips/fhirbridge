@@ -18,7 +18,9 @@ class Api::V1::BaseController < ApplicationController
 
   def is_request_format_xml
     result = true
-	if (request.headers["Accept"].include? "application/xml+fhir") then result = true end
+	if request.headers.key?("Accept") then
+	  if (request.headers["Accept"].include? "application/xml+fhir") then result = true end
+	end
 	
 	if params[:_format].present? then # _format param overrides accept header if present
 	  puts 'getting to case'
@@ -32,9 +34,9 @@ class Api::V1::BaseController < ApplicationController
       end
 	
 	end
-	
-    if (request.headers["Content-Type"].include? "application/json+fhir") then # content-type overrides format param
-      result = false
+
+	if request.headers.key?("Content-Type") then # content-type overrides format param	
+      if (request.headers["Content-Type"].include? "application/json+fhir") then result = false end
 	end
 	
 	return result
@@ -63,6 +65,15 @@ class Api::V1::BaseController < ApplicationController
 	return (id =~ /^[A-Za-z0-9\-\.]{1,64}$/)
   end
   
+  def convert_resource(resource_string)
+	if (is_request_format_xml) && ( ! resource_string.empty? ) then
+      return ::FhirClojureClient.convert_to_xml(resource_string) # conv the json to xml using clojure lib
+    else
+	  return resource_string # res string already in json format requested, nothing to do
+	end
+	
+  end
+  
   def conformance 
     resource_string = pg_call("SELECT fhir.read('Conformance', 'fb5ef8ec-55da-4718-9fd4-5a4c930ee8c9');") # hard coded conf record in db for now
  	
@@ -77,10 +88,7 @@ class Api::V1::BaseController < ApplicationController
     end
 	
 	build_headers(resource_json_hash)
-	if (is_request_format_xml) && ( ! resource_string.empty? ) then
-      resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-    end
-	render :text => resource_string, :status => response_status
+	render :text => convert_resource(resource_string), :status => response_status
 	
   end
   
@@ -116,10 +124,7 @@ class Api::V1::BaseController < ApplicationController
     end
 	
 	build_headers(resource_json_hash)
-	if (is_request_format_xml) && ( ! resource_string.empty? ) then
-      resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-    end
-	render :text => resource_string, :status => response_status
+	render :text => convert_resource(resource_string), :status => response_status
 	
   end
 
@@ -150,10 +155,7 @@ class Api::V1::BaseController < ApplicationController
     end
 	
 	build_headers(resource_json_hash)
-	if (is_request_format_xml) && ( ! resource_string.empty? ) then
-      resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-    end
-	render :text => resource_string, :status => response_status
+	render :text => convert_resource(resource_string), :status => response_status
 
   end
  
@@ -176,10 +178,7 @@ class Api::V1::BaseController < ApplicationController
     end
 	
 	build_headers(resource_json_hash)
-	if (is_request_format_xml) && ( ! resource_string.empty? ) then
-      resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-    end
-	render :text => resource_string, :status => response_status
+	render :text => convert_resource(resource_string), :status => response_status
 
   end
   
@@ -214,10 +213,7 @@ class Api::V1::BaseController < ApplicationController
     end
 	
 	build_headers(resource_json_hash)
-	if (is_request_format_xml) && ( ! resource_string.empty? ) then
-      resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-    end
-	render :text => resource_string, :status => response_status
+	render :text => convert_resource(resource_string), :status => response_status
 	
   end
   
@@ -241,10 +237,7 @@ class Api::V1::BaseController < ApplicationController
     end
 	
 	build_headers(resource_json_hash)
-	if (is_request_format_xml) && ( ! resource_string.empty? ) then
-      resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-    end
-	render :text => resource_string, :status => response_status
+	render :text => convert_resource(resource_string), :status => response_status
 	
   end 
   
@@ -282,10 +275,7 @@ class Api::V1::BaseController < ApplicationController
     end
 	
 	build_headers(resource_json_hash)
-	if (is_request_format_xml) && ( ! resource_string.empty? ) then
-      resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-    end
-	render :text => resource_string, :status => response_status
+	render :text => convert_resource(resource_string), :status => response_status
 	
   end
   
@@ -303,10 +293,7 @@ class Api::V1::BaseController < ApplicationController
     end
 	
 	build_headers(resource_json_hash)
-	if (is_request_format_xml) && ( ! resource_string.empty? ) then
-      resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
-    end
-	render :text => resource_string, :status => response_status
+	render :text => convert_resource(resource_string), :status => response_status
   end
 
   def destroy_session
