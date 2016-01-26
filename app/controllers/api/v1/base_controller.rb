@@ -18,7 +18,7 @@ class Api::V1::BaseController < ApplicationController
 
   def is_request_format_xml
     result = true
-	if (request.headers["Accept"] == 'application/xml+fhir') then result = true end
+	if (request.headers["Accept"].include? "application/xml+fhir") then result = true end
 	
 	if params[:_format].present? then # _format param overrides accept header if present
 	  puts 'getting to case'
@@ -33,7 +33,7 @@ class Api::V1::BaseController < ApplicationController
 	
 	end
 	
-    if (request.headers["Content-Type"] == 'application/json+fhir') then # content-type overrides format param
+    if (request.headers["Content-Type"].include? "application/json+fhir") then # content-type overrides format param
       result = false
 	end
 	
@@ -44,9 +44,9 @@ class Api::V1::BaseController < ApplicationController
   def build_headers(resource_json_hash)
 
     if is_request_format_xml then 
-	  headers['Content-Type'] = 'application/xml+fhir'
+	  headers['Content-Type'] = 'application/xml+fhir;charset=UTF-8'
     else
-	  headers['Content-Type'] = 'application/json+fhir'
+	  headers['Content-Type'] = 'application/json+fhir;charset=UTF-8'
 	end	
 	
 	if ! resource_json_hash.nil? then 
@@ -289,6 +289,25 @@ class Api::V1::BaseController < ApplicationController
 	
   end
   
+  def history
+    resource_string = pg_call("SELECT fhir.history('#{params[:resource_type]}', '#{params[:id]}');")
+
+ 	resource_json_hash = nil
+	if ! resource_string.empty? then
+	  resource_json_hash = JSON.parse resource_string   
+	  if resource_json_hash["resourceType"] == "OperationOutcome" then # deleted resource
+	    response_status = 400
+      else # found resource and everything was ok
+	    response_status = 200
+	  end
+    end
+	
+	build_headers(resource_json_hash)
+	if (is_request_format_xml) && ( ! resource_string.empty? ) then
+      resource_string = ::FhirClojureClient.convert_to_xml(resource_string)
+    end
+	render :text => resource_string, :status => response_status
+  end
 
   def destroy_session
     request.session_options[:skip] = true
