@@ -44,7 +44,7 @@ class Api::V1::BaseController < ApplicationController
 	
   end
 
-  def set_headers(resource_json_hash) # Parse the last-updated and others from the res in the db
+  def set_headers(resource_json_hash) # Parse the last-modified and others from the res in the db
     if resource_json_hash.key?("meta") then
 	  headers['ETag'] = resource_json_hash["meta"]["versionId"]
 	  headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
@@ -115,7 +115,7 @@ class Api::V1::BaseController < ApplicationController
 	else
       resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
 	  resource_json_hash = parse_json(resource_string)
-	  if resource_json_hash.is_a?("Hash") then
+	  if resource_json_hash.is_a?(Hash) then
 	    if resource_json_hash["resourceType"] == "OperationOutcome" then 
 	      response_status = get_err_status(resource_json_hash)
 	    else
