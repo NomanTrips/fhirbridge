@@ -73,8 +73,7 @@ class Api::V1::BaseController < ApplicationController
   end
   
   def is_resource_exist(resource_type, id)
-    does_res_exist = pg_call("SELECT fhir.is_exists('#{resource_type}', '#{id}');")
-	return = does_res_exist
+    return does_res_exist = pg_call("SELECT fhir.is_exists('#{resource_type}', '#{id}');")
   end
 
   def get_err_status(outcome_json_hash)
