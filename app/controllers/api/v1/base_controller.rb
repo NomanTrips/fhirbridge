@@ -36,35 +36,35 @@ class Api::V1::BaseController < ApplicationController
 	end
 
 	if request.headers.key?("Content-Type") then # content-type overrides format param	
-      if (request.headers["Content-Type"].include? "application/json+fhir") then result = false end
+      puts request.headers["Content-Type"].class.name
+	  if (request.headers["Content-Type"].to_s.include? "application/json+fhir") then result = false end
 	end
 	
 	return result
 	
   end
+
+  def set_headers(resource_json_hash) # Parse the last-updated and others from the res in the db
+    if resource_json_hash.key?("meta") then
+	  headers['ETag'] = resource_json_hash["meta"]["versionId"]
+	  headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+	end    
+  end
   
-  def build_headers(resource_json_hash)
+  def set_content_type_header()
     if is_request_format_xml then 
 	  headers['Content-Type'] = 'application/xml+fhir;charset=UTF-8'
     else
 	  headers['Content-Type'] = 'application/json+fhir;charset=UTF-8'
 	end	
-	
-	if ! resource_json_hash.nil? then 
-	  if resource_json_hash.key?("meta") then
-	    headers['ETag'] = resource_json_hash["meta"]["versionId"]
-		headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
-	  end    
-	end
-	
   end
 
-  def is_id_valid_chars_and_length(id)
+  def is_id_valid_chars_and_length(id) # resource id's must abide by fhir spec rules for id's
 	return (id =~ /^[A-Za-z0-9\-\.]{1,64}$/)
   end
   
   def convert_resource(resource_string)
-	if (is_request_format_xml) && ( ! resource_string.empty? ) then
+	if is_request_format_xml then
       return ::FhirClojureClient.convert_to_xml(resource_string) # conv the json to xml using clojure lib
     else
 	  return resource_string # res string already in json format requested, nothing to do
@@ -80,6 +80,15 @@ class Api::V1::BaseController < ApplicationController
     err_codes = ['400', '404', '410']
 	err = outcome_json_hash["issue"]["code"]["coding"].find {|element| element['code'].one_of? err_codes }
     return err.to_f
+  end
+
+  def parse_json(str)
+    begin
+      result = JSON.parse(str)  
+    rescue JSON::ParserError => e  
+      result = e
+    end 
+	return result
   end
   
   def conformance 
@@ -101,23 +110,24 @@ class Api::V1::BaseController < ApplicationController
   end
   
   def get
-    resource_json_hash = nil
-	resource_string = ''
 	if ! is_id_valid_chars_and_length(params[:id]) then 
 	  response_status = 400
-	elsif ! is_resource_exist(params[:resource_type], params[:id])
-	  response_status = 404
 	else
       resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
-	  resource_json_hash = JSON.parse resource_string
-	  if resource_json_hash["resourceType"] == "OperationOutcome" then 
-	    response_status = get_err_status(resource_json_hash)
-	  else
-	    response_status = 200
+	  resource_json_hash = parse_json(resource_string)
+	  if resource_json_hash.is_a?("Hash") then
+	    if resource_json_hash["resourceType"] == "OperationOutcome" then 
+	      response_status = get_err_status(resource_json_hash)
+	    else
+	      response_status = 200
+		  set_headers(resource_json_hash)
+	    end
 	  end
 	end
-    build_headers(resource_json_hash)
-	render :text => convert_resource(resource_string), :status => response_status
+    
+	set_content_type_header()
+    if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
+	render :text => body, :status => response_status
   
   end
 
