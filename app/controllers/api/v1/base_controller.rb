@@ -80,10 +80,12 @@ class Api::V1::BaseController < ApplicationController
 	outcome_json_hash['issue'][0]['code']['coding'].each do |element|
 	  if err_codes.include? element['code'] then 
 	    err = element['code']
+		puts 'setting err'
 	  end
 	end
 	
     if defined?(err) then 
+	  puts 'returning err to i'
 	  return err.to_i
 	else
 	  return 400
