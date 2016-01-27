@@ -34,7 +34,6 @@ class Api::V1::BaseController < ApplicationController
       end
 	
 	end
-
 	if request.headers.key?("Content-Type") then # content-type overrides format param	
       puts request.headers["Content-Type"].class.name
 	  if (request.headers["Content-Type"].to_s.include? "application/json+fhir") then result = false end
