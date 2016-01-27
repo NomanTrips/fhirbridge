@@ -78,11 +78,11 @@ class Api::V1::BaseController < ApplicationController
   def get_err_status(outcome_json_hash) # attempt to get error code from OperationOutcome json returned by fhirbase
     err_codes = ['400', '404', '410']
 	#err = outcome_json_hash["issue"]["code"]["coding"].find {|element| element['code'].one_of? err_codes }
-	outcome_json_hash['issue'][0]['code']['coding'].each do |element| {
+	outcome_json_hash['issue'][0]['code']['coding'].each do |element|
 	  if element['code'].one_of? err_codes then 
 	    err = element['code']
 	  end
-	}
+	end
 	
     if defined?(err) then 
 	  return err.to_i
