@@ -73,7 +73,7 @@ class Api::V1::BaseController < ApplicationController
   end
   
   def is_resource_exist(resource_type, id)
-    return does_res_exist = pg_call("SELECT fhir.is_exists('#{resource_type}', '#{id}');")
+    return pg_call("SELECT fhir.is_exists('#{resource_type}', '#{id}');")
   end
 
   def get_err_status(outcome_json_hash)
@@ -105,7 +105,7 @@ class Api::V1::BaseController < ApplicationController
 	resource_string = ''
 	if ! is_id_valid_chars_and_length(params[:id]) then 
 	  response_status = 400
-	elsif ! is_resource_exist(params[:resource_type], id)
+	elsif ! is_resource_exist(params[:resource_type], params[:id])
 	  response_status = 404
 	else
       resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
