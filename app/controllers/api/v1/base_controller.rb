@@ -75,11 +75,10 @@ class Api::V1::BaseController < ApplicationController
     return pg_call("SELECT fhir.is_exists('#{resource_type}', '#{id}');")
   end
 
-  def get_err_status(outcome_json_hash) # attempt to get error code from OperationOutcome json returned by fhirbase
+  def get_err_status(outcome_json_hash) # Get error code from OperationOutcome json returned by fhirbase
     err_codes = ['400', '404', '410']
-	#err = outcome_json_hash["issue"]["code"]["coding"].find {|element| element['code'].one_of? err_codes }
 	outcome_json_hash['issue'][0]['code']['coding'].each do |element|
-	  if element['code'].one_of? err_codes then 
+	  if err_codes.include? element['code'] then 
 	    err = element['code']
 	  end
 	end
