@@ -105,21 +105,21 @@ class Api::V1::BaseController < ApplicationController
 	resource_string = ''
 	if ! is_id_valid_chars_and_length(params[:id]) then 
 	  response_status = 400
-	  elsif ! is_resource_exist(params[:resource_type], id)
-	    response_status = 404
-	    else
-		  resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
-		  resource_json_hash = JSON.parse resource_string
-		  if resource_json_hash["resourceType"] == "OperationOutcome" then 
-		    response_status = get_err_status(resource_json_hash)
-		  else
-		    response_status = 200
-		  end
-		end
+	elsif ! is_resource_exist(params[:resource_type], id)
+	  response_status = 404
+	else
+      resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
+	  resource_json_hash = JSON.parse resource_string
+	  if resource_json_hash["resourceType"] == "OperationOutcome" then 
+	    response_status = get_err_status(resource_json_hash)
+	  else
+	    response_status = 200
 	  end
-	  build_headers(resource_json_hash)
-	  render :text => convert_resource(resource_string), :status => response_status
 	end
+    build_headers(resource_json_hash)
+	render :text => convert_resource(resource_string), :status => response_status
+  
+  end
 
   # POST /api/{plural_resource_name}
   def create
