@@ -44,7 +44,6 @@ class Api::V1::BaseController < ApplicationController
   end
   
   def build_headers(resource_json_hash)
-
     if is_request_format_xml then 
 	  headers['Content-Type'] = 'application/xml+fhir;charset=UTF-8'
     else
@@ -55,8 +54,7 @@ class Api::V1::BaseController < ApplicationController
 	  if resource_json_hash.key?("meta") then
 	    headers['ETag'] = resource_json_hash["meta"]["versionId"]
 		headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
-	  end
-      
+	  end    
 	end
 	
   end
@@ -75,7 +73,8 @@ class Api::V1::BaseController < ApplicationController
   end
   
   def is_resource_exist(resource_type, id)
-    return = pg_call("SELECT fhir.is_exists('#{resource_type}', '#{id}');")
+    does_res_exist = pg_call("SELECT fhir.is_exists('#{resource_type}', '#{id}');")
+	return = does_res_exist
   end
 
   def get_err_status(outcome_json_hash)
