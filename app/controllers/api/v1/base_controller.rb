@@ -77,6 +77,7 @@ class Api::V1::BaseController < ApplicationController
 
   def get_err_status(outcome_json_hash) # Get error code from OperationOutcome json returned by fhirbase
     err_codes = ['400', '404', '410']
+	err = nil
 	outcome_json_hash['issue'][0]['code']['coding'].each do |element|
 	  if err_codes.include? element['code'] then 
 	    err = element['code']
@@ -84,8 +85,7 @@ class Api::V1::BaseController < ApplicationController
 	  end
 	end
 	
-    if defined?(err) then 
-	  puts 'returning err to i'
+    if ! err.empty? then 
 	  return err.to_i
 	else
 	  return 400
