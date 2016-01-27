@@ -120,8 +120,6 @@ class Api::V1::BaseController < ApplicationController
 	  build_headers(resource_json_hash)
 	  render :text => convert_resource(resource_string), :status => response_status
 	end
-	
-  end
 
   # POST /api/{plural_resource_name}
   def create
