@@ -74,6 +74,16 @@ class Api::V1::BaseController < ApplicationController
 	
   end
   
+  def is_resource_exist(resource_type, id)
+    return = pg_call("SELECT fhir.is_exists('#{resource_type}', '#{id}');")
+  end
+
+  def get_err_status(outcome_json_hash)
+    err_codes = ['400', '404', '410']
+	err = outcome_json_hash["issue"]["code"]["coding"].find {|element| element['code'].one_of? err_codes }
+    return err.to_f
+  end
+  
   def conformance 
     resource_string = pg_call("SELECT fhir.read('Conformance', 'fb5ef8ec-55da-4718-9fd4-5a4c930ee8c9');") # hard coded conf record in db for now
  	
@@ -93,38 +103,25 @@ class Api::V1::BaseController < ApplicationController
   end
   
   def get
-	if ! is_id_valid_chars_and_length(params[:id]) then
+    resource_json_hash = nil
+	resource_string = ''
+	if ! is_id_valid_chars_and_length(params[:id]) then 
 	  response_status = 400
-	else	
-	  does_res_exist = pg_call("SELECT fhir.is_exists('#{params[:resource_type]}', '#{params[:id]}');")
-	  if ! does_res_exist then
+	  elsif ! is_resource_exist(params[:resource_type], id)
 	    response_status = 404
-	  end	
-    end
-	
-	if (does_res_exist) && ( is_id_valid_chars_and_length(params[:id]) ) then
-      resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
-	else
-	  resource_string = nil
-	end
-	
-	if resource_string == "No table for that resourceType" then
-	  response_status = 404 # Un-supported resource
-	  resource_string = ''
-	end
-
- 	resource_json_hash = nil
-	if ! resource_string.empty? then
-	  resource_json_hash = JSON.parse resource_string   
-	  if resource_json_hash["resourceType"] == "OperationOutcome" then # deleted resource
-	    response_status = 410
-      else # found resource and everything was ok
-	    response_status = 200
+	    else
+		  resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
+		  resource_json_hash = JSON.parse resource_string
+		  if resource_json_hash["resourceType"] == "OperationOutcome" then 
+		    response_status = get_err_status(resource_json_hash)
+		  else
+		    response_status = 200
+		  end
+		end
 	  end
-    end
-	
-	build_headers(resource_json_hash)
-	render :text => convert_resource(resource_string), :status => response_status
+	  build_headers(resource_json_hash)
+	  render :text => convert_resource(resource_string), :status => response_status
+	end
 	
   end
 
