@@ -19,7 +19,11 @@ class Api::V1::BaseController < ApplicationController
   def is_request_format_xml
     result = true
 	if request.headers.key?("Accept") then
-	  if (request.headers["Accept"].include? "application/xml+fhir") then result = true end
+	  if (request.headers["Accept"].include? "application/xml+fhir") then
+	    result = true
+	  elsif (request.headers["Accept"].include? "application/json+fhir") then
+	    result = false
+	  end
 	end
 	
 	if params[:_format].present? then # _format param overrides accept header if present
@@ -34,6 +38,7 @@ class Api::V1::BaseController < ApplicationController
       end
 	
 	end
+	
 	if request.headers.key?("Content-Type") then # content-type overrides format param	
       puts request.headers["Content-Type"].class.name
 	  if (request.headers["Content-Type"].to_s.include? "application/json+fhir") then result = false end
@@ -81,7 +86,6 @@ class Api::V1::BaseController < ApplicationController
 	outcome_json_hash['issue'][0]['code']['coding'].each do |element|
 	  if err_codes.include? element['code'] then 
 	    err = element['code']
-		puts 'setting err'
 	  end
 	end
 	
