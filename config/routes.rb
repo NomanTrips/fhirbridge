@@ -6,15 +6,15 @@ Rails.application.routes.draw do
       #resources :microposts, only: [:index, :create, :show, :update, :destroy]
     #end
   #end
-  match '/:resource_type/:id', to: 'api/v1/base#get', via: :get
-  match '/metadata', to: 'api/v1/base#conformance', via: :get
-  match '/:resource_type', to: 'api/v1/base#search', via: :get
-  match '/:resource_type', to: 'api/v1/base#create', via: :post
-  match '/:resource_type/:id', to: 'api/v1/base#delete', via: :delete
-  match '/:resource_type/:id', to: 'api/v1/base#update', via: :put
-  match '/:resource_type/:id/_history/:vid', to: 'api/v1/base#vread', via: :get
-  match '/:resource_type/:id/_history', to: 'api/v1/base#history', via: :get  
-  match '/', to: 'api/v1/base#splashpage', via: :get
+  match '/:resource_type/:id', to: 'api/DSTU2/fhir#read', via: :get
+  match '/metadata', to: 'api/DSTU2/fhir#conformance', via: :get
+  match '/:resource_type', to: 'api/DSTU2/fhir#search', via: :get
+  match '/:resource_type', to: 'api/DSTU2/fhir#create', via: :post
+  match '/:resource_type/:id', to: 'api/DSTU2/fhir#delete', via: :delete
+  match '/:resource_type/:id', to: 'api/DSTU2/fhir#update', via: :put
+  match '/:resource_type/:id/_history/:vid', to: 'api/DSTU2/fhir#vread', via: :get
+  match '/:resource_type/:id/_history', to: 'api/DSTU2/fhir#history', via: :get  
+  match '/', to: 'api/DSTU2/fhir#splashpage', via: :get
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
