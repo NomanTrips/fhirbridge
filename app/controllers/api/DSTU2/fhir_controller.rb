@@ -12,7 +12,8 @@ class Api::Dstu2::FhirController < ApplicationController
   end
 
   def splashpage
-    render html: '<h1>Fhir widget one experimental fhir server -- <a href="mailto:brianscott0017@yahoo.com" onmouseover="this.href=this.href.replace(/x/g,'');">contact</a></h1>'.html_safe
+    render file: "/app/views/bootstrap_frontpage/index.html"
+	#render html: '<h1>Fhir widget one experimental fhir server -- <a href="mailto:brianscott0017@yahoo.com" onmouseover="this.href=this.href.replace(/x/g,'');">contact</a></h1>'.html_safe
   end
 
   def is_request_format_xml
