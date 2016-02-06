@@ -2,7 +2,7 @@ require 'json'
 require 'postgres_calls'
 require 'fhir_clojure_client'
  
-class Api::Dstu2::FhirController < ApplicationController
+class Api::Dstutwo::FhirController < ApplicationController
   include PostgresCalls 
   #protect_from_forgery with: :null_session
   #before_action :destroy_session     
