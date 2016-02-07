@@ -11,6 +11,50 @@
       <div class="row">
         <div class="col-xs-3">
           <h3>Fhir Widget One</h3>
+          <table class="table">
+			   <thead>
+			    <tr>
+			      <th>#</th>
+			      <th>Operation</th>
+			      <th>Example</th>
+			      <th>Result</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <th scope="row">1</th>
+			      <td>Create</td>
+			      <td>/Patient</td>
+			      <td>json....</td>
+			    </tr>
+			    <tr>
+			      <th scope="row">2</th>
+			      <td>Get</td>
+			      <td>/Patient/id</td>
+			      <td>json...</td>
+			    </tr>
+			    <tr>
+			      <th scope="row">3</th>
+			      <td>Delete</td>
+			      <td>/Patient/id</td>
+			      <td>json...</td>
+			    </tr>
+			  </tbody>  
+          </table>
+
+          <%= link_to 'Contact', new_todo_path, class: 'btn btn-success' %>
+
+		 <form role="form">
+		  <div class="form-group">
+		    <label for="fhircall">Fhir call</label>
+		    <input type="text" id="fhircall" name="fhircall" class="form-control" />
+		  </div>
+
+		  <input type="submit" value="Perform" />
+		</form>
+
+
+
         </div>
         <div class="col-xs-9">
           <%= yield %>
