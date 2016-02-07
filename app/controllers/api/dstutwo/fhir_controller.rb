@@ -12,7 +12,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   end
 
   def splashpage
-    render file: "/app/views/bootstrap_frontpage/index.html"
+    render file: "/app/views/layouts/application.html.erb"
 	#render html: '<h1>Fhir widget one experimental fhir server -- <a href="mailto:brianscott0017@yahoo.com" onmouseover="this.href=this.href.replace(/x/g,'');">contact</a></h1>'.html_safe
   end
 
