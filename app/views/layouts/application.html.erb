@@ -38,24 +38,31 @@
       <div class="starter-template">
         <h1>Fhir calls</h1>
           
-          <div class="container">
-            <label for="fhirRead">Read Example</label>
-            <input type="text" class="form-control" placeholder="/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">
-            <button type="button" class="btn btn-primary">Read</button>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <label for="fhirRead">Read example: GET https://example.com/path/{resourceType}/{id}</label>
+            
+            <div class="input-group">
+              <span class="input-group-addon" id="basic-addon3">https://sheltered-headland-5396.herokuapp.com/</span>
+              <input type="text" class="form-control" placeholder="/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">
+              <button type="button" class="btn btn-primary">Read</button>
+            </div>
             <label for="fhirReadResponse">Response</label>
             <textarea class="form-control" rows="3" id="fhirReadResponse"></textarea>
-
           </div>
+        </div>
 
 
-          <div class="container">
-            <label for="fhirCreate">Create Example</label>
+        <div class="panel panel-default">
+          <div class="panel-body">
+
+            <label for="fhirCreate">Create example: POST https://example.com/path/{resourceType}</label>
             <input type="text" class="form-control" placeholder="/Patient" id="fhirCreate">
             <button type="button" class="btn btn-primary">Create</button>
             <label for="fhirCreateResponse">Response</label>
             <textarea class="form-control" rows="3" id="fhirCreateResponse"></textarea>
-
-          </div
+          </div>
+        </div>
 
       </div>
 
