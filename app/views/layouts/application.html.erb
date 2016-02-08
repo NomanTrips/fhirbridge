@@ -37,11 +37,23 @@
 
       <div class="starter-template">
         <h1>Fhir calls</h1>
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" aria-describedby="basic-addon2">
-            <span class="input-group-addon" id="basic-addon2">GET</span>
+          <div class="container">
+            <label for="fhirRead">Read Example</label>
+            <input type="text" class="form-control" placeholder="/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">
+            <button type="button" class="btn btn-primary">Read</button>
+            <label for="fhirReadResponse">Response</label>
+            <textarea class="form-control" rows="3" id="fhirReadResponse"></textarea>
+
           </div>
-        <textarea class="form-control" rows="3"></textarea>
+
+          <div class="container">
+            <label for="fhirCreate">Create Example</label>
+            <input type="text" class="form-control" placeholder="/Patient" id="fhirCreate">
+            <button type="button" class="btn btn-primary">Create</button>
+            <label for="fhirCreateResponse">Response</label>
+            <textarea class="form-control" rows="3" id="fhirCreateResponse"></textarea>
+
+          </div
 
       </div>
 
