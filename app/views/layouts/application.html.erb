@@ -9,31 +9,37 @@
   <%= javascript_include_tag "application" %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
+  <body>
 
-    <div id="main-container" class="container">
-      <div class="row">
-        <div class="col-xs-3">
-          <h3>Fhir Widget one</h3>
-
-          <form role="form" class="form-inline">
-           <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" class="form-control" />
-          </div>
-
-          <input type="submit" value="Login" />
-
-          </form>
-
-<button type="button" class="btn btn-primary">Primary</button>
-
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Fhir Widget One</a>
         </div>
-        <div class="col-xs-9">
-          <%= yield %>
-        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
-    </div>
+    </nav>
 
-</body>
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Fhir calls</h1>
+        <p class="lead">Example fhir calls.<br>Post, get etc.</p>
+      </div>
+
+    </div><!-- /.container -->
+
+  </body>
 </html>
