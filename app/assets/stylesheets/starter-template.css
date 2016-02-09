@@ -1,5 +1,6 @@
 body {
-  background-image: url(intro-bg.jpg)  no-repeat bottom center scroll;
+  background-image: url(intro-bg.jpg);
+  background-size: cover;
   padding-top: 50px;
 }
 .starter-template {
