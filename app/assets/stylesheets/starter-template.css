@@ -1,5 +1,5 @@
 body {
-  background-image: url(intro-bg.jpg);
+  background-image: url(intro-bg.jpg)  no-repeat bottom center scroll;
   padding-top: 50px;
 }
 .starter-template {
