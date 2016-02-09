@@ -1,17 +1,7 @@
 body {
-	    display: table;
-    width: 100%;
-    height: auto;
-    padding: 100px 0;
-    text-align: center;
-    color: #fff;
-  background-image: url(intro-bg.jpg);
-    background-color: #000;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
 
+  background-image: url(intro-bg.jpg);
+  background-size: 100% auto;
   padding-top: 50px;
 }
 .starter-template {

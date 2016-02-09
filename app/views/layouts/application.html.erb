@@ -39,34 +39,42 @@
         <h1>Fhir calls</h1>
         
         <label for="fhirRead">Read example: GET https://example.com/path/{resourceType}/{id}</label>  
-        <div class="col-lg-8">
-          <div class="input-group">
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-primary">Read</button>
-            </span>
-            <input type="text" class="form-control" placeholder="/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">
-          </div><!-- /input-group -->
-        </div><!-- /.col-lg-8 -->
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-primary">Read</button>
+              </span>
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-8 -->
+        </div><!-- /.row -->
 
-        <label for="fhirReadResponse">Response</label>
-        <div class="col-lg-8">
-          <textarea class="form-control" rows="3" id="fhirReadResponse"></textarea>
-        </div><!-- /.col-lg-8 -->
+        <div class="row">
+          <label for="fhirReadResponse">Response</label>
+          <div class="col-lg-8">
+            <textarea class="form-control" rows="3" id="fhirReadResponse"></textarea>
+          </div><!-- /.col-lg-8 -->
+        </div><!-- /.row -->
 
-        <label for="fhirCreate">Create example: POST https://example.com/path/{resourceType}</label>   
-        <div class="col-lg-8">
-          <div class="input-group">
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-primary">Create</button>
-            </span>
-            <input type="text" class="form-control" placeholder="/Patient" id="fhirRead">
-          </div><!-- /input-group -->
-        </div><!-- /.col-lg-8 -->
+        <label for="fhirCreate">Create example: POST https://example.com/path/{resourceType}</label> 
+        <div class="row">  
+          <div class="col-lg-8">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="/Patient" id="fhirRead">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-primary">Create</button>
+              </span>
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-8 -->
+        </div><!-- /.row -->
 
-        <label for="fhirCreateResponse">Response</label>
-        <div class="col-lg-8">
-          <textarea class="form-control" rows="3" id="fhirCreateResponse"></textarea>
-        </div><!-- /.col-lg-8 -->
+        <div class="row">
+          <label for="fhirCreateResponse">Response</label>
+          <div class="col-lg-8">
+            <textarea class="form-control" rows="3" id="fhirCreateResponse"></textarea>
+          </div><!-- /.col-lg-8 -->
+        </div><!-- /.row -->
         
       
       </div>
