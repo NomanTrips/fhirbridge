@@ -1,6 +1,6 @@
 body {
   background-image: url(intro-bg.jpg);
-  background-size: cover;
+  background-size: contain;
   padding-top: 50px;
 }
 .starter-template {

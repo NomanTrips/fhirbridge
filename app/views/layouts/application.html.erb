@@ -37,41 +37,22 @@
 
       <div class="starter-template">
         <h1>Fhir calls</h1>
- 
-        <label for="fhirRead">Read example: GET https://example.com/path/{resourceType}/{id}</label>         
-        <div class="row">
-          <div class="col-md-8">
-            <div class="input-group">
-              <span class="input-group-addon" id="basic-addon3">https://sheltered-headland-5396.herokuapp.com/</span>
-              <input type="text" class="form-control" placeholder="/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead" aria-describedby="basic-addon3">
-            </div>
-            <button type="button" class="btn btn-primary">Read</button>
-          </div>
-        </div>
+        
+        <label for="fhirRead">Read example: GET https://example.com/path/{resourceType}/{id}</label>  
+        <form class="form-inline">
+          <input type="text" class="form-control" placeholder="/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">
+          <button type="button" class="btn btn-primary">Read</button>
+        </form>
         <label for="fhirReadResponse">Response</label>
-        <div class="row">
-          <div class="col-md-8">
-            <textarea class="form-control" rows="3" id="fhirReadResponse"></textarea>
-          </div>
-        </div>
+        <textarea class="form-control" rows="3" id="fhirReadResponse"></textarea>
 
-
-        <label for="fhirCreate">Create example: POST https://example.com/path/{resourceType}</label>         
-        <div class="row">
-          <div class="col-md-8">
-            <div class="input-group">
-              <span class="input-group-addon" id="basic-addon4">https://sheltered-headland-5396.herokuapp.com/</span>
-              <input type="text" class="form-control" placeholder="/Patient" id="fhirRead" aria-describedby="basic-addon4">
-            </div>
-            <button type="button" class="btn btn-primary">Create</button>
-          </div>
-        </div>
+        <label for="fhirCreate">Create example: POST https://example.com/path/{resourceType}</label>  
+        <form class="form-inline">    
+          <input type="text" class="form-control" placeholder="/Patient" id="fhirRead">
+          <button type="button" class="btn btn-primary">Create</button>
+        </form>
         <label for="fhirCreateResponse">Response</label>
-        <div class="row">
-          <div class="col-md-8">
-            <textarea class="form-control" rows="3" id="fhirCreateResponse"></textarea>
-          </div>
-        </div>
+        <textarea class="form-control" rows="3" id="fhirCreateResponse"></textarea>
       
       </div>
     
