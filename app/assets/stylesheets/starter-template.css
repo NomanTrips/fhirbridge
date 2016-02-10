@@ -1,10 +1,12 @@
 body {
 
-  background-image: url(intro-bg.jpg);
   background-size: 100% auto;
   padding-top: 50px;
 }
 .starter-template {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
   padding: 40px 15px;
   text-align: center;
 }
