@@ -45,7 +45,7 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">
               <span class="input-group-btn">
-                <button type="button" class="btn btn-primary">Read</button>
+                <button type="button" class="btn btn-primary" <%=link_to "fhirRead", :controller => :fhir_controller, :action => :read_example%> >Read</button>
               </span>
             </div><!-- /input-group -->
 
@@ -63,7 +63,7 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <label for="fhirResponse">Response body</label>
-              <pre class="prettyprint">{"resourceType":"Patient", "name": [{"given": "Holly"}]}</pre>
+              <pre class="prettyprint"><%= @jubbamaster.inspect %></pre>
           </div>
         </div>    
       

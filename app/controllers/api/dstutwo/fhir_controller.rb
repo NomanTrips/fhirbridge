@@ -7,6 +7,12 @@ class Api::Dstutwo::FhirController < ApplicationController
   #protect_from_forgery with: :null_session
   #before_action :destroy_session     
   
+  def read_example
+  	@jubbamaster = ""
+  	puts 'master jubba'
+  	@jubbamaster = "this is king jubba calling..."
+  end
+
   def caching_allowed? # Can't set ETag with the caching?
     false
   end
