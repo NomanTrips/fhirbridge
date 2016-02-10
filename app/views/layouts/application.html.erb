@@ -8,6 +8,7 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= stylesheet_link_tag    "starter-template", :media => "all" %>
   <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "run-prettify" %>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
   <body>
@@ -47,34 +48,32 @@
                 <button type="button" class="btn btn-primary">Read</button>
               </span>
             </div><!-- /input-group -->
-            <label for="fhirReadResponse">Response</label>
-            <textarea class="form-control" rows="3" id="fhirReadResponse"></textarea>
-          </div>
-        </div>
 
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <label for="fhirRead">Create example: POST https://example.com/path/{resourceType}</label> 
+            <label for="fhirCreate">Create example: POST https://example.com/path/{resourceType}</label> 
             <div class="input-group">
               <input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient" id="fhirCreate">
               <span class="input-group-btn">
                 <button type="button" class="btn btn-primary">Create</button>
               </span>
             </div><!-- /input-group -->
-            <label>Request body</label>
-            <p>{  
-   "resourceType":"Patient",
-   "name":[  
-      {  
-         "given":[  
-            "Chetwynd"
-         ]
-      }
-   ]
-}</p>
-            <label for="fhirCreateResponse">Response</label>
-            <textarea class="form-control" rows="3" id="fhirCreateResponse"></textarea>
-            </div>
+
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <label for="fhirResponse">Response body</label>
+              <pre class="prettyprint">
+                {  
+                   "resourceType":"Patient",
+                   "name":[  
+                      {  
+                         "given":"Holly"
+                      }
+                   ]
+                }
+              </pre>
+          </div>
         </div>    
       
       </div>
