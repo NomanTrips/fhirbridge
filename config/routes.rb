@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       #resources :microposts, only: [:index, :create, :show, :update, :destroy]
     #end
   #end
-  get 'exampleread'    => 'api/dstutwo/fhir#example_read'
+  get 'exampleread/:resource_type/:id'    => 'api/dstutwo/fhir#example_read'
   #match '/fhir/example', to: 'api/dstutwo/fhir#example_read', via: :get
   match '/:resource_type/:id', to: 'api/dstutwo/fhir#read', via: :get
   match '/metadata', to: 'api/dstutwo/fhir#conformance', via: :get
