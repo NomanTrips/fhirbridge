@@ -127,6 +127,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   end
   
   def read
+  	puts 'read'
 	if ! is_id_valid_chars_and_length(params[:id]) then 
 	  response_status = 400
 	else

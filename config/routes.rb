@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       #resources :microposts, only: [:index, :create, :show, :update, :destroy]
     #end
   #end
+
+  match '/fhir/example', to: 'api/dstutwo/fhir#example_read', via: :get
   match '/:resource_type/:id', to: 'api/dstutwo/fhir#read', via: :get
   match '/metadata', to: 'api/dstutwo/fhir#conformance', via: :get
   match '/:resource_type', to: 'api/dstutwo/fhir#search', via: :get
@@ -15,7 +17,7 @@ Rails.application.routes.draw do
   match '/:resource_type/:id/_history/:vid', to: 'api/dstutwo/fhir#vread', via: :get
   match '/:resource_type/:id/_history', to: 'api/dstutwo/fhir#history', via: :get  
   match '/', to: 'api/dstutwo/fhir#splashpage', via: :get
-  match '/fhir/example_read', to: 'api/dstutwo/fhir#example_read', via: :post
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
