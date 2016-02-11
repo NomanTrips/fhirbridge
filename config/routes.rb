@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   match '/:resource_type/:id/_history/:vid', to: 'api/dstutwo/fhir#vread', via: :get
   match '/:resource_type/:id/_history', to: 'api/dstutwo/fhir#history', via: :get  
   match '/', to: 'api/dstutwo/fhir#splashpage', via: :get
-  match '/fhir/read_example', to: 'api/dstutwo/fhir#read_example', via: :post
+  match '/fhir/example_read', to: 'api/dstutwo/fhir#example_read', via: :post
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
