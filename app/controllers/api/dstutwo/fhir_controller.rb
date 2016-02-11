@@ -13,7 +13,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   	@jubbamaster = "this is king jubba calling..."
   	@fhirCall = "Patient/dasda-sadasd..."
   	@fhirResponseBody = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
-  	render :layout => 'fhir_response'
+  	render :layout => 'app/views/layouts/fhir_response.html.erb'
   end
 
   def caching_allowed? # Can't set ETag with the caching?
