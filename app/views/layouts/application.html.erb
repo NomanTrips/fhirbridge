@@ -43,18 +43,22 @@
           <div class="panel-body">        
             <label for="fhirRead">Read example: GET https://example.com/path/{resourceType}/{id}</label> 
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">
+              <!--<input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">-->
+              <span class="label label-default", id="fhirRead">https://sheltered-headland-5396.herokuapp.com/Patient/d193a135-cfb9-4e1f-8e27-3c0480a8d789</span>
               <span class="input-group-btn">
-                <button type="button" class="btn btn-primary"><%=link_to "Read", exampleread_path, :resourceType => "Patient", :id => "62d60123-244d-4da7-81be-40a6fd63a6ef"%></button>
+                <button type="button" class="btn btn-primary"><%=link_to "Read", exampleread_path, :resourceType => "Patient", :id => "d193a135-cfb9-4e1f-8e27-3c0480a8d789"%></button>
               </span>
             </div><!-- /input-group -->
 
             <label for="fhirCreate">Create example: POST https://example.com/path/{resourceType}</label> 
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient" id="fhirCreate">
+              <!--<input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient" id="fhirCreate">-->
+              <span class="label label-default", id="fhirCreate">https://sheltered-headland-5396.herokuapp.com/Patient</span>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-primary">Create</button>
               </span>
+              <label for="createPayload">Example payload</label>
+              <p><%= JSON.pretty_generate("{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"Fitzgerald\"]}]}")%></p> 
             </div><!-- /input-group -->
 
           </div>

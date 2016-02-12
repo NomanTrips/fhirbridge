@@ -12,7 +12,9 @@ class Api::Dstutwo::FhirController < ApplicationController
   	puts 'master jubba'
   	@jubbamaster = "this is king jubba calling..."
   	@fhirCall = "Patient/dasda-sadasd..."
-  	@fhirResponseBody = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
+
+  	json_resource = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
+  	@fhirResponseBody = JSON.pretty_generate(json_resource)
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
 
