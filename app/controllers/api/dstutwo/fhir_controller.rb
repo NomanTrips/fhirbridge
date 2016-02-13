@@ -17,7 +17,8 @@ class Api::Dstutwo::FhirController < ApplicationController
   helper_method :example_read
 
   def patient_resource_example
-    json_str = '{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{Faker::Name.first_name}\"]}]}'
+  	random_name = Faker::Name.first_name
+    json_str = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_name}\"]}]}"
     json_hash = JSON.parse(json_str)
     return JSON.pretty_generate(json_hash)
   end
