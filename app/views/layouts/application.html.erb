@@ -44,20 +44,20 @@
             <label for="fhirRead">Read example: GET https://example.com/path/{resourceType}/{id}</label> 
             <div class="input-group">
               <!--<input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">-->
-               <span class="label label-info">https://sheltered-headland-5396.herokuapp.com/Patient/d193a135-cfb9-4e1f-8e27-3c0480a8d789</span>
-               <button type="button" class="btn btn-success"><%=link_to "Read", exampleread_path%></button>
+               <span class="input-group-addon" id="read-addon">https://sheltered-headland-5396.herokuapp.com/Patient/d193a135-cfb9-4e1f-8e27-3c0480a8d789</span>
+               <button type="button" class="btn btn-primary" aria-describedby="read-addon"><%=link_to "Read", exampleread_path%></button>
             </div><!-- /input-group -->
 
             <label for="fhirCreate">Create example: POST https://example.com/path/{resourceType}</label> 
             <div class="input-group">
               <!--<input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient" id="fhirCreate">-->
-              <span class="label label-info", id="fhirCreate">https://sheltered-headland-5396.herokuapp.com/Patient</span>
-              <button type="button" class="btn btn-success">Create</button>
+              <span class="input-group-addon" id="create-addon">https://sheltered-headland-5396.herokuapp.com/Patient</span>
+              <button type="button" class="btn btn-primary" aria-describedby="read-addon">Create</button>
 
             </div><!-- /input-group -->
             
             <label for="createPayload">Example payload</label>
-            <pre id="createPayload" class="pretty-print"><%= patient_resource_example %></pre>
+            <pre id="createPayload"><%= patient_resource_example %></pre>
           </div>
         </div>
    
