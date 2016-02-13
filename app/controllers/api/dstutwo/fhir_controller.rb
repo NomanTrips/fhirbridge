@@ -9,7 +9,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   #before_action :destroy_session     
   
   def example_read
-  	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient/d193a135-cfb9-4e1f-8e27-3c0480a8d789"
+  	@fhirCall = 'https://sheltered-headland-5396.herokuapp.com/Patient/d193a135-cfb9-4e1f-8e27-3c0480a8d789'
   	puts params[:resourceType]
   	puts params[:id]
   	json_str = pg_call("SELECT fhir.read('Patient', 'd193a135-cfb9-4e1f-8e27-3c0480a8d789');")

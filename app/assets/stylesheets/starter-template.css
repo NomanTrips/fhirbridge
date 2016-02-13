@@ -6,7 +6,7 @@ body {
 .starter-template {
   margin-left: auto;
   margin-right: auto;
-  width: 60%;
+  width: 70%;
   padding: 40px 15px;
   text-align: left;
 }
@@ -16,5 +16,5 @@ a, a:hover, a:active, a:visited {
 }
 
 .label {
-  font-size: 12px;
+  font-size: 14px;
 }
