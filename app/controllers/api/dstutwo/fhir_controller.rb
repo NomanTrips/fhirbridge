@@ -12,7 +12,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient/d193a135-cfb9-4e1f-8e27-3c0480a8d789"
   	puts params[:resourceType]
   	puts params[:id]
-  	json_str = pg_call("SELECT fhir.read('#{params[:resourceType]}', '#{params[:id]}');")
+  	json_str = pg_call("SELECT fhir.read('Patient', 'd193a135-cfb9-4e1f-8e27-3c0480a8d789');")
   	@fhirResponseBody = JSON.pretty_generate(parse_json(json_str))
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
