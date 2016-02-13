@@ -14,3 +14,7 @@ body {
 a, a:hover, a:active, a:visited { 
   color: white; 
 }
+
+.label {
+  font-size: 14px;
+}
