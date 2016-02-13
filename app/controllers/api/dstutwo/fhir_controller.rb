@@ -2,7 +2,8 @@ require 'json'
 require 'postgres_calls'
 require 'fhir_clojure_client'
 require 'faker'
- 
+require 'coderay'
+
 class Api::Dstutwo::FhirController < ApplicationController
   include PostgresCalls 
   #protect_from_forgery with: :null_session
@@ -13,7 +14,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   	puts params[:resourceType]
   	puts params[:id]
   	json_str = pg_call("SELECT fhir.read('Patient', 'd193a135-cfb9-4e1f-8e27-3c0480a8d789');")
-  	@fhirResponseBody = JSON.pretty_generate(parse_json(json_str))
+  	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
   helper_method :example_read
@@ -22,7 +23,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   	random_name = Faker::Name.first_name
     json_str = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_name}\"]}]}"
     json_hash = JSON.parse(json_str)
-    return JSON.pretty_generate(json_hash)
+    return CodeRay.scan(JSON.pretty_generate(json_hash) , :json).div
   end
   helper_method :patient_resource_example
 
