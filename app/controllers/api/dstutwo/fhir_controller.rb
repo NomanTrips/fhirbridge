@@ -1,6 +1,7 @@
 require 'json'
 require 'postgres_calls'
 require 'fhir_clojure_client'
+require 'faker'
  
 class Api::Dstutwo::FhirController < ApplicationController
   include PostgresCalls 
@@ -8,15 +9,19 @@ class Api::Dstutwo::FhirController < ApplicationController
   #before_action :destroy_session     
   
   def example_read
-  	@jubbamaster = ""
-  	puts 'master jubba'
-  	@jubbamaster = "this is king jubba calling..."
-  	@fhirCall = "Patient/dasda-sadasd..."
-
-  	json_resource = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
-  	@fhirResponseBody = JSON.pretty_generate(json_resource)
+  	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient/d193a135-cfb9-4e1f-8e27-3c0480a8d789"
+  	json_str = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
+  	@fhirResponseBody = JSON.pretty_generate(parse_json(json_str))
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
+  helper_method :example_read
+
+  def patient_resource_example
+    json_str = '{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{Faker::Name.first_name}\"]}]}'
+    json_hash = JSON.parse(json_str)
+    return JSON.pretty_generate(json_hash)
+  end
+  helper_method :patient_resource_example
 
   def caching_allowed? # Can't set ETag with the caching?
     false

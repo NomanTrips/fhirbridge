@@ -53,3 +53,4 @@ gem 'nokogiri'
 gem 'therubyrhino'  # If using JRuby
 gem 'jquery-rails'  # If using Bootstrap's JS plugins.
 gem 'less-rails-bootstrap'
+gem 'faker'
