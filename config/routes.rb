@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   get 'about'    => 'api/dstutwo/fhir#about'
   get 'exampleread'    => 'api/dstutwo/fhir#example_read'
-  get 'examplecreate/:payload'    => 'api/dstutwo/fhir#example_create'
+  get 'examplecreate'    => 'api/dstutwo/fhir#example_create'
   get 'examplesearch'    => 'api/dstutwo/fhir#example_search'
   match '/:resource_type/:id', to: 'api/dstutwo/fhir#read', via: :get
   match '/metadata', to: 'api/dstutwo/fhir#conformance', via: :get
