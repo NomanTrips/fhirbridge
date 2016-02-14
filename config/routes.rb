@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  get 'about'    => 'app/views/layouts/about.html.erb'
+  get 'about'    => 'api/dstutwo/fhir#about'
   get 'exampleread'    => 'api/dstutwo/fhir#example_read'
   get 'examplecreate'    => 'api/dstutwo/fhir#example_create'
   get 'examplesearch'    => 'api/dstutwo/fhir#example_search'

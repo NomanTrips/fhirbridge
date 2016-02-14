@@ -44,6 +44,10 @@ class Api::Dstutwo::FhirController < ApplicationController
   def caching_allowed? # Can't set ETag with the caching?
     false
   end
+  
+  def about
+    render file: "/app/views/layouts/about.html.erb"
+  end
 
   def splashpage
     render file: "/app/views/layouts/application.html.erb"
