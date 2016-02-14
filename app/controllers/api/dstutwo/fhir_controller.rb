@@ -11,18 +11,32 @@ class Api::Dstutwo::FhirController < ApplicationController
   
   def example_read
   	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient/d193a135-cfb9-4e1f-8e27-3c0480a8d789"
-  	puts params[:resourceType]
-  	puts params[:id]
   	json_str = pg_call("SELECT fhir.read('Patient', 'd193a135-cfb9-4e1f-8e27-3c0480a8d789');")
   	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
   helper_method :example_read
 
+  def example_create
+  	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient"
+  	json_str = pg_call("SELECT fhir.create('#{@example_patient_str}');")
+  	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
+  	render :file => "/app/views/layouts/fhir_response.html.erb"
+  end
+  helper_method :example_create
+
+  def example_search
+  	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient?given=holly"
+  	json_str = pg_call("SELECT fhir.search('Patient', 'given=holly');")
+  	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
+  	render :file => "/app/views/layouts/fhir_response.html.erb"
+  end
+  helper_method :example_create
+
   def patient_resource_example
   	random_name = Faker::Name.first_name
-    json_str = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_name}\"]}]}"
-    json_hash = JSON.parse(json_str)
+    @example_patient_str = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_name}\"]}]}"
+    json_hash = JSON.parse(@example_patient_str)
     return CodeRay.scan(JSON.pretty_generate(json_hash) , :json).div
   end
   helper_method :patient_resource_example

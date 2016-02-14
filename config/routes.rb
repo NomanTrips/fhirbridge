@@ -1,13 +1,9 @@
 Rails.application.routes.draw do
-  #api
-  #namespace :api do
-   # namespace :v1 do
-      #resources :users, only: [:index, :create, :show, :update, :destroy]
-      #resources :microposts, only: [:index, :create, :show, :update, :destroy]
-    #end
-  #end
+
+  get 'about'    => '/app/views/layouts/about.html.erb'
   get 'exampleread'    => 'api/dstutwo/fhir#example_read'
-  #match '/fhir/example', to: 'api/dstutwo/fhir#example_read', via: :get
+  get 'examplecreate'    => 'api/dstutwo/fhir#example_create'
+  get 'examplesearch'    => 'api/dstutwo/fhir#example_search'
   match '/:resource_type/:id', to: 'api/dstutwo/fhir#read', via: :get
   match '/metadata', to: 'api/dstutwo/fhir#conformance', via: :get
   match '/:resource_type', to: 'api/dstutwo/fhir#search', via: :get
