@@ -27,7 +27,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about"><%=link_to "About", about_path%></a></li>
+            <li><%=link_to "About", about_path%></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -55,7 +55,7 @@
             <div class="input-group">
               <!--<input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient" id="fhirCreate">-->
               <span class="input-group-addon" id="create-addon">https://sheltered-headland-5396.herokuapp.com/Patient</span>
-              <button type="button" class="btn btn-primary" aria-describedby="read-addon"><%=link_to "Create", examplecreate_path, {:payload => "#{patient_resource_example}"}%></button>
+              <button type="button" class="btn btn-primary" aria-describedby="read-addon"><%=link_to "Create", examplecreate_path({:payload => "#{patient_resource_example}"} )%></button>
 
             </div><!-- /input-group -->
             
