@@ -19,7 +19,8 @@ class Api::Dstutwo::FhirController < ApplicationController
 
   def example_create
   	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient"
-  	json_str = pg_call("SELECT fhir.create('#{@example_patient_str}');")
+  	puts params[:payload]
+  	json_str = pg_call("SELECT fhir.create('#{params[:payload]}');")
   	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
@@ -31,7 +32,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
-  helper_method :example_create
+  helper_method :example_search
 
   def patient_resource_example
   	random_name = Faker::Name.first_name
