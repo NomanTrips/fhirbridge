@@ -26,9 +26,9 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li  class="active"><%=link_to "Home", home_path%></li>
             <li><%=link_to "About", about_path%></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><%=link_to "Contact", contact_path%></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -37,25 +37,23 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Fhir calls</h1>
+        <h1>Fhir example calls</h1>
 
         <div class="panel panel-default">
           <div class="panel-body">        
             
-            <label for="fhirRead">Read example: GET https://example.com/path/{resourceType}/{id}</label> 
+            <label for="fhirRead">Read specific patient example: GET https://example.com/path/{resourceType}/{id}</label> 
             <div class="input-group">
-              <!--<input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient/62d60123-244d-4da7-81be-40a6fd63a6ef" id="fhirRead">-->
-               <span class="input-group-addon" id="read-addon">https://sheltered-headland-5396.herokuapp.com/Patient/d193a135-cfb9-4e1f-8e27-3c0480a8d789</span>
+               <span class="input-group-addon" id="read-addon">https://sheltered-headland-5396.herokuapp.com/Patient/2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2</span>
                <button type="button" class="btn btn-primary" aria-describedby="read-addon"><%=link_to "Read", exampleread_path%></button>
             </div><!-- /input-group -->
 
             <div class="col-xs-12" style="height:20px;"></div>
 
-            <label for="fhirCreate">Create example: POST https://example.com/path/{resourceType}</label> 
+            <label for="fhirCreate">Create a new patient: POST https://example.com/path/{resourceType}</label> 
             <div class="input-group">
-              <!--<input type="text" class="form-control" placeholder="https://sheltered-headland-5396.herokuapp.com/Patient" id="fhirCreate">-->
               <span class="input-group-addon" id="create-addon">https://sheltered-headland-5396.herokuapp.com/Patient</span>
-              <button type="button" class="btn btn-primary" aria-describedby="read-addon"><%=link_to "Create", examplecreate_path({:payload => "#{patient_resource_example}"} )%></button>
+              <button type="button" class="btn btn-primary" aria-describedby="read-addon"><%=link_to "Create", examplecreate_path({:payload => "#{@example_patient_str}"} )%></button>
 
             </div><!-- /input-group -->
             
@@ -64,9 +62,9 @@
           
             <div class="col-xs-12" style="height:20px;"></div>
 
-            <label for="fhirSearch">Search example: GET https://example.com/path/[type]{?[parameters]</label> 
+            <label for="fhirSearch">Search for a patient by last name: GET https://example.com/path/[type]{?[parameters]</label> 
             <div class="input-group">
-               <span class="input-group-addon" id="search-addon">https://sheltered-headland-5396.herokuapp.com/Patient?given=holly</span>
+               <span class="input-group-addon" id="search-addon">https://sheltered-headland-5396.herokuapp.com/Patient?family=skyes</span>
                <button type="button" class="btn btn-primary" aria-describedby="search-addon"><%=link_to "Search", examplesearch_path%></button>
             </div><!-- /input-group -->
 

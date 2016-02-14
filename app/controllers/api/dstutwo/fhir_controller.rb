@@ -10,8 +10,8 @@ class Api::Dstutwo::FhirController < ApplicationController
   #before_action :destroy_session     
   
   def example_read
-  	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient/d193a135-cfb9-4e1f-8e27-3c0480a8d789"
-  	json_str = pg_call("SELECT fhir.read('Patient', 'd193a135-cfb9-4e1f-8e27-3c0480a8d789');")
+  	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient/2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2"
+  	json_str = pg_call("SELECT fhir.read('Patient', '2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2');")
   	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
@@ -28,15 +28,16 @@ class Api::Dstutwo::FhirController < ApplicationController
 
   def example_search
   	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient?given=holly"
-  	json_str = pg_call("SELECT fhir.search('Patient', 'given=holly');")
+  	json_str = pg_call("SELECT fhir.search('Patient', 'family=skyes');")
   	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
   helper_method :example_search
 
   def patient_resource_example
-  	random_name = Faker::Name.first_name
-    @example_patient_str = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_name}\"]}]}"
+  	random_first_name = Faker::Name.first_name
+  	random_last_name = Faker::Name.last_name
+    @example_patient_str = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_first_name}\"],\"family\": [\"#{random_last_name}\"]}]}"
     json_hash = JSON.parse(@example_patient_str)
     return CodeRay.scan(JSON.pretty_generate(json_hash) , :json).div
   end
@@ -48,6 +49,10 @@ class Api::Dstutwo::FhirController < ApplicationController
   
   def about
     render file: "/app/views/layouts/about.html.erb"
+  end
+  
+  def contact
+    render file: "/app/views/layouts/contact.html.erb"
   end
 
   def splashpage

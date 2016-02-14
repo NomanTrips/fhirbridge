@@ -26,31 +26,31 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><%=link_to "About", about_path%></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><%=link_to "Home", home_path%></li>
+            <li class="active"><%=link_to "About", about_path%></li>
+            <li><%=link_to "Contact", contact_path%></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-
+      <h1>About</h1>
       <div class="starter-template">
 
         <div class="panel panel-default">
           <div class="panel-body">
-            <h3>Fhir widget</h3>
+            <h4>Fhir widget</h4>
             <p>Fhir widget is an open source experimental FHIR server built ontop of fhirbase. Fhirbase is an opensource implementation
               of the FHIR specification built entirely in Postgresql. It serves as the backend database for Fhir widget where resources
               are stored as json.</p>
-            <a href="https://github.com/fhirbase/fhirbase">Fhirbase</a>
-            <a href="https://github.com/NomanTrips/alpha-chase">Fhir widget source</a>           
-            <h3>FHIR</h3>
+            <a class="blackLabel" href="https://github.com/fhirbase/fhirbase">Fhirbase</a>
+            <a class="blackLabel" href="https://github.com/NomanTrips/alpha-chase">Fhir widget source</a>           
+            <h4>FHIR</h4>
             <p>FHIR, which stands for Fast Healthcare Interoperability Resources is a new heatlh IT interoperability standard
               developed by HL7. The standard uses HTTP for communication with the model of RESTful web serives as it's architecture, the
               same kind of technology that the rest of the civilized IT world has been using for years.</p>
-            <a href="https://www.hl7.org/fhir/">FHIR specification</a>
+            <a class="blackLabel" href="https://www.hl7.org/fhir/">FHIR specification</a>
           </div>
         </div>    
       

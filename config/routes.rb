@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
   get 'about'    => 'api/dstutwo/fhir#about'
+  get 'contact'    => 'api/dstutwo/fhir#contact'
+  get 'home'    => 'api/dstutwo/fhir#splashpage'
   get 'exampleread'    => 'api/dstutwo/fhir#example_read'
   get 'examplecreate'    => 'api/dstutwo/fhir#example_create'
   get 'examplesearch'    => 'api/dstutwo/fhir#example_search'

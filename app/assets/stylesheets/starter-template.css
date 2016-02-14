@@ -15,6 +15,10 @@ a, a:hover, a:active, a:visited {
   color: white; 
 }
 
+a.blackLabel, a.blackLabel:hover, a.blackLabel:active, a.blackLabel:visited {
+  color: black;
+}
+
 .label {
   font-size: 14px;
 }
