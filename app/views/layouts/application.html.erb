@@ -53,17 +53,11 @@
             <label for="fhirCreate">Create a new patient: POST https://example.com/path/{resourceType}</label> 
             <div class="input-group">
               <span class="input-group-addon" id="create-addon">https://sheltered-headland-5396.herokuapp.com/Patient</span>
-              <button type="button" class="btn btn-primary" aria-describedby="read-addon">
-                <%=
-                  patient_resource_example
-                  link_to "Create", examplecreate_path({:payload => "#{@example_patient_str}"} )
-                %>
-              </button>
-
+              <button type="button" class="btn btn-primary" aria-describedby="read-addon"><%=link_to "Create", examplecreate_path({:payload => "#{example_patient}"} )%></button>
             </div><!-- /input-group -->
             
             <label for="createPayload">Example payload</label>
-            <%= raw(@pretty_patient_example) %>
+            <%= raw(example_patient_pretty) %>
           
             <div class="col-xs-12" style="height:20px;"></div>
 
