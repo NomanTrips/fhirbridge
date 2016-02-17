@@ -58,10 +58,10 @@ class Api::Dstutwo::FhirController < ApplicationController
   def splashpage
    	random_first_name = Faker::Name.first_name
   	random_last_name = Faker::Name.last_name
-  	example_patient = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_first_name}\"],\"family\": [\"#{random_last_name}\"]}]}"
+  	@example_patient = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_first_name}\"],\"family\": [\"#{random_last_name}\"]}]}"
   	json_hash = JSON.parse(example_patient)
-  	example_patient_pretty = CodeRay.scan(JSON.pretty_generate(json_hash) , :json).div
-    render file: "/app/views/layouts/application.html.erb" locals: { example_patient: example_patient, example_patient_pretty: example_patient_pretty }
+  	@example_patient_pretty = CodeRay.scan(JSON.pretty_generate(json_hash) , :json).div
+    render file: "/app/views/layouts/application.html.erb"
 	#render html: '<h1>Fhir widget one experimental fhir server -- <a href="mailto:brianscott0017@yahoo.com" onmouseover="this.href=this.href.replace(/x/g,'');">contact</a></h1>'.html_safe
   end
 
