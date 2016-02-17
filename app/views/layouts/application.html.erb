@@ -42,7 +42,7 @@
         <div class="panel panel-default">
           <div class="panel-body">        
             
-            <label for="fhirRead">Read specific patient example: GET https://example.com/path/{resourceType}/{id}</label> 
+            <label for="fhirRead">Read specific patient: GET https://example.com/path/{resourceType}/{id}</label> 
             <div class="input-group">
                <span class="input-group-addon" id="read-addon">https://sheltered-headland-5396.herokuapp.com/Patient/2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2</span>
                <button type="button" class="btn btn-primary" aria-describedby="read-addon"><%=link_to "Read", exampleread_path%></button>
@@ -53,12 +53,17 @@
             <label for="fhirCreate">Create a new patient: POST https://example.com/path/{resourceType}</label> 
             <div class="input-group">
               <span class="input-group-addon" id="create-addon">https://sheltered-headland-5396.herokuapp.com/Patient</span>
-              <button type="button" class="btn btn-primary" aria-describedby="read-addon"><%=link_to "Create", examplecreate_path({:payload => "#{@example_patient_str}"} )%></button>
+              <button type="button" class="btn btn-primary" aria-describedby="read-addon">
+                <%=
+                  patient_resource_example
+                  link_to "Create", examplecreate_path({:payload => "#{@example_patient_str}"} )
+                %>
+              </button>
 
             </div><!-- /input-group -->
             
             <label for="createPayload">Example payload</label>
-            <%= raw(patient_resource_example) %>
+            <%= raw(@pretty_patient_example) %>
           
             <div class="col-xs-12" style="height:20px;"></div>
 

@@ -19,6 +19,19 @@ a.blackLabel, a.blackLabel:hover, a.blackLabel:active, a.blackLabel:visited {
   color: black;
 }
 
+a.link {
+  color: #0000EE;
+}
+
+a.link:visited {
+  color: #551A8B;
+}
+
+a.link:active {
+  color: #FF0000;
+}
+
+
 .label {
   font-size: 14px;
 }

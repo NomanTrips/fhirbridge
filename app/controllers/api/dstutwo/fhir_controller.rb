@@ -39,7 +39,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   	random_last_name = Faker::Name.last_name
     @example_patient_str = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_first_name}\"],\"family\": [\"#{random_last_name}\"]}]}"
     json_hash = JSON.parse(@example_patient_str)
-    return CodeRay.scan(JSON.pretty_generate(json_hash) , :json).div
+    @pretty_patient_example = CodeRay.scan(JSON.pretty_generate(json_hash) , :json).div
   end
   helper_method :patient_resource_example
 
