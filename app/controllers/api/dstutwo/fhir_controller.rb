@@ -1,7 +1,7 @@
 require 'json'
 require 'postgres_calls'
 require 'fhir_clojure_client'
-require 'faker'
+#require 'faker'
 require 'coderay'
 
 class Api::Dstutwo::FhirController < ApplicationController
@@ -68,8 +68,8 @@ class Api::Dstutwo::FhirController < ApplicationController
   end
 
   def splashpage
-   	random_first_name = Faker::Name.first_name
-  	random_last_name = Faker::Name.last_name
+   	#random_first_name = Faker::Name.first_name
+  	#random_last_name = Faker::Name.last_name
   	@example_patient = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_first_name}\"],\"family\": [\"#{random_last_name}\"]}]}"
   	json_hash = JSON.parse(@example_patient)
   	@example_patient_pretty = CodeRay.scan(JSON.pretty_generate(json_hash) , :json).div
