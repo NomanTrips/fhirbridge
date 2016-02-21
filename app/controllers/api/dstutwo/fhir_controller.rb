@@ -34,15 +34,6 @@ class Api::Dstutwo::FhirController < ApplicationController
   end
   helper_method :example_search
 
-  #def patient_resource_example
-  #	random_first_name = Faker::Name.first_name
-  #	random_last_name = Faker::Name.last_name
-   # @example_patient_str = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_first_name}\"],\"family\": [\"#{random_last_name}\"]}]}"
-    #json_hash = JSON.parse(@example_patient_str)
-    #@pretty_patient_example = CodeRay.scan(JSON.pretty_generate(json_hash) , :json).div
-  #end
-  #helper_method :patient_resource_example
-
   def caching_allowed? # Can't set ETag with the caching?
     false
   end
@@ -169,7 +160,6 @@ class Api::Dstutwo::FhirController < ApplicationController
   end
   
   def read
-  	puts 'read'
 	if ! is_id_valid_chars_and_length(params[:id]) then 
 	  response_status = 400
 	else

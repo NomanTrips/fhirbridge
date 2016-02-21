@@ -55,3 +55,4 @@ gem 'jquery-rails'  # If using Bootstrap's JS plugins.
 gem 'less-rails-bootstrap'
 gem 'faker'
 gem 'coderay'
+gem 'rack-cors', :require => 'rack/cors'
