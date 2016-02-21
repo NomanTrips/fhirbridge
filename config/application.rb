@@ -46,12 +46,6 @@ module FhirWidgetOne
 		#	Rails.cache.write 'clojure_core', core
 		#	puts 'put it into the cache?'
 		#end
-    config.middleware.insert_before 0, "Rack::Cors" do
-      allow do
-        origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :options]
-      end
-    end
-    
+
   end
 end
