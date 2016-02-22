@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'exampleread'    => 'api/dstutwo/fhir#example_read'
   get 'examplecreate'    => 'api/dstutwo/fhir#example_create'
   get 'examplesearch'    => 'api/dstutwo/fhir#example_search'
+  match '*any' => 'application#options', :via => [:options]
   match '/:resource_type/:id', to: 'api/dstutwo/fhir#read', via: :get
   match '/metadata', to: 'api/dstutwo/fhir#conformance', via: :get
   match '/:resource_type', to: 'api/dstutwo/fhir#search', via: :get

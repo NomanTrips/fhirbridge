@@ -18,6 +18,7 @@ class Api::Dstutwo::FhirController < ApplicationController
     headers['Access-Control-Allow-Headers'] = 'origin, authorization, accept, content-type, x-requested-with'
     headers['Access-Control-Max-Age'] = "1728000"
     headers['Access-Control-Allow-Credentials'] = "true"
+    puts 'getting to cors set access ctrl headers'
   end
 
   def cors_preflight_check
@@ -27,6 +28,7 @@ class Api::Dstutwo::FhirController < ApplicationController
       headers['Access-Control-Allow-Headers'] = 'origin, authorization, accept, content-type, x-requested-with'
       headers['Access-Control-Max-Age'] = '1728000'
       headers['Access-Control-Allow-Credentials'] = "true"
+    puts 'getting to cors cors_preflight_check'
 
       render :text => '', :content_type => 'text/plain'
     end
