@@ -51,8 +51,11 @@ class FhirClojureClient
 	def self.convert_to_json(resource_as_xml_str)
 				
 		payload_parsed = @@fhir_core.parse(idx, resource_as_xml_str)			
-		resource_as_json_str = @@fhir_core.generate(idx, @@clojure_core.keyword("json"), payload_parsed)	
-		return resource_as_json_str.to_s
+		resource_as_json_str = @@fhir_core.generate(idx, @@clojure_core.keyword("json"), payload_parsed)
+		if resource_as_json_str.include? '\n'
+   			puts "it has newlines"
+		end	
+		return resource_as_json_str.gsub('\n', '')
 		
 	end
   
