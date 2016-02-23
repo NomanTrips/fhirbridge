@@ -52,8 +52,8 @@ class FhirClojureClient
 				
 		payload_parsed = @@fhir_core.parse(idx, resource_as_xml_str)			
 		resource_as_json_str = @@fhir_core.generate(idx, @@clojure_core.keyword("json"), payload_parsed)	
-		
-		return resource_as_json_str
+		puts resource_as_json_str.class.name
+		return resource_as_json_str.to_s
 		
 	end
   
