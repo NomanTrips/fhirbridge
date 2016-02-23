@@ -133,7 +133,8 @@ class Api::Dstutwo::FhirController < ApplicationController
 	if is_request_format_xml then
       return ::FhirClojureClient.convert_to_xml(resource_string) # conv the json to xml using clojure lib
     else
-	  return resource_string # res string already in json format requested, nothing to do
+	    return ::FhirClojureClient.convert_to_json(resource_string) 
+    #return resource_string # res string already in json format requested, nothing to do
 	end
 	
   end
@@ -201,7 +202,7 @@ class Api::Dstutwo::FhirController < ApplicationController
 	end    
 	set_content_type_header()
     if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
-    body = "{\"resourceType\": \"Patient\", \"id\": \"2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2\",\"meta\": {\"versionId\": \"2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2\",\"lastUpdated\": \"2015-12-25T00:17:46.012383+00:00\"},\"name\": [{\"given\": [\"Holly\"],\"family\": [\"Skyes\"]}]}"
+    #body = "{\"resourceType\": \"Patient\", \"id\": \"2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2\",\"meta\": {\"versionId\": \"2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2\",\"lastUpdated\": \"2015-12-25T00:17:46.012383+00:00\"},\"name\": [{\"given\": [\"Holly\"],\"family\": [\"Skyes\"]}]}"
 	render :text => body, :status => response_status  
   end
 
