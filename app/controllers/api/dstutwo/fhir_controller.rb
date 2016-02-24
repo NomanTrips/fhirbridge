@@ -214,7 +214,7 @@ class Api::Dstutwo::FhirController < ApplicationController
  puts 'outputting diffy...'
  puts Diffy::Diff.new(body, bodytwo)
  puts 'end diffy'
-  render :json => body, :status => response_status  
+  render :json => bodytwo, :status => response_status  
   end
 
   # POST /api/{plural_resource_name}
