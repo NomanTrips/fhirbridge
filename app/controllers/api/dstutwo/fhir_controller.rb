@@ -120,7 +120,7 @@ class Api::Dstutwo::FhirController < ApplicationController
     if is_request_format_xml then 
 	  headers['Content-Type'] = 'application/xml+fhir;charset=UTF-8'
     else
-	  headers['Content-Type'] = 'application/json+fhir;charset=UTF-8'
+	  headers['Content-Type'] = 'application/json;charset=UTF-8'
 	end	
   end
 
@@ -214,7 +214,7 @@ class Api::Dstutwo::FhirController < ApplicationController
  puts 'outputting diffy...'
  puts Diffy::Diff.new(body, bodytwo)
  puts 'end diffy'
-  render :text => body, :status => response_status  
+  render :json => body, :status => response_status  
   end
 
   # POST /api/{plural_resource_name}
