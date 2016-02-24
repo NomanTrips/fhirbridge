@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   #protect_from_forgery with: :exception
 
 before_filter :add_allow_credentials_headers
+config.middleware.use Rack::ContentLength
 
 def add_allow_credentials_headers                                                                                                                                                                                                                                                        
   # https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS#section_5                                                                                                                                                                                                      
