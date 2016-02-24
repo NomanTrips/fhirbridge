@@ -17,6 +17,7 @@ require 'lib/deps/jackson-dataformat-smile-2.4.4.jar'
 require 'lib/deps/joda-time-2.6.jar'
 require 'lib/deps/tigris-0.1.1.jar'
 require 'lib/deps/xz-1.5.jar'
+require 'rack'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -46,6 +47,6 @@ module FhirWidgetOne
 		#	Rails.cache.write 'clojure_core', core
 		#	puts 'put it into the cache?'
 		#end
-
+    config.middleware.use Rack::ContentLength
   end
 end
