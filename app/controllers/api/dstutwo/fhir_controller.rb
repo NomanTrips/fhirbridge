@@ -113,6 +113,7 @@ class Api::Dstutwo::FhirController < ApplicationController
     if resource_json_hash.key?("meta") then
 	  headers['ETag'] = resource_json_hash["meta"]["versionId"]
 	  headers['Last-Modified'] = resource_json_hash["meta"]["lastUpdated"]
+    headers['Content-Length'] =_config.bytesize.to_s
 	end    
   end
   
