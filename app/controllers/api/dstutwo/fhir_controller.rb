@@ -209,6 +209,7 @@ class Api::Dstutwo::FhirController < ApplicationController
     #body = "{\"resourceType\": \"Patient\",\"name\": [{\"given\": [\"Holly\"]}],\"meta\": {\"lastUpdated\": \"2015-12-11T14:19:48.25617+00:00\",\"versionId\": \"8a0cc4a3-d2ea-445b-9701-7652e7cb6d95\"},\"id\": \"8a0cc4a3-d2ea-445b-9701-7652e7cb6d95\"}"	
      #puts 'printing hadrcoded body'
      #puts body
+     body = "{\"resourceType\":\"Patient\",\"name\":[{\"family\":[\"Skyes\"],\"given\":[\"Holly\"]}],\"meta\":{\"lastUpdated\":\"2015-12-25T00:17:46.012383+00:00\",\"versionId\":\"2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2\"},\"id\":\"2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2\"}"
   render :text => body, :status => response_status  
   end
 
