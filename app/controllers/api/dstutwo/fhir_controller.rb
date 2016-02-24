@@ -83,9 +83,9 @@ class Api::Dstutwo::FhirController < ApplicationController
   def is_request_format_xml
     result = true
 	if request.headers.key?("Accept") then
-	  if (request.headers["Accept"].include? "application/xml+fhir") then
+	  if (request.headers["Accept"].include? "application/xml") then
 	    result = true
-	  elsif (request.headers["Accept"].include? "application/json+fhir") then
+	  elsif (request.headers["Accept"].include? "application/json") then
 	    result = false
 	  end
 	end
