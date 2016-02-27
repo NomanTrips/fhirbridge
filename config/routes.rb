@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+
+  match '/_services/smart/Launch', to: 'api/dstutwo/fhir#smart_launch', via: :post
   get 'about'    => 'api/dstutwo/fhir#about'
   get 'contact'    => 'api/dstutwo/fhir#contact'
   get 'home'    => 'api/dstutwo/fhir#splashpage'

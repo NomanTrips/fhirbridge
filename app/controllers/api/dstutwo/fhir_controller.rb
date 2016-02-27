@@ -31,7 +31,16 @@ class Api::Dstutwo::FhirController < ApplicationController
 
       render :text => '', :content_type => 'text/plain'
     end
-  end     
+  end    
+
+  def smart_launch
+    puts 'getting to smart_launch'
+    puts request.body.read
+    smart_hash = parse_json(request.body.read)
+    smart_params = smart_hash["parameters"]
+    response_hash = [:created_by => "fhir_starter", :username => "NomanTrips", :launch_id => SecureRandom.uuid, :created_at => Time.now.getutc, smart_params]
+    render :json => response_hash, :status => 200
+  end
   
   def example_read
   	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient/2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2"
