@@ -38,7 +38,7 @@ class Api::Dstutwo::FhirController < ApplicationController
     puts request.body.read
     smart_hash = parse_json(request.body.read)
     smart_params = smart_hash["parameters"]
-    response_hash = [:created_by => "fhir_starter", :username => "NomanTrips", :launch_id => SecureRandom.uuid, :created_at => Time.now.getutc, smart_params]
+    response_hash = [:created_by => "fhir_starter", :username => "NomanTrips", :launch_id => SecureRandom.uuid, :created_at => Time.now.getutc, :parameters => smart_params]
     render :json => response_hash, :status => 200
   end
   
