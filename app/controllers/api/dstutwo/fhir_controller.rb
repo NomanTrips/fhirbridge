@@ -16,7 +16,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS'
-    headers['Access-Control-Allow-Headers'] = 'origin, authorization, accept, content-type, x-requested-with'
+    headers['Access-Control-Allow-Headers'] = 'origin, authorization, accept, content-type, x-requested-with, Authorization'
     headers['Access-Control-Max-Age'] = "1728000"
     headers['Access-Control-Allow-Credentials'] = "true"
   end
