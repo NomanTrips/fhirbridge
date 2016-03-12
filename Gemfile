@@ -44,7 +44,7 @@ gem 'rails-api'
 gem 'json'
 
 ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.23'
-gem 'puma', '>= 3.0.2'
+gem 'puma', '3.0.2'
 
 gem 'jrclj'
 gem 'nokogiri'
