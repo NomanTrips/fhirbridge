@@ -13,24 +13,21 @@ class Api::Dstutwo::FhirController < ApplicationController
   include ActionController::HttpAuthentication::Token::ControllerMethods
   #protect_from_forgery with: :null_session
   #before_action :destroy_session
-  before_filter :authenticate
+  before_filter :authenticate, :except => [:conformance]
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers
 
   def authenticate
-    # The conf statement should be public and not require any auth
-    puts request.original_url
-    if request.original_url.include? "sheltered-headland-5396.herokuapp.com/metadata"  then 
-      return true
-    end
 puts 'getting to auth'
-puts request.headers
-    authenticate_or_request_with_http_basic do |username, password|
+if request.headers.key?("Authorization") then
+  puts request.headers["Authorization"]
+end
+    authenticate_or_request_with_http_token do |token, options|
       # you probably want to guard against a wrong username, and encrypt the
       # password but this is the idea.
-      puts username
-      puts "outputing the pw: #{password}"
-      return introspect_token(password)
+      #puts token
+      puts "outputing the token: #{token}"
+      return introspect_token(token)
     end
   end
 

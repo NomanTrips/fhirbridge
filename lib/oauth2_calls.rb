@@ -14,8 +14,8 @@ module Oauth2Calls
   end
 
   def introspect_token(access_token)
-  	client_id = "2a557ada-8fd7-4144-9e00-26375fb4b398"
-  	client_secret = "AIiLQqa_yK-DTlrPNyjNAUEjM6F1WV2v7iwipOILtUc5_18c27kMlJZxXtfZ8Nai6LjjhDBI-GiwxuYZOWX_tpk"
+  	client_id = "d952fe96-73de-4850-bf95-1d6c4e76b6f7"
+  	client_secret = "ANgugQvcZLe3JXB9DblrMjkCue25enOmrRVgivtwYNsedmWWCIx9cIdiAU4R-weFkruYTpdjYPL4IQ5jHrKTST8"
     response = HTTP.basic_auth(:user => client_id, :pass => client_secret)
       .headers(:accept => "application/json")
       .post('https://arcane-meadow-94486.herokuapp.com/introspect', :params => {:token => access_token})
