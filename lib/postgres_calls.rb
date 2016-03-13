@@ -3,16 +3,19 @@ require 'json'
 
 module PostgresCalls
 
-  def pg_call(pg_statement)
+  def pg_call(stmt_name, pg_statement, res_type, id)
     
 	begin
-		res =  ActiveRecord::Base.connection.execute(pg_statement) # Running fhirbase stored procedure
+		connection = ActiveRecord::Base.connection.raw_connection
+		connection.prepare('#{stmt_name}', "#{pg_statement}")
+		res = connection.exec_prepared('#{stmt_name}', [ res_type ], [ id ])
+		#res =  ActiveRecord::Base.connection.execute(pg_statement) # Running fhirbase stored procedure
 	rescue ActiveRecord::StatementInvalid => e
 		if (e.to_s.include? "relation") && ((e.to_s.include? "does not exist")) then
 			return "No table for that resourceType"
 		end
 	end
-	
+	puts res.size().to_s
 	resource_as_json_str = ''
 	if res.size() > 0 then
 		res_hash = res[0] #First row of query result

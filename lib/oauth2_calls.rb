@@ -19,10 +19,13 @@ module Oauth2Calls
     response = HTTP.basic_auth(:user => client_id, :pass => client_secret)
       .headers(:accept => "application/json")
       .post('https://arcane-meadow-94486.herokuapp.com/introspect', :params => {:token => access_token})
-    puts "response status: #{response.code.to_s}"
-    puts "resp body: #{response.to_s}"
     response_hash = parse_json(response.to_s)
-    return response_hash['active']
+    if response_hash.key?("active") then
+      return response_hash['active'] # json response node from auth server, bool which tells if token is valid
+    else
+      return false
+    end
+
   end
   
 end

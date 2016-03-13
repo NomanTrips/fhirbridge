@@ -13,7 +13,7 @@ class Api::Dstutwo::FhirController < ApplicationController
   include ActionController::HttpAuthentication::Token::ControllerMethods
   #protect_from_forgery with: :null_session
   #before_action :destroy_session
-  before_filter :authenticate, :except => [:conformance]
+  #before_filter :authenticate, :except => [:conformance]
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers
 
@@ -26,7 +26,7 @@ class Api::Dstutwo::FhirController < ApplicationController
     if not is_authorized then
       render :text => "Un-Authorized", :status => 401  
     end
-    
+
   end
 
   def cors_set_access_control_headers
@@ -214,7 +214,8 @@ class Api::Dstutwo::FhirController < ApplicationController
 	if ! is_id_valid_chars_and_length(params[:id]) then 
 	  response_status = 400
 	else
-      resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
+      #resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
+      resource_string = pg_call("read_stmt", "SELECT fhir.read('$1', '$2');", params[:resource_type], params[:id] )
 	  resource_json_hash = parse_json(resource_string)
 	  if resource_json_hash.is_a?(Hash) then
 	    if resource_json_hash["resourceType"] == "OperationOutcome" then 
