@@ -22,13 +22,13 @@ puts 'getting to auth'
 if request.headers.key?("Authorization") then
   puts request.headers["Authorization"]
 end
-    authenticate_or_request_with_http_token do |token, options|
+    #authenticate_or_request_with_http_token do |token, options|
       # you probably want to guard against a wrong username, and encrypt the
       # password but this is the idea.
       #puts token
-      puts "outputing the token: #{token}"
-      return introspect_token(token)
-    end
+     # puts "outputing the token: #{token}"
+      return introspect_token(request.headers["Authorization"])
+    #end
   end
 
   def cors_set_access_control_headers
