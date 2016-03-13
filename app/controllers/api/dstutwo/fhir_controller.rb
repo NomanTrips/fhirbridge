@@ -18,17 +18,15 @@ class Api::Dstutwo::FhirController < ApplicationController
   after_filter :cors_set_access_control_headers
 
   def authenticate
-puts 'getting to auth'
-if request.headers.key?("Authorization") then
-  puts request.headers["Authorization"]
-end
-    #authenticate_or_request_with_http_token do |token, options|
-      # you probably want to guard against a wrong username, and encrypt the
-      # password but this is the idea.
-      #puts token
-     # puts "outputing the token: #{token}"
-      return introspect_token(request.headers["Authorization"])
-    #end
+    is_authorized = false
+    if request.headers.key?("Authorization") then
+      is_authorized = introspect_token(request.headers["Authorization"])
+    end
+
+    if not is_authorized then
+      render :text => "Un-Authorized", :status => 401  
+    end
+    
   end
 
   def cors_set_access_control_headers
