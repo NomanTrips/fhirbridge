@@ -1,17 +1,32 @@
 require 'json'
 require 'postgres_calls'
 require 'fhir_clojure_client'
+require 'oauth2_calls'
 #require 'faker'
 require 'coderay'
-require 'diffy'
 
 class Api::Dstutwo::FhirController < ApplicationController
-  include PostgresCalls 
+  include PostgresCalls
+  include Oauth2Calls
   #protect_from_forgery with: :null_session
   #before_action :destroy_session
-
+  before_filter :authenticate
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers
+
+  def authenticate
+    # The conf statement should be public and not require any auth
+    if request.original_url == "https://sheltered-headland-5396.herokuapp.com/metadata" then 
+      return true
+    end
+
+    authenticate_or_request_with_http_basic do |username, password|
+      # you probably want to guard against a wrong username, and encrypt the
+      # password but this is the idea.
+      puts "outputing the pw: #{password}"
+      return introspect_token(password)
+    end
+  end
 
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
@@ -209,22 +224,9 @@ class Api::Dstutwo::FhirController < ApplicationController
 	    end
 	  end
 	end    
-	set_content_type_header()
+	  set_content_type_header()
     if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
-    #body = "{\"resourceType\": \"Patient\", \"id\": \"2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2\",\"meta\": {\"versionId\": \"2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2\",\"lastUpdated\": \"2015-12-25T00:17:46.012383+00:00\"},\"name\": [{\"given\": [\"Holly\"],\"family\": [\"Skyes\"]}]}"
-    #puts 'printing body...'
-    #puts ''
-    #puts body
-    #puts ''
-
-    #body = "{\"resourceType\": \"Patient\",\"name\": [{\"given\": [\"Holly\"]}],\"meta\": {\"lastUpdated\": \"2015-12-11T14:19:48.25617+00:00\",\"versionId\": \"8a0cc4a3-d2ea-445b-9701-7652e7cb6d95\"},\"id\": \"8a0cc4a3-d2ea-445b-9701-7652e7cb6d95\"}"	
-     #puts 'printing hadrcoded body'
-     #puts body
-     bodytwo = "{\"resourceType\":\"Patient\",\"name\":[{\"family\":[\"Skyes\"],\"given\":[\"Holly\"]}],\"meta\":{\"lastUpdated\":\"2015-12-25T00:17:46.012383+00:00\",\"versionId\":\"2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2\"},\"id\":\"2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2\"}"
- puts 'outputting diffy...'
- puts Diffy::Diff.new(body, bodytwo)
- puts 'end diffy'
-  render :json => body, :status => response_status  
+    render :json => body, :status => response_status  
   end
 
   # POST /api/{plural_resource_name}

@@ -44,7 +44,7 @@ gem 'rails-api'
 gem 'json'
 
 ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.23'
-gem 'puma', '3.0.2'
+gem 'puma', '3.0.2' # Using older version, 3.1.0 was throwing errors about some US-ASCII char
 
 gem 'jrclj'
 gem 'nokogiri'
@@ -57,3 +57,4 @@ gem 'less-rails-bootstrap'
 gem 'coderay'
 gem 'diffy'
 gem 'rack'
+gem 'http'
