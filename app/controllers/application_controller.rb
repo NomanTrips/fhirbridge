@@ -13,14 +13,14 @@ def add_allow_credentials_headers
   # the browser will not reject the response                                                                                                                                                                                                                                             
   headers['Access-Control-Allow-Origin'] = '*'
   headers['Access-Control-Allow-Methods'] = 'GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS'
-  headers['Access-Control-Allow-Headers'] = 'origin, authorization, accept, content-type, x-requested-with, Authorization'
+  headers['Access-Control-Allow-Headers'] = 'origin, Authorization, accept, content-type, x-requested-with, Authorization'
   headers['Access-Control-Max-Age'] = "1728000"
   headers['Access-Control-Allow-Credentials'] = "true" 
   puts 'running add allow cred headers....'                                                                                                                                                                                                                    
 end 
 
 def options                                                                                                                                                                                                                                                                              
-  head :status => 200, :'Access-Control-Allow-Headers' => 'accept, content-type'                                                                                                                                                                                                         
+  head :status => 200, :'Access-Control-Allow-Headers' => 'accept, content-type, Authorization'                                                                                                                                                                                                         
 end
   
 end
