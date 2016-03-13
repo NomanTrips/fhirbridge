@@ -5,9 +5,12 @@ require 'oauth2_calls'
 #require 'faker'
 require 'coderay'
 
+
 class Api::Dstutwo::FhirController < ApplicationController
   include PostgresCalls
   include Oauth2Calls
+  include ActionController::HttpAuthentication::Basic::ControllerMethods
+  include ActionController::HttpAuthentication::Token::ControllerMethods
   #protect_from_forgery with: :null_session
   #before_action :destroy_session
   before_filter :authenticate
@@ -16,7 +19,8 @@ class Api::Dstutwo::FhirController < ApplicationController
 
   def authenticate
     # The conf statement should be public and not require any auth
-    if request.original_url == "https://sheltered-headland-5396.herokuapp.com/metadata" then 
+    puts request.original_url
+    if request.original_url.include? "sheltered-headland-5396.herokuapp.com/metadata"  then 
       return true
     end
 
