@@ -10,7 +10,10 @@ module PostgresCalls
 		values = [ { value: 1}, { value: res_type } ]
 		values.push( { value: 2}, { value: id } )
 		#connection = ActiveRecord::Base.connection
+		
 		conn = PG.connect( dbname: 'fhir_widget_one_production' )
+		puts conn.class.name
+		puts conn.methods
 		#puts connection.raw_connection.class.name
 		conn.prepare('test', pg_statement)
 		res = conn.exec_prepared('test', values)
