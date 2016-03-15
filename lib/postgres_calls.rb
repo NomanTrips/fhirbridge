@@ -21,7 +21,8 @@ module PostgresCalls
 		#res = connection.execute(%Q{ SELECT fhir.read(#{connection.quote(params[:resource_type])}, #{connection.quote(params[:id])});} ) # Running fhirbase stored procedure
 	    conn.close()
 		#res =  ActiveRecord::Base.connection.execute(pg_statement) # Running fhirbase stored procedure
-	rescue ActiveRecord::StatementInvalid => e
+	rescue PG::ConnectionBad => e
+		puts e.to_s
 		if (e.to_s.include? "relation") && ((e.to_s.include? "does not exist")) then
 			return "No table for that resourceType"
 		end
