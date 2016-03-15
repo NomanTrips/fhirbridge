@@ -8,7 +8,8 @@ module PostgresCalls
 	begin
 		values = [ { value: 1}, { value: res_type } ]
 		values.push( { value: 2}, { value: id } )
-		connection = ActiveRecord::Base.connection.raw_connection
+		connection = ActiveRecord::Base.connection
+		puts connection.class.name
 		puts connection.methods
 		connection.prepare('test', pg_statement)
 		res = connection.exec_prepared('test', values)
