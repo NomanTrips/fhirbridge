@@ -6,9 +6,13 @@ module PostgresCalls
   def pg_call(stmt_name, pg_statement, res_type, id)
     
 	begin
+		values = [ { value: 1}, { value: res_type } ]
+		values.push( { value: 2}, { value: id } )
 		connection = ActiveRecord::Base.connection.raw_connection
-		connection.prepare('#{stmt_name}', "#{pg_statement}")
-		res = connection.exec_prepared('#{stmt_name}', [ res_type ], [ id ])
+		connection.describe_prepared('test')
+		connection.prepare('test', pg_statement)
+		res = connection.exec_prepared('#{stmt_name}', values)
+		connection.close()
 		#res =  ActiveRecord::Base.connection.execute(pg_statement) # Running fhirbase stored procedure
 	rescue ActiveRecord::StatementInvalid => e
 		if (e.to_s.include? "relation") && ((e.to_s.include? "does not exist")) then
