@@ -9,9 +9,9 @@ module PostgresCalls
 		values = [ { value: 1}, { value: res_type } ]
 		values.push( { value: 2}, { value: id } )
 		connection = ActiveRecord::Base.connection.raw_connection
-		connection.describe_prepared('test')
+		puts connection.methods
 		connection.prepare('test', pg_statement)
-		res = connection.exec_prepared('#{stmt_name}', values)
+		res = connection.exec_prepared('test', values)
 		connection.close()
 		#res =  ActiveRecord::Base.connection.execute(pg_statement) # Running fhirbase stored procedure
 	rescue ActiveRecord::StatementInvalid => e
