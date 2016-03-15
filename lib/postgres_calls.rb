@@ -16,7 +16,7 @@ module PostgresCalls
 		res = conn.exec_prepared('test', values)
 	
 		#res = connection.execute(%Q{ SELECT fhir.read(#{connection.quote(params[:resource_type])}, #{connection.quote(params[:id])});} ) # Running fhirbase stored procedure
-	    connection.close()
+	    conn.close()
 		#res =  ActiveRecord::Base.connection.execute(pg_statement) # Running fhirbase stored procedure
 	rescue ActiveRecord::StatementInvalid => e
 		if (e.to_s.include? "relation") && ((e.to_s.include? "does not exist")) then
