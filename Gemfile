@@ -5,8 +5,7 @@ source 'http://rubygems.org'
 gem 'rails', '4.1.8'
 # Use postgresql as the database for Active Record--- jvm adapter for jruby
 #gem 'activerecord-jdbcpostgresql-adapter'
-gem 'pg_jruby'
-# Use SCSS for stylesheets
+gem 'pg', '0.17.1', :platform => :jruby, :git => 'git://github.com/headius/jruby-pg.git', :branch => :master# Use SCSS for stylesheets
 #gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'

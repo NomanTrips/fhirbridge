@@ -1,6 +1,6 @@
 # lib/postgres_calls.rb
 require 'json'
-require 'pg_jruby'
+require 'pg'
 
 module PostgresCalls
 
