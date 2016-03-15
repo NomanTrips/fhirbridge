@@ -6,6 +6,7 @@ module PostgresCalls
   def pg_call(stmt_name, pg_statement, res_type, id)
     
 	begin
+		
 		values = [ { value: 1}, { value: res_type } ]
 		values.push( { value: 2}, { value: id } )
 		connection = ActiveRecord::Base.connection
