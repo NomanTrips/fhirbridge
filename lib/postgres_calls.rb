@@ -1,19 +1,21 @@
 # lib/postgres_calls.rb
 require 'json'
+require 'pg_jruby'
 
 module PostgresCalls
 
-  def pg_call(res_type, id)
+  def pg_call(stmt_name, pg_statement, res_type, id)
     
 	begin		
-		#values = [ { value: 1}, { value: res_type } ]
-		#values.push( { value: 2}, { value: id } )
-		connection = ActiveRecord::Base.connection
+		values = [ { value: 1}, { value: res_type } ]
+		values.push( { value: 2}, { value: id } )
+		#connection = ActiveRecord::Base.connection
+		conn = PG.connect( dbname: 'fhir_widget_one_production' )
 		#puts connection.raw_connection.class.name
-		#connection.prepare('test', pg_statement)
-		#res = connection.exec_prepared('test', values)
+		conn.prepare('test', pg_statement)
+		res = conn.exec_prepared('test', values)
 	
-		res = connection.execute(%Q{ SELECT fhir.read(#{connection.quote(params[:resource_type])}, #{connection.quote(params[:id])});} ) # Running fhirbase stored procedure
+		#res = connection.execute(%Q{ SELECT fhir.read(#{connection.quote(params[:resource_type])}, #{connection.quote(params[:id])});} ) # Running fhirbase stored procedure
 	    connection.close()
 		#res =  ActiveRecord::Base.connection.execute(pg_statement) # Running fhirbase stored procedure
 	rescue ActiveRecord::StatementInvalid => e

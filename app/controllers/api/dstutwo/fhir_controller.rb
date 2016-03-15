@@ -215,9 +215,9 @@ class Api::Dstutwo::FhirController < ApplicationController
 	  response_status = 400
 	else
       #resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
-      #resource_string = pg_call("read_stmt", "SELECT fhir.read('$1', '$2');", params[:resource_type], params[:id] )
+      resource_string = pg_call("read_stmt", "SELECT fhir.read('$1', '$2');", params[:resource_type], params[:id] )
       #resource_string = pg_call(%Q{ SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}'); } )
-	    resource_string = pg_call(params[:resource_type], params[:id])
+	    #resource_string = pg_call(params[:resource_type], params[:id])
     resource_json_hash = parse_json(resource_string)
 	  if resource_json_hash.is_a?(Hash) then
 	    if resource_json_hash["resourceType"] == "OperationOutcome" then 
