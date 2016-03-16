@@ -11,7 +11,14 @@ module PostgresCalls
 		values.push( { value: 2}, { value: id } )
 		#connection = ActiveRecord::Base.connection
 		
-		conn = PG::Connection.open(dbname: 'fhir_widget_one_production')
+		db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
+        username = db_parts[3]
+        password = db_parts[4]
+        host = db_parts[5]
+        db = db_parts[7]
+        conn = PG::Connection.open(:host =>  host, :dbname => db, :user=> username, :password=> password)
+
+		#conn = PG::Connection.open(dbname: 'fhir_widget_one_production')
 		puts conn.class.name
 		puts conn.methods
 		#puts connection.raw_connection.class.name
@@ -21,7 +28,7 @@ module PostgresCalls
 		#res = connection.execute(%Q{ SELECT fhir.read(#{connection.quote(params[:resource_type])}, #{connection.quote(params[:id])});} ) # Running fhirbase stored procedure
 	    conn.close()
 		#res =  ActiveRecord::Base.connection.execute(pg_statement) # Running fhirbase stored procedure
-	rescue PG::ConnectionBad => e
+	rescue StandardError => e
 		puts e.to_s
 		if (e.to_s.include? "relation") && ((e.to_s.include? "does not exist")) then
 			return "No table for that resourceType"
