@@ -195,39 +195,38 @@ class Api::Dstutwo::FhirController < ApplicationController
   end
   
   def conformance
-    resource_string = pg_call("SELECT fhir.read('Conformance', 'fb5ef8ec-55da-4718-9fd4-5a4c930ee8c9');") # hard coded conf record in db for now
-	resource_json_hash = parse_json(resource_string)
-	if resource_json_hash.is_a?(Hash) then
-	  if resource_json_hash["resourceType"] == "OperationOutcome" then 
-	    response_status = get_err_status(resource_json_hash)
-	  else
-	    response_status = 200
-		set_headers(resource_json_hash)
-	  end
-	end   
-	set_content_type_header()
-    if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
-	render :text => body, :status => response_status	
-  end
-  
-  def read
-	if ! is_id_valid_chars_and_length(params[:id]) then 
-	  response_status = 400
-	else
-      #resource_string = pg_call("SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}');")
-      resource_string = pg_call("read_stmt", "SELECT fhir.read($1, $2);", params[:resource_type], params[:id] )
-      #resource_string = pg_call(%Q{ SELECT fhir.read('#{params[:resource_type]}', '#{params[:id]}'); } )
-	    #resource_string = pg_call(params[:resource_type], params[:id])
-    resource_json_hash = parse_json(resource_string)
+    query_params = ['Conformance', 'fb5ef8ec-55da-4718-9fd4-5a4c930ee8c9']
+    resource_string = pg_call("SELECT fhir.read($1, $2);", query_params) # hard coded conf record in db for now
+	  resource_json_hash = parse_json(resource_string)
 	  if resource_json_hash.is_a?(Hash) then
 	    if resource_json_hash["resourceType"] == "OperationOutcome" then 
 	      response_status = get_err_status(resource_json_hash)
 	    else
 	      response_status = 200
-		  set_headers(resource_json_hash)
+		    set_headers(resource_json_hash)
 	    end
-	  end
-	end    
+	  end   
+	  set_content_type_header()
+    if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
+	  render :text => body, :status => response_status	
+  end
+  
+  def read
+	  if ! is_id_valid_chars_and_length(params[:id]) then 
+	    response_status = 400
+	  else
+      query_params = [params[:resource_type], params[:id]]
+      resource_string = pg_call("SELECT fhir.read($1, $2);", query_params)
+      resource_json_hash = parse_json(resource_string)
+	    if resource_json_hash.is_a?(Hash) then
+	      if resource_json_hash["resourceType"] == "OperationOutcome" then 
+	        response_status = get_err_status(resource_json_hash)
+	      else
+	        response_status = 200
+		      set_headers(resource_json_hash)
+	      end
+	    end
+	  end    
 	  set_content_type_header()
     if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
     render :json => body, :status => response_status  
@@ -240,32 +239,34 @@ class Api::Dstutwo::FhirController < ApplicationController
     else
       payload = request.body.read # json
     end
-    resource_string = pg_call("SELECT fhir.create('#{convert_resource(payload)}');")
-	resource_json_hash = parse_json(resource_string)
-	if resource_json_hash.is_a?(Hash) then
-	  if resource_json_hash["resourceType"] == "OperationOutcome" then 
-	    response_status = get_err_status(resource_json_hash)
-	  else
-	    response_status = 201
-		set_headers(resource_json_hash)
+    query_params = [convert_resource(payload)]
+    resource_string = pg_call("SELECT fhir.create($1);", query_params)
+	  resource_json_hash = parse_json(resource_string)
+	  if resource_json_hash.is_a?(Hash) then
+	    if resource_json_hash["resourceType"] == "OperationOutcome" then 
+	      response_status = get_err_status(resource_json_hash)
+	    else
+	      response_status = 201
+		    set_headers(resource_json_hash)
+	    end
 	  end
-	end
-	set_content_type_header()
+	  set_content_type_header()
     if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
-	render :text => body, :status => response_status
+	  render :text => body, :status => response_status
   end
  
   #  DELETE [base]/[type]/[id]
   def delete
-    resource_string = pg_call("SELECT fhir.delete('#{params[:resource_type]}', '#{params[:id]}');")
-	resource_json_hash = parse_json(resource_string)
-	if resource_json_hash.is_a?(Hash) then
-	  if resource_json_hash["resourceType"] == "OperationOutcome" then 
-	    response_status = get_err_status(resource_json_hash)
-	  else
-	    response_status = 204
-		set_headers(resource_json_hash)
-	  end
+    query_params = [params[:resource_type], params[:id]]
+    resource_string = pg_call("SELECT fhir.delete($1, $2);", query_params)
+	  resource_json_hash = parse_json(resource_string)
+	  if resource_json_hash.is_a?(Hash) then
+	    if resource_json_hash["resourceType"] == "OperationOutcome" then 
+	      response_status = get_err_status(resource_json_hash)
+	    else
+	      response_status = 204
+		    set_headers(resource_json_hash)
+	    end
 	end
     
 	set_content_type_header()
@@ -289,20 +290,20 @@ class Api::Dstutwo::FhirController < ApplicationController
   end
   
   def search
-    resource_string = pg_call("SELECT fhir.search('#{params[:resource_type]}', '#{get_search_string}');")
-	resource_json_hash = parse_json(resource_string)
-	if resource_json_hash.is_a?(Hash) then
-	  if resource_json_hash["resourceType"] == "OperationOutcome" then 
-	    response_status = get_err_status(resource_json_hash)
-	  else
-	    response_status = 200
-		set_headers(resource_json_hash)
+    query_params = [params[:resource_type], get_search_string]
+    resource_string = pg_call("SELECT fhir.search($1, $2);", query_params)
+	  resource_json_hash = parse_json(resource_string)
+	  if resource_json_hash.is_a?(Hash) then
+	    if resource_json_hash["resourceType"] == "OperationOutcome" then 
+	      response_status = get_err_status(resource_json_hash)
+	    else
+	      response_status = 200
+		    set_headers(resource_json_hash)
+	    end
 	  end
-	end
-    
-	set_content_type_header()
+	  set_content_type_header()
     if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
-	render :text => body, :status => response_status	
+	  render :text => body, :status => response_status	
   end
   
   # PATCH/PUT /api/{resource_name}/id
@@ -312,56 +313,58 @@ class Api::Dstutwo::FhirController < ApplicationController
     else
       payload = request.body.read # json
     end
-    resource_string = pg_call("SELECT fhir.update(fhirbase_json.merge(fhir.read('#{params[:resource_type]}', '#{params[:id]}'),'#{payload}'));")
-	resource_json_hash = parse_json(resource_string)
-	if resource_json_hash.is_a?(Hash) then
-	  if resource_json_hash["resourceType"] == "OperationOutcome" then 
-	    response_status = get_err_status(resource_json_hash)
-	  else
-	    response_status = 200
-		set_headers(resource_json_hash)
-	  end
-	end
-	set_content_type_header()
-    if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
-	render :text => body, :status => response_status
-  end 
-  
-  def vread
-	if ! is_id_valid_chars_and_length(params[:vid]) then 
-	  response_status = 400
-	else
-      resource_string = pg_call("SELECT fhir.vread('#{params[:resource_type]}', /*old_version_id*/ '#{params[:vid]}');")
+    query_params = [params[:resource_type], params[:id], payload]
+    resource_string = pg_call("SELECT fhir.update(fhirbase_json.merge(fhir.read($1, $2), $3));", query_params)
 	  resource_json_hash = parse_json(resource_string)
 	  if resource_json_hash.is_a?(Hash) then
 	    if resource_json_hash["resourceType"] == "OperationOutcome" then 
 	      response_status = get_err_status(resource_json_hash)
 	    else
 	      response_status = 200
-		  set_headers(resource_json_hash)
+		    set_headers(resource_json_hash)
 	    end
 	  end
-	end    
-	set_content_type_header()
+	  set_content_type_header()
     if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
-	render :text => body, :status => response_status  
+	  render :text => body, :status => response_status
+  end 
+  
+  def vread
+	  if ! is_id_valid_chars_and_length(params[:vid]) then 
+	    response_status = 400
+	  else
+      query_params = [params[:resource_type], params[:vid]]
+      resource_string = pg_call("SELECT fhir.vread($1, /*old_version_id*/ $2);", query_params)
+	    resource_json_hash = parse_json(resource_string)
+	    if resource_json_hash.is_a?(Hash) then
+	      if resource_json_hash["resourceType"] == "OperationOutcome" then 
+	        response_status = get_err_status(resource_json_hash)
+	      else
+	        response_status = 200
+		      set_headers(resource_json_hash)
+	      end
+	    end
+	  end    
+	  set_content_type_header()
+    if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
+	  render :text => body, :status => response_status  
   end
   
   def history
-    resource_string = pg_call("SELECT fhir.history('#{params[:resource_type]}', '#{params[:id]}');")
-	resource_json_hash = parse_json(resource_string)
-	if resource_json_hash.is_a?(Hash) then
-	  if resource_json_hash["resourceType"] == "OperationOutcome" then 
-	    response_status = get_err_status(resource_json_hash)
-	  else
-	    response_status = 200
-		set_headers(resource_json_hash)
+    query_params = [params[:resource_type], params[:id]]
+    resource_string = pg_call("SELECT fhir.history($1, $2);", query_params)
+	  resource_json_hash = parse_json(resource_string)
+	  if resource_json_hash.is_a?(Hash) then
+	    if resource_json_hash["resourceType"] == "OperationOutcome" then 
+	      response_status = get_err_status(resource_json_hash)
+	    else
+	      response_status = 200
+		    set_headers(resource_json_hash)
+	    end
 	  end
-	end
-    
-	set_content_type_header()
+	  set_content_type_header()
     if defined?(resource_string) then body = convert_resource(resource_string) else body = '' end
-	render :text => body, :status => response_status
+	  render :text => body, :status => response_status
   end
 
   def destroy_session
