@@ -7,8 +7,9 @@ module PostgresCalls
   def pg_call(stmt_name, pg_statement, res_type, id)
     
 	begin		
-		values = [ { value: 1}, { value: res_type } ]
-		values.push( { value: 2}, { value: id } )
+		#values = [ { value: 1}, { value: res_type } ]
+		#values.push( { value: 2}, { value: id } )
+		values = [res_type, id]
 		#connection = ActiveRecord::Base.connection
 		
 		db_parts = ENV['DATABASE_URL'].split(/\/|:|@/)
