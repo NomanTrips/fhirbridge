@@ -23,12 +23,12 @@ module PostgresCalls
 		puts conn.methods
 		#puts connection.raw_connection.class.name
 		conn.prepare('test', pg_statement)
-		res = conn.exec_prepared('test', values)
+		res = conn.exec_prepared('test', res_type, id)
 	
 		#res = connection.execute(%Q{ SELECT fhir.read(#{connection.quote(params[:resource_type])}, #{connection.quote(params[:id])});} ) # Running fhirbase stored procedure
 	    conn.close()
 		#res =  ActiveRecord::Base.connection.execute(pg_statement) # Running fhirbase stored procedure
-	rescue StandardError => e
+	rescue PG::Error => e
 		puts e.to_s
 		if (e.to_s.include? "relation") && ((e.to_s.include? "does not exist")) then
 			return "No table for that resourceType"
