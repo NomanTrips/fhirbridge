@@ -23,7 +23,7 @@ module PostgresCalls
 		puts conn.methods
 		#puts connection.raw_connection.class.name
 		conn.prepare('test', pg_statement)
-		res = conn.exec_prepared('test', res_type, id)
+		res = conn.exec_prepared('test', values)
 	
 		#res = connection.execute(%Q{ SELECT fhir.read(#{connection.quote(params[:resource_type])}, #{connection.quote(params[:id])});} ) # Running fhirbase stored procedure
 	    conn.close()
