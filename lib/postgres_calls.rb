@@ -20,8 +20,8 @@ module PostgresCalls
         conn = PG::Connection.open(:host =>  host, :dbname => db, :user=> username, :password=> password)
 
 		#conn = PG::Connection.open(dbname: 'fhir_widget_one_production')
-		puts conn.class.name
-		puts conn.methods
+		#puts conn.class.name
+		#puts conn.methods
 		#puts connection.raw_connection.class.name
 		conn.prepare('test', pg_statement)
 		res = conn.exec_prepared('test', values)
@@ -35,7 +35,6 @@ module PostgresCalls
 			return "No table for that resourceType"
 		end
 	end
-	puts res.size().to_s
 	resource_as_json_str = ''
 	if res.num_tuples() > 0 then
 		res_hash = res[0] #First row of query result
