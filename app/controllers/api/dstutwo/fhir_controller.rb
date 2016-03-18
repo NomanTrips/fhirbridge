@@ -2,7 +2,7 @@ require 'json'
 require 'postgres_calls'
 require 'fhir_clojure_client'
 require 'oauth2_calls'
-#require 'faker'
+require 'faker'
 require 'coderay'
 
 
