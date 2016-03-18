@@ -60,7 +60,8 @@ class Api::Dstutwo::FhirController < ApplicationController
   
   def example_read
   	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient/2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2"
-  	json_str = pg_call("SELECT fhir.read('Patient', '2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2');")
+    query_params = ['Patient', '2d6ebe1f-6810-4b50-8b85-085d4ac6c0b2']
+  	json_str = pg_call("SELECT fhir.read($1, $2);", query_params)
   	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
@@ -68,8 +69,8 @@ class Api::Dstutwo::FhirController < ApplicationController
 
   def example_create
   	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient"
-  	puts params[:payload]
-  	json_str = pg_call("SELECT fhir.create('#{params[:payload]}');")
+    query_params = [params[:payload]]
+  	json_str = pg_call("SELECT fhir.create($1);", query_params)
   	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
@@ -77,7 +78,8 @@ class Api::Dstutwo::FhirController < ApplicationController
 
   def example_search
   	@fhirCall = "https://sheltered-headland-5396.herokuapp.com/Patient?given=holly"
-  	json_str = pg_call("SELECT fhir.search('Patient', 'family=skyes');")
+    query_params = ['Patient', 'family=skyes']
+  	json_str = pg_call("SELECT fhir.search($1, $2);", query_params)
   	@fhirResponseBody =  CodeRay.scan(JSON.pretty_generate(parse_json(json_str)) , :json).div
   	render :file => "/app/views/layouts/fhir_response.html.erb"
   end
@@ -96,8 +98,8 @@ class Api::Dstutwo::FhirController < ApplicationController
   end
 
   def splashpage
-   	#random_first_name = Faker::Name.first_name
-  	#random_last_name = Faker::Name.last_name
+   	random_first_name = Faker::Name.first_name
+  	random_last_name = Faker::Name.last_name
   	@example_patient = "{\"resourceType\":\"Patient\", \"name\": [{\"given\": [\"#{random_first_name}\"],\"family\": [\"#{random_last_name}\"]}]}"
   	json_hash = JSON.parse(@example_patient)
   	@example_patient_pretty = CodeRay.scan(JSON.pretty_generate(json_hash) , :json).div
