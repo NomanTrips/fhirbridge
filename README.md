@@ -15,7 +15,7 @@ The installation is two part: setting up the API server and then setting up the 
 ### API server
 - Clone the repository to a folder on your desktop (you could also download the zip instead). Open a terminal or cmd prompt and cd to the folder you want to clone the repository into. Then run the command:
 ```
-git clone https://github.com/NomanTrips/alpha-chase.git
+git clone https://github.com/NomanTrips/fhirbridge.git
 ```
 - If you don't have git on your computer or if your on windows you will need to get git: https://git-scm.com/download/win
 - Install dependencies:
